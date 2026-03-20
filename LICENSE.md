@@ -1,0 +1,5 @@
+# License
+
+Copyright (c) 2026 James Daley. All Rights Reserved.
+
+This software is proprietary and confidential. No part of this software may be reproduced, distributed, or transmitted in any form or by any means without the prior written permission of the copyright holder.

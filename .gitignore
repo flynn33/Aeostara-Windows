@@ -1,0 +1,25 @@
+# Build output
+build/
+out/
+cmake-build-*/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.sln.docstates
+
+# vcpkg
+vcpkg_installed/
+
+# IDE
+.idea/
+.vscode/
+
+# OS
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Audit trail files (generated at runtime)
+*.jsonl
