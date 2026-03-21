@@ -1,0 +1,23 @@
+{
+  "platform": "windows",
+  "displayName": "Aeostara for Windows",
+  "status": "reference-implementation",
+  "version": "0.1.0",
+  "toolchain": {
+    "compiler": "MSVC (Visual Studio 2022)",
+    "buildSystem": "CMake 3.28+",
+    "packageManager": "vcpkg",
+    "standard": "C++20"
+  },
+  "implementation": {
+    "language": "C++20",
+    "testFramework": "CppUnitTest (Microsoft)",
+    "dependencies": ["nlohmann/json"],
+    "compilerFlags": "/W4 /WX"
+  },
+  "shell": {
+    "type": "CLI",
+    "commands": ["validate", "diff", "heal"]
+  },
+  "forsettiBridge": "interface-ready"
+}
