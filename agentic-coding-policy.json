@@ -58,14 +58,22 @@
     }
   ],
   "architecture_constraints": {
+    "forsetti_integration_boundary": {
+      "domain_layer": "AeostaraCore",
+      "platform_layer": "AeostaraCLI",
+      "rule": "Domain (AeostaraCore) must not import Forsetti modules. Platform layer (AeostaraCLI) may import Forsetti modules for framework-mediated hosting."
+    },
     "must_not_import_rules": [
       {
         "source": "AeostaraCore",
-        "must_not_include": ["ForsettiCore", "ForsettiPlatform", "ForsettiHostTemplate", "AeostaraCLI"]
+        "must_not_include": ["ForsettiCore", "ForsettiPlatform", "ForsettiHostTemplate", "AeostaraCLI"],
+        "reason": "Domain contracts and algorithms are Forsetti-independent"
       },
       {
         "source": "AeostaraCLI",
-        "must_not_include": ["ForsettiCore", "ForsettiPlatform", "ForsettiHostTemplate"]
+        "must_not_include": [],
+        "may_include": ["ForsettiCore", "ForsettiPlatform", "ForsettiHostTemplate", "AeostaraCore"],
+        "reason": "Platform shell may integrate with Forsetti per R003 boundary rules"
       }
     ]
   }
