@@ -18,6 +18,7 @@
       "id": "R003",
       "name": "Forsetti Boundary Compliance",
       "description": "This branch is a Windows-native realization branch and may integrate with the Windows Forsetti framework at the platform services layer. Domain-level contracts remain Forsetti-independent. Forsetti boundary rules: no framework modification, no direct module-to-module communication, no direct OS communication, no module-owned UI, framework-mediated I/O only.",
+      "current_state": "No Forsetti integration code exists in this branch. AeostaraCore and AeostaraCLI are currently Forsetti-independent. Future integration at the platform layer (AeostaraCLI) is architecturally permitted but not yet implemented.",
       "severity": "error"
     },
     {

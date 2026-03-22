@@ -120,6 +120,15 @@ powershell -ExecutionPolicy Bypass -File Scripts/check-architecture.ps1
 - **ASH-inspired** — healing semantics follow the Aeostara Self-Healing architectural pattern
 - **Windows-native realization** — this branch is a native realization of the Aeostara spec; Windows-native Forsetti integration is permitted at the platform services layer while observing Forsetti boundary rules
 
+## Release Documentation
+
+- [Build and Test Guide](docs/windows/BUILD_AND_TEST.md)
+- [CLI Operator Guide](docs/windows/CLI_OPERATOR_GUIDE.md)
+- [Release Checklist](docs/windows/RELEASE_CHECKLIST.md)
+- [Release Artifact Spec](docs/windows/RELEASE_ARTIFACT_SPEC.md)
+- [Troubleshooting](docs/windows/TROUBLESHOOTING.md)
+- [Phase 7 State Report](docs/windows/PHASE7_STATE_REPORT.md)
+
 ## License
 
 Proprietary. All rights reserved. See [LICENSE.md](LICENSE.md).
