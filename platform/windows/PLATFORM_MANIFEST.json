@@ -1,7 +1,7 @@
 {
   "platform": "windows",
   "displayName": "Aeostara for Windows",
-  "status": "reference-implementation",
+  "status": "release-candidate",
   "version": "0.1.0",
   "toolchain": {
     "compiler": "MSVC (Visual Studio 2022)",

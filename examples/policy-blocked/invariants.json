@@ -1,0 +1,20 @@
+[
+  {
+    "invariant_id": "INV-001",
+    "name": "SSL Required",
+    "description": "SSL must be enabled — critical, blocks healing if violated",
+    "severity": "critical",
+    "expression": "server.ssl_enabled == true",
+    "applies_to": ["server"],
+    "auto_remediate": false
+  },
+  {
+    "invariant_id": "INV-002",
+    "name": "Database Port Standard",
+    "description": "Database port must be 5432",
+    "severity": "high",
+    "expression": "database.port == 5432",
+    "applies_to": ["database"],
+    "auto_remediate": true
+  }
+]
