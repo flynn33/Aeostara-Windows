@@ -17,16 +17,16 @@ Write-Host "Aeostara Architecture Check" -ForegroundColor Cyan
 Write-Host "Source: $SourceDir"
 Write-Host ""
 
-# 1. Grep for forbidden Forsetti includes
-$hits = Get-ChildItem -Path "$SourceDir/include","$SourceDir/src" -Recurse -Include "*.h","*.cpp" |
+# 1. Grep for Forsetti includes in domain (AeostaraCore only — CLI/Services may integrate)
+$hits = Get-ChildItem -Path "$SourceDir/include/AeostaraCore","$SourceDir/src/AeostaraCore" -Recurse -Include "*.h","*.cpp" |
     Select-String -Pattern '#include.*Forsetti' -List
 
 if ($hits.Count -gt 0) {
-    Write-Host "[FAIL] Forbidden Forsetti includes:" -ForegroundColor Red
+    Write-Host "[FAIL] Forsetti includes in domain (AeostaraCore):" -ForegroundColor Red
     $hits | ForEach-Object { Write-Host "  $_" -ForegroundColor Yellow }
     $failures++
 } else {
-    Write-Host "[OK] No Forsetti includes" -ForegroundColor Green
+    Write-Host "[OK] No Forsetti includes in domain (AeostaraCore)" -ForegroundColor Green
 }
 
 # 2. Check Core→CLI dependency direction

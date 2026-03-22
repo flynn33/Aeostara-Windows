@@ -29,20 +29,20 @@ Write-Host "=== Aeostara Guardrails Verification ===" -ForegroundColor Cyan
 Write-Host "Source directory: $SourceDir"
 Write-Host ""
 
-# ---- 1. No Forsetti includes ----
+# ---- 1. No Forsetti includes in domain (AeostaraCore) ----
 Write-Host "--- Architecture Checks ---" -ForegroundColor Cyan
 
-$forsettiIncludes = Get-ChildItem -Path "$SourceDir/include","$SourceDir/src" -Recurse -Include "*.h","*.cpp","*.hpp" |
+$forsettiIncludes = Get-ChildItem -Path "$SourceDir/include/AeostaraCore","$SourceDir/src/AeostaraCore" -Recurse -Include "*.h","*.cpp","*.hpp" |
     Select-String -Pattern '#include\s+[<"]Forsetti' -List
 
-Write-Check "No ForsettiCore/ForsettiPlatform includes" ($forsettiIncludes.Count -eq 0) `
+Write-Check "No Forsetti includes in domain (AeostaraCore)" ($forsettiIncludes.Count -eq 0) `
     ($forsettiIncludes | ForEach-Object { $_.Path } | Out-String)
 
-# ---- 2. No Forsetti namespace ----
-$forsettiNs = Get-ChildItem -Path "$SourceDir/include","$SourceDir/src" -Recurse -Include "*.h","*.cpp","*.hpp" |
+# ---- 2. No Forsetti namespace in domain (AeostaraCore) ----
+$forsettiNs = Get-ChildItem -Path "$SourceDir/include/AeostaraCore","$SourceDir/src/AeostaraCore" -Recurse -Include "*.h","*.cpp","*.hpp" |
     Select-String -Pattern 'namespace\s+Forsetti' -List
 
-Write-Check "No Forsetti namespace usage" ($forsettiNs.Count -eq 0) `
+Write-Check "No Forsetti namespace in domain (AeostaraCore)" ($forsettiNs.Count -eq 0) `
     ($forsettiNs | ForEach-Object { $_.Path } | Out-String)
 
 # ---- 3. Copyright headers ----

@@ -43,12 +43,13 @@ TEST_CLASS(ArchitectureEnforcementTests)
 {
 public:
 
-    // R001 compliance: No ForsettiCore or ForsettiPlatform includes in any Aeostara source
-    TEST_METHOD(NoForsettiIncludes)
+    // R003 compliance: Domain (AeostaraCore) must not include Forsetti headers
+    // Note: CLI/Services layers may integrate with Forsetti per boundary rules
+    TEST_METHOD(NoDomainForsettiIncludes)
     {
         auto srcRoot = fs::path(AEOSTARA_SOURCE_DIR);
-        auto includeRoot = srcRoot / "include";
-        auto srcDir = srcRoot / "src";
+        auto includeRoot = srcRoot / "include" / "AeostaraCore";
+        auto srcDir = srcRoot / "src" / "AeostaraCore";
 
         auto files = collectSourceFiles(includeRoot);
         auto srcFiles = collectSourceFiles(srcDir);
@@ -60,7 +61,7 @@ public:
             auto content = readFileContent(filePath);
             Assert::IsFalse(
                 std::regex_search(content, forsettiInclude),
-                (L"Forbidden Forsetti include found in: " + filePath.wstring()).c_str());
+                (L"Forsetti include in domain (AeostaraCore): " + filePath.wstring()).c_str());
         }
     }
 
