@@ -118,7 +118,7 @@ powershell -ExecutionPolicy Bypass -File Scripts/check-architecture.ps1
 - **No Python dependency** — build, test, and run require only MSVC, CMake, and vcpkg
 - **Forsetti-compliant** — R001 (approved dependencies only), R005 (interface-first, all types final)
 - **ASH-inspired** — healing semantics follow the Aeostara Self-Healing architectural pattern
-- **Host-agnostic core** — AeostaraCore has no Forsetti runtime coupling; future hosting via adapter
+- **Windows-native realization** — this branch is a native realization of the Aeostara spec; Windows-native Forsetti integration is permitted at the platform services layer while observing Forsetti boundary rules
 
 ## License
 
