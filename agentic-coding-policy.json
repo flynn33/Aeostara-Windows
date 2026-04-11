@@ -1,81 +1,38 @@
 {
-  "schemaVersion": "1.0",
-  "policyName": "Aeostara Agentic Coding Policy",
+  "schemaVersion": "1.1",
+  "policyName": "Aeostara Windows Branch Policy",
+  "policyScope": "platform/windows",
+  "description": "Policy for Windows native realization branch aligned to downstream ASH conformance semantics.",
   "rules": [
     {
-      "id": "R001",
-      "name": "Native Technologies Only",
-      "description": "Use only C++20 standard library, Windows SDK, and Microsoft-provided tools (vcpkg, MSVC, CppUnitTest). nlohmann/json via vcpkg is allowed. No Boost, no non-Microsoft third-party tools.",
+      "id": "W001",
+      "name": "Upstream Semantic Alignment",
+      "description": "Branch semantics must align with ASH upstream authority and Aeostara downstream conformance artifacts from main.",
       "severity": "error"
     },
     {
-      "id": "R002",
-      "name": "Sealed Core Library",
-      "description": "AeostaraCore is a sealed static library. Consumers use public headers in include/AeostaraCore/ only.",
+      "id": "W002",
+      "name": "Windows Native Implementation",
+      "description": "Implementation remains C++20/MSVC/CMake/vcpkg native for Windows runtime delivery.",
       "severity": "error"
     },
     {
-      "id": "R003",
-      "name": "Forsetti Boundary Compliance",
-      "description": "This branch is a Windows-native realization branch and may integrate with the Windows Forsetti framework at the platform services layer. Domain-level contracts remain Forsetti-independent. Forsetti boundary rules: no framework modification, no direct module-to-module communication, no direct OS communication, no module-owned UI, framework-mediated I/O only.",
-      "current_state": "No Forsetti integration code exists in this branch. AeostaraCore and AeostaraCLI are currently Forsetti-independent. Future integration at the platform layer (AeostaraCLI) is architecturally permitted but not yet implemented.",
+      "id": "W003",
+      "name": "Strict OOP and Modularity",
+      "description": "Use interface-first boundaries, constructor DI, and modular one-way dependencies across core/CLI/test layers.",
       "severity": "error"
     },
     {
-      "id": "R004",
-      "name": "Interface-First Design",
-      "description": "All major components expose abstract interfaces (pure virtual classes). Implementations use constructor dependency injection.",
+      "id": "W004",
+      "name": "Deterministic Safety Envelope",
+      "description": "Policy gating, backup, verification, rollback, fallback/containment/safe-halt escalation hooks, and audit evidence are mandatory.",
       "severity": "error"
     },
     {
-      "id": "R005",
-      "name": "Strict OOP",
-      "description": "All concrete classes must be final. All classes use constructor DI. No hidden globals or singletons.",
-      "severity": "error"
-    },
-    {
-      "id": "R006",
-      "name": "One-Way Dependencies",
-      "description": "AeostaraCore depends on nothing except nlohmann/json. AeostaraCLI depends on AeostaraCore. Tests depend on AeostaraCore. No reverse or lateral imports.",
-      "severity": "error"
-    },
-    {
-      "id": "R007",
-      "name": "Deterministic Behavior",
-      "description": "No random production behavior. All repair plans are deterministic. Same input must produce same output.",
-      "severity": "error"
-    },
-    {
-      "id": "R008",
-      "name": "Proprietary Licensing",
-      "description": "All source files carry proprietary header comment. Copyright (c) 2026 James Daley. All Rights Reserved.",
-      "severity": "error"
-    },
-    {
-      "id": "R009",
-      "name": "No Mutation Without Rollback",
-      "description": "Every file mutation must be preceded by a backup. Rollback must be available for every repair action.",
+      "id": "W005",
+      "name": "No Interpreted Runtime in Product",
+      "description": "Shipped product paths must not depend on Python or YAML parsers.",
       "severity": "error"
     }
-  ],
-  "architecture_constraints": {
-    "forsetti_integration_boundary": {
-      "domain_layer": "AeostaraCore",
-      "platform_layer": "AeostaraCLI",
-      "rule": "Domain (AeostaraCore) must not import Forsetti modules. Platform layer (AeostaraCLI) may import Forsetti modules for framework-mediated hosting."
-    },
-    "must_not_import_rules": [
-      {
-        "source": "AeostaraCore",
-        "must_not_include": ["ForsettiCore", "ForsettiPlatform", "ForsettiHostTemplate", "AeostaraCLI"],
-        "reason": "Domain contracts and algorithms are Forsetti-independent"
-      },
-      {
-        "source": "AeostaraCLI",
-        "must_not_include": [],
-        "may_include": ["ForsettiCore", "ForsettiPlatform", "ForsettiHostTemplate", "AeostaraCore"],
-        "reason": "Platform shell may integrate with Forsetti per R003 boundary rules"
-      }
-    ]
-  }
+  ]
 }
