@@ -41,7 +41,7 @@ cmake --build --preset debug --target RUN_TESTS
 **Result:** ✅ PASS — 3/3 test suites, 0 failures
 
 ```
-Test project A:/Claude/aeostara/build/debug
+Test project build/debug
     Start 1: AeostaraCoreTests
 1/3 Test #1: AeostaraCoreTests ................   Passed    0.78 sec
     Start 2: AeostaraArchitectureTests

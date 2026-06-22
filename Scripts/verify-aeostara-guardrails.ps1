@@ -3,7 +3,7 @@
 # Proprietary and Confidential.
 #
 # Usage: powershell -ExecutionPolicy Bypass -File Scripts/verify-aeostara-guardrails.ps1
-# Run from the repository root (A:/Claude/aeostara/)
+# Run from the repository root.
 
 param(
     [string]$SourceDir = $PSScriptRoot + "/.."

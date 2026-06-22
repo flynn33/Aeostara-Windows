@@ -1,0 +1,29 @@
+name: Windows Build
+
+on:
+  push:
+    branches: ['main']
+  pull_request:
+    branches: ['main']
+
+jobs:
+  windows-build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure
+        shell: pwsh
+        run: cmake --preset debug
+
+      - name: Build
+        shell: pwsh
+        run: cmake --build --preset debug
+
+      - name: Test
+        shell: pwsh
+        run: ctest --preset debug
+
+      - name: Architecture guardrails
+        shell: pwsh
+        run: ./Scripts/verify-aeostara-guardrails.ps1

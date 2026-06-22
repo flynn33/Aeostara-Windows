@@ -2,16 +2,16 @@
 
 **Downstream ASH-based healing platform** - Windows C++20 implementation
 
-This branch is the Windows native realization of Aeostara. Semantic authority is upstream in ASH; this branch implements execution mechanics and native runtime behavior on Windows.
+This repository is the Windows native realization of Aeostara. Semantic authority is upstream in ASH and the pinned Aeostara base release; this repository implements execution mechanics and native runtime behavior on Windows.
 
 Copyright (c) 2026 James Daley. All Rights Reserved.
 Proprietary and Confidential.
 
 ## Branch Role
 
-- Semantic authority: ASH upstream + Aeostara downstream conformance specs from `main`
+- Semantic authority: ASH upstream and `flynn33/aeostara` release `v1.0.0`
 - Branch responsibility: native Windows implementation of those semantics
-- Conflict rule: semantics align to `main`/ASH; Windows branch updates implementation details only
+- Conflict rule: semantics align to the pinned Aeostara release and ASH; Windows changes update implementation details only
 
 ## Native Stack
 
@@ -45,12 +45,10 @@ aeostara heal    <config> --desired <desired> [--invariants <invariants>] [--aud
 - Rollback/escalation on verification failure
 - Audit trail for all decision-critical actions
 
-## Branch Alignment
+## Base Pin and Migration
 
-This branch is validated against `platform_windows` profile contract:
-
-- `branch_profiles/platform_windows.profile.json`
-- `python3 ci/branch_alignment_checker.py . --profile platform_windows`
+- [Aeostara baseline reference](AEOSTARA_BASELINE_REFERENCE.md)
+- [Migration provenance](MIGRATION_PROVENANCE.md)
 
 ## Release Documentation
 
