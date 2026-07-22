@@ -121,7 +121,7 @@ $requiredFiles = @(
     "CMakeLists.txt",
     "CMakePresets.json",
     "vcpkg.json",
-    "LICENSE.md",
+    "LICENSE",
     "include/AeostaraCore/IHealingEngine.h",
     "include/AeostaraCore/IConfigAdapter.h",
     "include/AeostaraCore/IBackupProvider.h",
