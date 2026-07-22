@@ -4,8 +4,6 @@
 
 This repository is the Windows native realization of Aeostara. Semantic authority is upstream in ASH and the pinned Aeostara base release; this repository implements execution mechanics and native runtime behavior on Windows.
 
-Copyright (c) 2026 James Daley. All Rights Reserved.
-Proprietary and Confidential.
 
 ## Branch Role
 
@@ -60,4 +58,7 @@ aeostara heal    <config> --desired <desired> [--invariants <invariants>] [--aud
 
 ## License
 
-Proprietary. All rights reserved. See [LICENSE.md](LICENSE.md).
+Copyright 2026 James Daley
+
+This project is licensed under the Apache License, Version 2.0.
+See the [LICENSE](LICENSE) file for the full terms.
