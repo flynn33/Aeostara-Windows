@@ -1,6 +1,6 @@
 // Aeostara
 // Copyright (c) 2026 James Daley. All Rights Reserved.
-// SPDX-License-Identifier: Apache-2.0
+// SPDX-License-Identifier: LicenseRef-Raven-Forge-Dual
 #include "AeostaraCore/NativeExecutionBindings.h"
 #include <chrono>
 #include <iomanip>
@@ -157,7 +157,7 @@ NativeExecutionSession::NativeExecutionSession(SemanticEnvironment environment, 
     validateCompleteSemanticInput(input_); if (!diagnostics_) diagnostics_ = createDefaultDiagnostics(); if (!clock_) clock_ = std::make_shared<NativeClock>();
 }
 NativeExecutionSession::~NativeExecutionSession() {
-    if (!state_->armed || state_->complete) return;
+    if (!state_->armed || state_->complete || state_->failure) return;
     try { std::lock_guard lock(mutex_); (void)failAndRestore(OperationPhase::Execute, OperationCode::Failed, "Execution session abandoned before verified completion"); }
     catch (...) { /* Caller uses outcome/complete to observe failures before destruction. */ }
 }
@@ -254,6 +254,7 @@ void NativeExecutionSession::checkTarget(bool originalRequired) const {
 
 OperationAttempt<BaseContracts::ExecutionContext> NativeExecutionSession::prepareExecution() {
     std::lock_guard lock(mutex_);
+    if (state_->failure) return *state_->failure;
     OperationPhase activePhase = OperationPhase::Plan;
     try {
         if (state_->context) { checkContext(*state_->context); if (!state_->complete) checkTarget(state_->executed == 0); return *state_->context; }
@@ -326,12 +327,14 @@ OperationAttempt<BaseContracts::ExecutionContext> NativeExecutionSession::prepar
 }
 
 OperationAttempt<BaseContracts::BackupResult> NativeExecutionSession::prepareBackup(const BaseContracts::ExecutionContext& context, const BaseContracts::RecoveryPlan& plan) {
-    std::lock_guard lock(mutex_); try { checkContext(context); if (plan != state_->planning->recoveryPlan) throw std::invalid_argument("Foreign recovery plan");
+    std::lock_guard lock(mutex_); if (state_->failure) return *state_->failure;
+    try { checkContext(context); if (plan != state_->planning->recoveryPlan) throw std::invalid_argument("Foreign recovery plan");
         checkTarget(state_->executed == 0); if (!state_->backup) throw std::runtime_error("No actual verified backup receipt"); return *state_->backup;
     } catch (const std::exception& error) { return reject(OperationPhase::Backup, OperationCode::InvalidInput, error.what()); }
 }
 
 OperationAttempt<BaseContracts::ExecutionStepResult> NativeExecutionSession::executeOperations(const BaseContracts::ExecutionContext& context, const Json& requested, const std::string& stepID) {
+    if (state_->failure) return *state_->failure;
     bool authorizedPhase = false;
     try {
         checkContext(context); if (state_->failure || state_->complete) return reject(OperationPhase::Execute, OperationCode::Blocked, "Execution already failed/completed");
@@ -370,6 +373,7 @@ OperationAttempt<BaseContracts::ExecutionStepResult> NativeExecutionSession::exe
 }
 OperationAttempt<BaseContracts::ExecutionStepResult> NativeExecutionSession::executeStep(const BaseContracts::ExecutionContext& context, const BaseContracts::RecoveryStep& step) {
     std::lock_guard lock(mutex_);
+    if (state_->failure) return *state_->failure;
     try { checkContext(context); const auto& steps = state_->planning->recoveryPlan.value().at("recoverySteps");
         if (steps.size() != 1 || steps.at(std::size_t{0}) != step.value()) throw std::invalid_argument("Step differs from exact owned recovery plan");
         if (state_->executed != 0) return reject(OperationPhase::Execute, OperationCode::InvalidInput, "Recovery step already started; use remaining exact mutation operations");
@@ -377,7 +381,8 @@ OperationAttempt<BaseContracts::ExecutionStepResult> NativeExecutionSession::exe
     } catch (const std::exception& error) { return reject(OperationPhase::Execute, OperationCode::InvalidInput, error.what()); }
 }
 OperationAttempt<BaseContracts::ExecutionStepResult> NativeExecutionSession::applyMutation(const BaseContracts::ExecutionContext& context, const BaseContracts::JsonMutationOperation& operation) {
-    std::lock_guard lock(mutex_); try { checkContext(context); const auto& steps = state_->planning->recoveryPlan.value().at("recoverySteps");
+    std::lock_guard lock(mutex_); if (state_->failure) return *state_->failure;
+    try { checkContext(context); const auto& steps = state_->planning->recoveryPlan.value().at("recoverySteps");
         if (steps.size() != 1) throw std::invalid_argument("Mutation has no exact owning recovery step");
         return executeOperations(context, Json::array({operation.value()}), steps.at(std::size_t{0}).at("stepID").get<std::string>());
     } catch (const std::exception& error) { return reject(OperationPhase::Execute, OperationCode::InvalidInput, error.what()); }
@@ -385,6 +390,7 @@ OperationAttempt<BaseContracts::ExecutionStepResult> NativeExecutionSession::app
 
 OperationAttempt<BaseContracts::VerificationResult> NativeExecutionSession::verify(const BaseContracts::ExecutionContext& context, const BaseContracts::VerificationPlan& requested) const {
     std::lock_guard lock(mutex_);
+    if (state_->failure) return *state_->failure;
     bool authorizedPhase = false;
     try {
         checkContext(context); if (requested != state_->planning->verificationPlan || !requested.value().at("generatedBeforeMutation").get<bool>()) throw std::invalid_argument("Foreign or late-generated verification plan");
@@ -441,6 +447,7 @@ OperationFailure NativeExecutionSession::failAndRestore(OperationPhase phase, Op
     return failAndRestore(OperationFailure(phase, code, message));
 }
 OperationFailure NativeExecutionSession::failAndRestore(OperationFailure error) const {
+    if (state_->failure) return *state_->failure;
     auto captured = reject(error.phase, error.code, error.message, error.evidence);
     captured.mappingStatus = error.mappingStatus;
     for (const auto& unavailable : error.unavailableEvidence) if (unavailable.field != "diagnosticChain") captured.unavailableEvidence.push_back(unavailable);
@@ -474,14 +481,16 @@ OperationFailure NativeExecutionSession::failAndRestore(OperationFailure error) 
     state_->failure = error; return error;
 }
 OperationAttempt<BaseContracts::RollbackPlan> NativeExecutionSession::rollbackPlan() const {
-    std::lock_guard lock(mutex_); try { if (!state_->verification || state_->verification->value().at("status") != Json("FAILED") || !state_->backup) throw std::invalid_argument("Actual failed verification and verified backup required");
+    std::lock_guard lock(mutex_); if (state_->failure && state_->mutation == MutationState::RestoreFailed) return *state_->failure;
+    try { if (!state_->verification || state_->verification->value().at("status") != Json("FAILED") || !state_->backup) throw std::invalid_argument("Actual failed verification and verified backup required");
         const auto ref = state_->verification->value().at("diagnosticReference");
         return BaseContracts::RollbackPlan(Json{{"rollbackPlanID", "rollback-" + sha256(Json{{"backupID", state_->backup->value().at("backupRecord").at("backupRecordID")}, {"verificationID", state_->verification->value().at("verificationResultID")}}.dump())},
             {"backupRecordID", state_->backup->value().at("backupRecord").at("backupRecordID")}, {"triggerVerificationResultID", state_->verification->value().at("verificationResultID")}, {"diagnosticReference", ref}});
     } catch (const std::exception& error) { return reject(OperationPhase::Rollback, OperationCode::Blocked, error.what()); }
 }
 OperationAttempt<BaseContracts::RollbackResult> NativeExecutionSession::executeRollback(const BaseContracts::ExecutionContext& context, const BaseContracts::RollbackPlan& requested) {
-    std::lock_guard lock(mutex_); try { checkContext(context); const auto genuine = rollbackPlan();
+    std::lock_guard lock(mutex_); if (state_->failure && state_->mutation == MutationState::RestoreFailed) return *state_->failure;
+    try { checkContext(context); const auto genuine = rollbackPlan();
         if (const auto* error = std::get_if<OperationFailure>(&genuine)) return *error;
         if (requested != std::get<BaseContracts::RollbackPlan>(genuine)) throw std::invalid_argument("Foreign rollback evidence");
         if (state_->rollback) return *state_->rollback;
@@ -492,7 +501,8 @@ OperationAttempt<BaseContracts::RollbackResult> NativeExecutionSession::executeR
 }
 
 OperationAttempt<BaseContracts::HealResult> NativeExecutionSession::complete(const BaseContracts::ExecutionContext& context) {
-    std::lock_guard lock(mutex_); try {
+    std::lock_guard lock(mutex_); if (state_->failure) return *state_->failure;
+    try {
         checkContext(context); if (state_->failure) return *state_->failure;
         if (state_->complete && state_->healResult) return *state_->healResult;
         if (!state_->verification) { auto checked = verify(context, state_->planning->verificationPlan); if (const auto* error = std::get_if<OperationFailure>(&checked)) return *error; }
@@ -508,6 +518,7 @@ OperationAttempt<BaseContracts::HealResult> NativeExecutionSession::complete(con
 OperationAttempt<std::shared_ptr<const BaseBindings::AtomicPersistenceContext>> NativeExecutionSession::authorizeAtomicPersistence(
     const BaseContracts::ExecutionContext& context, BaseBindings::NativePersistencePurpose purpose, BaseBindings::AtomicOperation operation) const {
     std::lock_guard lock(mutex_);
+    if (state_->failure) return *state_->failure;
     try {
         checkContext(context);
         if (!state_->complete || state_->failure || state_->armed || state_->lease || !state_->verification ||

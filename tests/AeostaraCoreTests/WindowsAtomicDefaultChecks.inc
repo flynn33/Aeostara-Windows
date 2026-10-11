@@ -1,6 +1,6 @@
 // Aeostara
 // Copyright (c) 2026 James Daley. All Rights Reserved.
-// SPDX-License-Identifier: Apache-2.0
+// SPDX-License-Identifier: LicenseRef-Raven-Forge-Dual
 static unsigned runWindowsAtomicDefaultChecks() {
     unsigned checks = 0;
     const auto require = [&](bool condition) { ++checks; if (!condition) throw std::runtime_error("Atomic boundary assertion " + std::to_string(checks)); };

@@ -1,6 +1,6 @@
 // Aeostara
 // Copyright (c) 2026 James Daley. All Rights Reserved.
-// SPDX-License-Identifier: Apache-2.0
+// SPDX-License-Identifier: LicenseRef-Raven-Forge-Dual
 #include "CppUnitTest.h"
 #include "AeostaraCore/NativeExecutionBindings.h"
 #include "AeostaraCore/BaseDocumentBindings.h"
@@ -42,10 +42,11 @@ class TestBackup final : public Aeostara::IBackupProvider {
 public:
     std::shared_ptr<TestFS> fs;
     bool corrupt = false, restoreFails = false, attempted = false, capability = true;
+    int restorationCalls = 0;
     explicit TestBackup(std::shared_ptr<TestFS> value) : fs(std::move(value)) {}
     bool supportsBackup() const noexcept override { return capability; }
     std::string createBackup(const std::string& path) override { fs->files["backup"] = corrupt ? "{}" : fs->readFile(path); return "backup"; }
-    bool restoreBackup(const std::string& backup, const std::string& target) override { attempted = true; if (restoreFails) throw std::runtime_error("Actual injected restore failure"); fs->writeFile(target, fs->readFile(backup)); return true; }
+    bool restoreBackup(const std::string& backup, const std::string& target) override { attempted = true; ++restorationCalls; if (restoreFails) throw std::runtime_error("Actual injected restore failure"); fs->writeFile(target, fs->readFile(backup)); return true; }
 };
 class TestAdapter final : public Aeostara::IConfigAdapter {
 public:
@@ -181,8 +182,20 @@ public:
         Assert::IsTrue(result.failure->diagnosticPersistence == DiagnosticPersistence::Persisted); (void)operationFailureJson(*result.failure);
     }
     TEST_METHOD(RestorationFailureRetainsMeasuredMutationAndBothFailures) {
-        Harness h; const auto original = h.fs->files.at("configuration"); h.adapter->partialThrow = true; h.backup->restoreFails = true; const auto result = h.session->run();
+        Harness h; const auto original = h.fs->files.at("configuration"); const auto plan = success(h.session->planCaptured()); const auto context = success(h.session->prepareExecution());
+        const BaseContracts::RecoveryStep step(plan.recoveryPlan.value().at("recoverySteps").at(std::size_t{0}));
+        h.adapter->partialThrow = true; h.backup->restoreFails = true; Assert::IsTrue(std::holds_alternative<OperationFailure>(h.session->executeStep(context, step))); const auto result = h.session->outcome();
         Assert::IsFalse(result.success); Assert::IsTrue(result.failure.has_value()); Assert::IsTrue(result.mutationState == MutationState::RestoreFailed); Assert::IsTrue(h.fs->files.at("configuration") != original); Assert::IsFalse(result.failure->secondaryFailures.empty()); Assert::IsTrue(result.rawHashAfter.has_value()); Assert::IsTrue(*result.rawHashAfter == sha256(h.fs->files.at("configuration")));
+        const auto failure = operationFailureJson(*result.failure); const auto writes = h.fs->targetWrites; const auto restoreCalls = h.backup->restorationCalls; const auto actualPartial = h.fs->files.at("configuration");
+        h.adapter->partialThrow = false; h.backup->restoreFails = false;
+        const auto remainsStopped = [&](const auto& attempted) { Assert::IsTrue(std::holds_alternative<OperationFailure>(attempted)); Assert::IsTrue(operationFailureJson(std::get<OperationFailure>(attempted)) == failure); };
+        remainsStopped(h.session->prepareExecution()); remainsStopped(h.session->prepareBackup(context, plan.recoveryPlan)); remainsStopped(h.session->executeStep(context, step));
+        remainsStopped(h.session->applyMutation(context, BaseContracts::JsonMutationOperation(step.value().at("jsonMutationOperations").at(std::size_t{0}))));
+        remainsStopped(h.session->verify(context, plan.verificationPlan)); remainsStopped(h.session->complete(context)); remainsStopped(h.session->rollbackPlan());
+        remainsStopped(h.session->authorizeAtomicPersistence(context, BaseBindings::NativePersistencePurpose::BackupSnapshot, BaseBindings::AtomicOperation::Write));
+        const auto rerun = h.session->run(); Assert::IsFalse(rerun.success); Assert::IsTrue(operationFailureJson(*rerun.failure) == failure);
+        Assert::AreEqual(writes, h.fs->targetWrites); Assert::AreEqual(restoreCalls, h.backup->restorationCalls); Assert::AreEqual(actualPartial, h.fs->files.at("configuration"));
+        h.bridges.reset(); h.session.reset(); Assert::AreEqual(writes, h.fs->targetWrites); Assert::AreEqual(restoreCalls, h.backup->restorationCalls);
     }
     TEST_METHOD(AuditPersistenceFailureBlocksTargetMutation) {
         Harness h; h.fs->auditFail = true; const auto result = h.session->run(); Assert::IsFalse(result.success); Assert::IsTrue(result.failure.has_value()); Assert::AreEqual(0, h.fs->targetWrites); Assert::IsFalse(h.fs->files.contains("backup"));

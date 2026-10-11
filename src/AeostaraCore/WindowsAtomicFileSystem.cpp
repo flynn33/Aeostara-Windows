@@ -1,6 +1,6 @@
 // Aeostara
 // Copyright (c) 2026 James Daley. All Rights Reserved.
-// SPDX-License-Identifier: Apache-2.0
+// SPDX-License-Identifier: LicenseRef-Raven-Forge-Dual
 #include "AeostaraCore/WindowsAtomicFileSystem.h"
 #include "AeostaraCore/Diagnostics.h"
 #define WIN32_LEAN_AND_MEAN
