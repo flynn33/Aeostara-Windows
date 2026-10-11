@@ -1,6 +1,6 @@
 // Aeostara
 // Copyright (c) 2026 James Daley. All Rights Reserved.
-// Proprietary and Confidential.
+// SPDX-License-Identifier: Apache-2.0
 
 #include "CppUnitTest.h"
 
@@ -74,7 +74,7 @@ public:
         plan.backupFilePath = "/tmp/backup.json";
         plan.originalFilePath = "/etc/config.json";
 
-        nlohmann::json j = plan;
+        Json j = plan;
         auto restored = j.get<RollbackPlan>();
 
         Assert::AreEqual(plan.planID, restored.planID);

@@ -1,10 +1,10 @@
 // Aeostara
 // Copyright (c) 2026 James Daley. All Rights Reserved.
-// Proprietary and Confidential.
+// SPDX-License-Identifier: Apache-2.0
 
 #pragma once
 
-#include <nlohmann/json.hpp>
+#include "AeostaraCore/Json.h"
 
 #include <map>
 #include <optional>
@@ -18,40 +18,40 @@ namespace Aeostara {
 // ---------------------------------------------------------------------------
 struct ObservedState final {
     std::string sourceFile;
-    nlohmann::json data;
+    Json data;
     std::string timestamp;  // ISO 8601
 
     bool operator==(const ObservedState&) const = default;
 };
 
-void to_json(nlohmann::json& j, const ObservedState& s);
-void from_json(const nlohmann::json& j, ObservedState& s);
+void to_json(Json& j, const ObservedState& s);
+void from_json(const Json& j, ObservedState& s);
 
 // ---------------------------------------------------------------------------
 // 2. DesiredState — declared desired configuration
 // ---------------------------------------------------------------------------
 struct DesiredState final {
-    nlohmann::json data;
+    Json data;
     std::string source;
 
     bool operator==(const DesiredState&) const = default;
 };
 
-void to_json(nlohmann::json& j, const DesiredState& s);
-void from_json(const nlohmann::json& j, DesiredState& s);
+void to_json(Json& j, const DesiredState& s);
+void from_json(const Json& j, DesiredState& s);
 
 // ---------------------------------------------------------------------------
 // 3. EncodedState — flattened canonical representations for drift comparison
 // ---------------------------------------------------------------------------
 struct EncodedState final {
-    std::map<std::string, nlohmann::json> observed;
-    std::map<std::string, nlohmann::json> desired;
+    std::map<std::string, Json> observed;
+    std::map<std::string, Json> desired;
 
     bool operator==(const EncodedState&) const = default;
 };
 
-void to_json(nlohmann::json& j, const EncodedState& s);
-void from_json(const nlohmann::json& j, EncodedState& s);
+void to_json(Json& j, const EncodedState& s);
+void from_json(const Json& j, EncodedState& s);
 
 // ---------------------------------------------------------------------------
 // 4. DriftEvent — a single detected drift between observed and desired
@@ -65,21 +65,21 @@ enum class DriftType {
 std::string to_string(DriftType type);
 DriftType driftTypeFromString(const std::string& str);
 
-void to_json(nlohmann::json& j, DriftType type);
-void from_json(const nlohmann::json& j, DriftType& type);
+void to_json(Json& j, DriftType type);
+void from_json(const Json& j, DriftType& type);
 
 struct DriftEvent final {
     std::string keyPath;
     DriftType type;
-    nlohmann::json observedValue;  // null if KeyAdded
-    nlohmann::json desiredValue;   // null if KeyRemoved
+    Json observedValue;  // null if KeyAdded
+    Json desiredValue;   // null if KeyRemoved
     std::string description;
 
     bool operator==(const DriftEvent&) const = default;
 };
 
-void to_json(nlohmann::json& j, const DriftEvent& e);
-void from_json(const nlohmann::json& j, DriftEvent& e);
+void to_json(Json& j, const DriftEvent& e);
+void from_json(const Json& j, DriftEvent& e);
 
 // ---------------------------------------------------------------------------
 // 5. RepairAction — a single remediation step
@@ -93,21 +93,21 @@ enum class RepairActionType {
 std::string to_string(RepairActionType type);
 RepairActionType repairActionTypeFromString(const std::string& str);
 
-void to_json(nlohmann::json& j, RepairActionType type);
-void from_json(const nlohmann::json& j, RepairActionType& type);
+void to_json(Json& j, RepairActionType type);
+void from_json(const Json& j, RepairActionType& type);
 
 struct RepairAction final {
     std::string keyPath;
     RepairActionType actionType;
-    nlohmann::json fromValue;
-    nlohmann::json toValue;
+    Json fromValue;
+    Json toValue;
     std::string rationale;
 
     bool operator==(const RepairAction&) const = default;
 };
 
-void to_json(nlohmann::json& j, const RepairAction& a);
-void from_json(const nlohmann::json& j, RepairAction& a);
+void to_json(Json& j, const RepairAction& a);
+void from_json(const Json& j, RepairAction& a);
 
 // ---------------------------------------------------------------------------
 // 6. RepairPlan — complete repair sequence
@@ -121,8 +121,8 @@ struct RepairPlan final {
     bool operator==(const RepairPlan&) const = default;
 };
 
-void to_json(nlohmann::json& j, const RepairPlan& p);
-void from_json(const nlohmann::json& j, RepairPlan& p);
+void to_json(Json& j, const RepairPlan& p);
+void from_json(const Json& j, RepairPlan& p);
 
 // ---------------------------------------------------------------------------
 // 7. VerificationResult — outcome of post-repair verification
@@ -135,8 +135,8 @@ struct VerificationResult final {
     bool operator==(const VerificationResult&) const = default;
 };
 
-void to_json(nlohmann::json& j, const VerificationResult& r);
-void from_json(const nlohmann::json& j, VerificationResult& r);
+void to_json(Json& j, const VerificationResult& r);
+void from_json(const Json& j, VerificationResult& r);
 
 // ---------------------------------------------------------------------------
 // 8. RollbackPlan — recovery procedure
@@ -149,8 +149,8 @@ struct RollbackPlan final {
     bool operator==(const RollbackPlan&) const = default;
 };
 
-void to_json(nlohmann::json& j, const RollbackPlan& p);
-void from_json(const nlohmann::json& j, RollbackPlan& p);
+void to_json(Json& j, const RollbackPlan& p);
+void from_json(const Json& j, RollbackPlan& p);
 
 // ---------------------------------------------------------------------------
 // 9. AuditEvent — audit trail record
@@ -171,21 +171,21 @@ enum class AuditEventType {
 std::string to_string(AuditEventType type);
 AuditEventType auditEventTypeFromString(const std::string& str);
 
-void to_json(nlohmann::json& j, AuditEventType type);
-void from_json(const nlohmann::json& j, AuditEventType& type);
+void to_json(Json& j, AuditEventType type);
+void from_json(const Json& j, AuditEventType& type);
 
 struct AuditEvent final {
     std::string eventID;
     AuditEventType type;
     std::string timestamp;
     std::string configFile;
-    nlohmann::json details;
+    Json details;
 
     bool operator==(const AuditEvent&) const = default;
 };
 
-void to_json(nlohmann::json& j, const AuditEvent& e);
-void from_json(const nlohmann::json& j, AuditEvent& e);
+void to_json(Json& j, const AuditEvent& e);
+void from_json(const Json& j, AuditEvent& e);
 
 // ---------------------------------------------------------------------------
 // 10. ModuleManifest — Aeostara module metadata (NOT Forsetti's)
@@ -200,7 +200,7 @@ struct ModuleManifest final {
     bool operator==(const ModuleManifest&) const = default;
 };
 
-void to_json(nlohmann::json& j, const ModuleManifest& m);
-void from_json(const nlohmann::json& j, ModuleManifest& m);
+void to_json(Json& j, const ModuleManifest& m);
+void from_json(const Json& j, ModuleManifest& m);
 
 } // namespace Aeostara

@@ -1,6 +1,6 @@
 // Aeostara
 // Copyright (c) 2026 James Daley. All Rights Reserved.
-// Proprietary and Confidential.
+// SPDX-License-Identifier: Apache-2.0
 
 #pragma once
 
@@ -26,18 +26,18 @@ public:
     /// Checks the post-repair state (desired values) against invariants.
     PolicyDecision evaluate(const RepairPlan& plan,
                             const std::vector<Invariant>& invariants,
-                            const std::map<std::string, nlohmann::json>& desiredFlat) const;
+                            const std::map<std::string, Json>& desiredFlat) const;
 
     /// Evaluate a single invariant expression against a flat state map.
     /// Returns true if the invariant holds.
     static bool evaluateExpression(const std::string& expression,
-                                    const std::map<std::string, nlohmann::json>& flatState);
+                                    const std::map<std::string, Json>& flatState);
 
     /// Parse an expression into (keyPath, operator, expectedValue).
     struct ParsedExpression final {
         std::string keyPath;
         std::string op;
-        nlohmann::json expectedValue;
+        Json expectedValue;
     };
 
     static ParsedExpression parseExpression(const std::string& expression);

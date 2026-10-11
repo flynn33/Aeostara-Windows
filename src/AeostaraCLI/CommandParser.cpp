@@ -1,8 +1,9 @@
 // Aeostara
 // Copyright (c) 2026 James Daley. All Rights Reserved.
-// Proprietary and Confidential.
+// SPDX-License-Identifier: Apache-2.0
 
 #include "CommandParser.h"
+#include "AeostaraCore/Version.h"
 
 #include <iostream>
 #include <string>
@@ -79,15 +80,15 @@ ParsedCommand CommandParser::parse(int argc, char* argv[]) {
 }
 
 void CommandParser::printUsage() {
-    std::cerr << "Aeostara v0.1 - Deterministic Config Drift Healing\n"
+    std::cerr << "Aeostara " << AeostaraVersion::toString() << " - Windows SDK development CLI\n"
               << "\n"
               << "Usage:\n"
               << "  aeostara <command> <config> --desired <desired> [options]\n"
               << "\n"
               << "Commands:\n"
               << "  validate   Validate config and detect drift\n"
-              << "  diff       Show drift and proposed repair plan\n"
-              << "  heal       Apply deterministic repair\n"
+              << "  diff       Show differences and checked planning failures\n"
+              << "  heal       Requires an explicitly bound semantic environment\n"
               << "\n"
               << "Options:\n"
               << "  --config, -c <path>       Config file path (or first positional arg)\n"

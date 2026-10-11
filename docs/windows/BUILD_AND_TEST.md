@@ -1,121 +1,40 @@
-# Aeostara Windows — Build and Test Guide
+# Build and test the Windows SDK
 
-## Prerequisites
+Install Visual Studio 2022 with native C++ development and test tools, qualified v143 MSVC 19.44.35223 (VCToolsVersion 14.44.35207), Windows SDK 10.0.26100.0, and CMake 3.28 or later. The qualified release host used CMake/CTest 4.4.2 and VSTest 17.14. A standalone native NuGet CLI is needed only for package construction and local-folder restore. No vcpkg dependency is fetched.
 
-| Requirement | Version | Notes |
-|-------------|---------|-------|
-| Windows | 10 or 11 | x64 |
-| Visual Studio | 2022 | C++ Desktop Development workload required |
-| CMake | 3.28+ | Bundled with VS2022 or install standalone |
-| vcpkg | latest | Set `VCPKG_ROOT` environment variable |
+`debug` and `release` configure the shared source development build with tests enabled and the DEVELOPMENT diagnostic profile. Build/test presets select the requested configuration explicitly:
 
-### Setting VCPKG_ROOT
-
-```powershell
-# Permanent (user-level)
-[Environment]::SetEnvironmentVariable("VCPKG_ROOT", "C:\path\to\vcpkg", "User")
-
-# Session-only
-$env:VCPKG_ROOT = "C:\path\to\vcpkg"
-```
-
-## Configure
-
-### Debug (with tests)
 ```powershell
 cmake --preset debug
-```
-- Generator: Visual Studio 17 2022
-- Build type: Debug
-- Tests: ON
-- vcpkg toolchain: auto-detected from VCPKG_ROOT
-- Dependencies: nlohmann-json fetched automatically
-
-### Release (without tests)
-```powershell
-cmake --preset release
-```
-- Generator: Visual Studio 17 2022
-- Build type: Release
-- Tests: OFF
-
-## Build
-
-```powershell
-# Debug
 cmake --build --preset debug
-
-# Release
+ctest --preset debug
 cmake --build --preset release
+ctest --preset release
 ```
 
-### Build Targets
-| Target | Type | Output |
-|--------|------|--------|
-| `AeostaraCore` | Static library | `build/debug/src/AeostaraCore/Debug/AeostaraCore.lib` |
-| `aeostara` | Executable | `build/debug/src/AeostaraCLI/Debug/aeostara.exe` |
-| `AeostaraCoreTests` | Test DLL | `build/debug/tests/Debug/AeostaraCoreTests.dll` |
-| `AeostaraArchitectureTests` | Test DLL | `build/debug/tests/Debug/AeostaraArchitectureTests.dll` |
-| `AeostaraCLITests` | Test DLL | `build/debug/tests/Debug/AeostaraCLITests.dll` |
+`sdk` configures the separate lean installation build. Both distributed configurations use the LEAN backend:
 
-### Compiler Flags
-- `/W4` — warning level 4 (high)
-- `/WX` — warnings as errors
-- `/std:c++20` — C++20 standard
-
-## Test
-
-### Run All Tests
 ```powershell
-cmake --build --preset debug --target RUN_TESTS
+cmake --preset sdk
+cmake --build --preset sdk-debug
+ctest --preset sdk-debug
+cmake --build --preset sdk-release
+ctest --preset sdk-release
+cmake --install build/sdk --config Debug --prefix C:/SDK/Aeostara
+cmake --install build/sdk --config Release --prefix C:/SDK/Aeostara
 ```
 
-### Test Suites
-| Suite | Files | Coverage |
-|-------|-------|----------|
-| AeostaraCoreTests | 12 | Contracts, DriftAnalyzer, RepairPlanner, PolicyEvaluator, JsonPath, HealingEngine, Verification, BackupManager, RollbackManager, AuditTrail, JsonConfigAdapter, InvariantParser |
-| AeostaraArchitectureTests | 1 | Forsetti isolation, class finality, namespaces, copyright headers |
-| AeostaraCLITests | 1 | Command parsing |
+The producer requires Windows x64 and the exact qualified compiler. /W4 /WX, C++20, /EHsc, /GR and /Z7 are explicit. /MDd and /MD are selected by configuration. Compiler-independent ABI, alternate toolsets and mixed CRT/configuration use are unsupported and rejected by package/header checks.
 
-### Acceptance Scenarios (HealingEngineTests)
-1. Valid config, no drift → validates correctly
-2. Invalid JSON → error reported
-3. Policy blocked (invariant violation) → no repair
-4. Repairable config → full healing flow with backup
-5. Verification failure → automatic rollback
+Native Visual Studio CppUnitTest suites cover Core, architecture and CLI. CTest invokes VSTest with configuration-specific TRX results under `TestResults/Debug` and `TestResults/Release`. Additional native executables evaluate all adopted semantic vectors from input-only producer results, controlled lifecycle failures and diagnostic behavior. Expected values enter only after evaluation. Do not infer semantic correctness from a successful schema comparison or build.
 
-### Test Fixtures
-Located in `Resources/TestFixtures/`:
-- `valid_config.json`
-- `desired_state.json`
-- `repairable_config.json`
-- `policy_blocked_config.json`
-- `invalid_config.json`
-- `invariants.json`
+Run the repository guardrails after changes:
 
-## Guardrail Verification
-
-### Full Guardrails Check
 ```powershell
-powershell -ExecutionPolicy Bypass -File Scripts/verify-aeostara-guardrails.ps1
+pwsh -File Scripts/verify-aeostara-guardrails.ps1
+pwsh -File Scripts/check-architecture.ps1
 ```
 
-Checks: Forsetti isolation (domain only), copyright headers, class finality, dependency direction, Python/YAML compliance, required file existence (15 files).
+The [SDK client](../../examples/sdk-client/README.md) builds against installed public headers and libraries through CMake or native NuGet. Release qualification also checks moved package paths with spaces/Unicode, source-unavailable clients, incompatible consumers, every public header in isolation, archive object composition, repeated staging and a second clean compiler build. Actual results belong in the release verification record; these commands are instructions, not a statement that an unexecuted gate passed.
 
-### Fast Architecture Check
-```powershell
-powershell -ExecutionPolicy Bypass -File Scripts/check-architecture.ps1
-```
-
-Checks: Forsetti isolation (domain only), dependency direction, namespace isolation, Python compliance, YAML compliance.
-
-## Expected Results
-
-All of the following should produce zero failures:
-```powershell
-cmake --preset debug                                           # Configure OK
-cmake --build --preset debug                                    # Build OK (0 warnings)
-cmake --build --preset debug --target RUN_TESTS                 # 3/3 suites pass
-powershell -ExecutionPolicy Bypass -File Scripts/check-architecture.ps1    # PASSED
-powershell -ExecutionPolicy Bypass -File Scripts/verify-aeostara-guardrails.ps1  # ALL PASSED
-```
+`Scripts/package-sdk.ps1` creates the five prerelease assets from a lean Debug/Release build and an existing NuGet CLI. A dirty intermediate build requires `-AllowDirtyCandidate` and is labeled ineligible for publication. Publication staging requires a clean source and an actual exact-source verification record. The script uses explicit file allowlists, stable ZIP ordering/timestamps and content hashes. It does not publish or create a tag.

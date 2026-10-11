@@ -1,5 +1,7 @@
 # Phase 7 State Report — Windows Release Hardening
 
+Historical record for the March 2026 CLI implementation. Its dependency inventory, generic repair behavior, branch, and version do not describe the October 2026 SDK release. Current instructions are in [SDK_GUIDE.md](SDK_GUIDE.md) and [BUILD_AND_TEST.md](BUILD_AND_TEST.md).
+
 Date: 2026-03-22
 Branch: `platform/windows`
 Version: v0.1.0

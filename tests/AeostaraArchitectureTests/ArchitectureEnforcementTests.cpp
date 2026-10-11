@@ -1,6 +1,6 @@
 // Aeostara
 // Copyright (c) 2026 James Daley. All Rights Reserved.
-// Proprietary and Confidential.
+// SPDX-License-Identifier: Apache-2.0
 
 #include "CppUnitTest.h"
 
@@ -75,7 +75,7 @@ public:
 
         // Match "class Foo :" or "class Foo {" or "struct Foo :" or "struct Foo {"
         // that are NOT interfaces (I-prefixed) and NOT already final
-        std::regex classDecl(R"((class|struct)\s+(\w+)\s+(final\s+)?[:{])");
+        std::regex classDecl(R"((enum\s+)?(class|struct)\s+(\w+)\s+(final\s+)?[:{])");
 
         for (const auto& filePath : files) {
             auto content = readFileContent(filePath);
@@ -90,17 +90,14 @@ public:
             std::sregex_iterator end;
 
             for (; it != end; ++it) {
-                std::string typeName = (*it)[2].str();
-                std::string finalKeyword = (*it)[3].str();
+                if (!(*it)[1].str().empty()) continue;
+                std::string typeName = (*it)[3].str();
+                std::string finalKeyword = (*it)[4].str();
 
                 // Skip interfaces (I-prefixed types)
                 if (typeName.size() > 1 && typeName[0] == 'I' && std::isupper(typeName[1])) {
                     continue;
                 }
-
-                // Skip enums disguised as classes/structs
-                if (typeName.find("Type") != std::string::npos) continue;
-                if (typeName.find("Severity") != std::string::npos) continue;
 
                 Assert::IsFalse(
                     finalKeyword.empty(),

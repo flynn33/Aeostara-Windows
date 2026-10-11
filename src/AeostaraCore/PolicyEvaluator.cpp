@@ -1,6 +1,6 @@
 // Aeostara
 // Copyright (c) 2026 James Daley. All Rights Reserved.
-// Proprietary and Confidential.
+// SPDX-License-Identifier: Apache-2.0
 
 #include "AeostaraCore/PolicyEvaluator.h"
 
@@ -20,16 +20,16 @@ std::string trim(const std::string& s) {
 }
 
 // Parse a value string into a JSON value
-nlohmann::json parseValue(const std::string& valueStr) {
+Json parseValue(const std::string& valueStr) {
     std::string v = trim(valueStr);
     if (v.empty()) return nullptr;
 
     // Try parsing as JSON literal
     try {
-        return nlohmann::json::parse(v);
+        return Json::parse(v);
     } catch (...) {
         // If it fails, treat as a bare string
-        return nlohmann::json(v);
+        return Json(v);
     }
 }
 
@@ -58,7 +58,7 @@ PolicyEvaluator::ParsedExpression PolicyEvaluator::parseExpression(const std::st
 }
 
 bool PolicyEvaluator::evaluateExpression(const std::string& expression,
-                                          const std::map<std::string, nlohmann::json>& flatState) {
+                                          const std::map<std::string, Json>& flatState) {
     auto parsed = parseExpression(expression);
 
     auto it = flatState.find(parsed.keyPath);
@@ -75,12 +75,11 @@ bool PolicyEvaluator::evaluateExpression(const std::string& expression,
 
     // Numeric comparisons: both must be numbers
     if (actual.is_number() && expected.is_number()) {
-        double a = actual.get<double>();
-        double e = expected.get<double>();
-        if (parsed.op == ">")  return a > e;
-        if (parsed.op == "<")  return a < e;
-        if (parsed.op == ">=") return a >= e;
-        if (parsed.op == "<=") return a <= e;
+        const int comparison = actual.compare_number(expected);
+        if (parsed.op == ">")  return comparison > 0;
+        if (parsed.op == "<")  return comparison < 0;
+        if (parsed.op == ">=") return comparison >= 0;
+        if (parsed.op == "<=") return comparison <= 0;
     }
 
     // String comparisons for ordered operators
@@ -98,7 +97,7 @@ bool PolicyEvaluator::evaluateExpression(const std::string& expression,
 
 PolicyDecision PolicyEvaluator::evaluate(const RepairPlan& plan,
                                           const std::vector<Invariant>& invariants,
-                                          const std::map<std::string, nlohmann::json>& desiredFlat) const {
+                                          const std::map<std::string, Json>& desiredFlat) const {
     (void)plan;  // Plan metadata reserved for future policy rules
     PolicyDecision decision;
     decision.allowed = true;
@@ -109,7 +108,7 @@ PolicyDecision PolicyEvaluator::evaluate(const RepairPlan& plan,
         if (!holds) {
             auto parsed = parseExpression(inv.expression);
             auto it = desiredFlat.find(parsed.keyPath);
-            nlohmann::json actualValue = (it != desiredFlat.end()) ? it->second : nullptr;
+            Json actualValue = (it != desiredFlat.end()) ? it->second : nullptr;
 
             InvariantViolation violation{
                 .invariantID = inv.invariantID,

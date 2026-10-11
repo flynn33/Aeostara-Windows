@@ -1,6 +1,6 @@
 // Aeostara
 // Copyright (c) 2026 James Daley. All Rights Reserved.
-// Proprietary and Confidential.
+// SPDX-License-Identifier: Apache-2.0
 
 #include "CppUnitTest.h"
 
@@ -71,11 +71,11 @@ public:
         auto fs = std::make_shared<MockFileSystem>();
         BackupManager manager(fs);
 
-        // copyFile returns false for nonexistent source, backup path still generated
+        // A confirmed missing source cannot produce a confirmed backup receipt.
         auto backupPath = manager.createBackup("missing.json");
-        Assert::IsFalse(backupPath.empty());
-        // The backup file should not exist since source was missing
-        Assert::IsFalse(fs->fileExists(backupPath));
+        Assert::IsTrue(backupPath.empty());
+        Assert::AreEqual(size_t{0}, fs->files.size());
+        Assert::AreEqual(size_t{0}, fs->configurationWrites);
     }
 
     TEST_METHOD(BackupPath_ContainsOriginalName)

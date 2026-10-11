@@ -1,6 +1,6 @@
 // Aeostara
 // Copyright (c) 2026 James Daley. All Rights Reserved.
-// Proprietary and Confidential.
+// SPDX-License-Identifier: Apache-2.0
 
 #include "CppUnitTest.h"
 
@@ -25,7 +25,7 @@ public:
         fs.files["config.json"] = Testing::SAMPLE_CONFIG;
 
         DesiredState desired;
-        desired.data = nlohmann::json::parse(Testing::SAMPLE_DESIRED);
+        desired.data = Json::parse(Testing::SAMPLE_DESIRED);
 
         Verifier verifier;
         auto result = verifier.verify("config.json", desired, {}, fs);
@@ -40,7 +40,7 @@ public:
         fs.files["config.json"] = Testing::DRIFTED_CONFIG;
 
         DesiredState desired;
-        desired.data = nlohmann::json::parse(Testing::SAMPLE_DESIRED);
+        desired.data = Json::parse(Testing::SAMPLE_DESIRED);
 
         Verifier verifier;
         auto result = verifier.verify("config.json", desired, {}, fs);
@@ -55,9 +55,9 @@ public:
         fs.files["config.json"] = Testing::SAMPLE_CONFIG;
 
         DesiredState desired;
-        desired.data = nlohmann::json::parse(Testing::SAMPLE_DESIRED);
+        desired.data = Json::parse(Testing::SAMPLE_DESIRED);
 
-        auto invariants = InvariantParser::parse(nlohmann::json::parse(Testing::SAMPLE_INVARIANTS));
+        auto invariants = InvariantParser::parse(Json::parse(Testing::SAMPLE_INVARIANTS));
 
         Verifier verifier;
         auto result = verifier.verify("config.json", desired, invariants, fs);
@@ -72,9 +72,9 @@ public:
         fs.files["config.json"] = Testing::DRIFTED_CONFIG;
 
         DesiredState desired;
-        desired.data = nlohmann::json::parse(Testing::SAMPLE_DESIRED);
+        desired.data = Json::parse(Testing::SAMPLE_DESIRED);
 
-        auto invariants = InvariantParser::parse(nlohmann::json::parse(Testing::SAMPLE_INVARIANTS));
+        auto invariants = InvariantParser::parse(Json::parse(Testing::SAMPLE_INVARIANTS));
 
         Verifier verifier;
         auto result = verifier.verify("config.json", desired, invariants, fs);
@@ -88,7 +88,7 @@ public:
         fs.files["config.json"] = Testing::SAMPLE_CONFIG;
 
         DesiredState desired;
-        desired.data = nlohmann::json::parse(Testing::SAMPLE_DESIRED);
+        desired.data = Json::parse(Testing::SAMPLE_DESIRED);
 
         Verifier verifier;
         auto result = verifier.verify("config.json", desired, {}, fs);

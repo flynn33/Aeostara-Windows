@@ -1,6 +1,6 @@
 // Aeostara
 // Copyright (c) 2026 James Daley. All Rights Reserved.
-// Proprietary and Confidential.
+// SPDX-License-Identifier: Apache-2.0
 
 #include "CppUnitTest.h"
 
@@ -39,7 +39,7 @@ public:
 
         JsonConfigAdapter adapter(fs);
 
-        Assert::ExpectException<nlohmann::json::parse_error>([&]() {
+        Assert::ExpectException<Json::parse_error>([&]() {
             adapter.observe("bad.json");
         });
     }
@@ -61,10 +61,10 @@ public:
 
         ObservedState observed;
         observed.sourceFile = "config.json";
-        observed.data = nlohmann::json::parse(SAMPLE_CONFIG);
+        observed.data = Json::parse(SAMPLE_CONFIG);
 
         DesiredState desired;
-        desired.data = nlohmann::json::parse(SAMPLE_DESIRED);
+        desired.data = Json::parse(SAMPLE_DESIRED);
 
         auto encoded = adapter.encode(observed, desired);
 
@@ -89,7 +89,7 @@ public:
         bool success = adapter.applyRepair("config.json", plan);
 
         Assert::IsTrue(success);
-        auto updated = nlohmann::json::parse(fs->readFile("config.json"));
+        auto updated = Json::parse(fs->readFile("config.json"));
         Assert::AreEqual(8080, updated["server"]["port"].get<int>());
     }
 
@@ -108,7 +108,7 @@ public:
         bool success = adapter.applyRepair("config.json", plan);
 
         Assert::IsTrue(success);
-        auto updated = nlohmann::json::parse(fs->readFile("config.json"));
+        auto updated = Json::parse(fs->readFile("config.json"));
         Assert::AreEqual(std::string("localhost"), updated["server"]["host"].get<std::string>());
     }
 
@@ -131,7 +131,7 @@ public:
         bool success = adapter.applyRepair("config.json", plan);
 
         Assert::IsTrue(success);
-        auto updated = nlohmann::json::parse(fs->readFile("config.json"));
+        auto updated = Json::parse(fs->readFile("config.json"));
         Assert::AreEqual(8080, updated["server"]["port"].get<int>());
         Assert::AreEqual(5432, updated["database"]["port"].get<int>());
         Assert::AreEqual(std::string("aeostara_prod"), updated["database"]["name"].get<std::string>());

@@ -1,6 +1,6 @@
 // Aeostara
 // Copyright (c) 2026 James Daley. All Rights Reserved.
-// Proprietary and Confidential.
+// SPDX-License-Identifier: Apache-2.0
 
 #pragma once
 
@@ -17,6 +17,7 @@ public:
     explicit BackupManager(std::shared_ptr<IFileSystem> fs);
 
     std::string createBackup(const std::string& filePath) override;
+    bool supportsBackup() const noexcept override { return true; }
     bool restoreBackup(const std::string& backupPath, const std::string& originalPath) override;
 
 private:

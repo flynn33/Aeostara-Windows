@@ -1,6 +1,6 @@
 // Aeostara
 // Copyright (c) 2026 James Daley. All Rights Reserved.
-// Proprietary and Confidential.
+// SPDX-License-Identifier: Apache-2.0
 
 #pragma once
 
@@ -19,7 +19,7 @@ public:
     static std::vector<Invariant> parseFile(const std::string& path, IFileSystem& fs);
 
     /// Parse invariants from a JSON value (array of invariant objects).
-    static std::vector<Invariant> parse(const nlohmann::json& j);
+    static std::vector<Invariant> parse(const Json& j);
 };
 
 } // namespace Aeostara

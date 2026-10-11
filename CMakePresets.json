@@ -2,50 +2,28 @@
   "version": 6,
   "configurePresets": [
     {
-      "name": "debug",
-      "displayName": "Debug",
-      "description": "Debug build with MSVC",
-      "generator": "Visual Studio 17 2022",
-      "binaryDir": "${sourceDir}/build/debug",
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Debug",
-        "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
-        "BUILD_TESTING": "ON"
-      }
+      "name": "development", "hidden": true,
+      "generator": "Visual Studio 17 2022", "architecture": "x64", "toolset": "v143",
+      "cacheVariables": { "BUILD_TESTING": "ON", "AEOSTARA_DIAGNOSTIC_PROFILE": "DEVELOPMENT", "AEOSTARA_INSTALL_SDK": "OFF", "CMAKE_SYSTEM_VERSION": "10.0.26100.0" }
     },
+    { "name": "debug", "inherits": "development", "binaryDir": "${sourceDir}/build/development" },
+    { "name": "release", "inherits": "development", "binaryDir": "${sourceDir}/build/development" },
     {
-      "name": "release",
-      "displayName": "Release",
-      "description": "Release build with MSVC",
-      "generator": "Visual Studio 17 2022",
-      "binaryDir": "${sourceDir}/build/release",
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Release",
-        "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
-        "BUILD_TESTING": "OFF"
-      }
+      "name": "sdk", "generator": "Visual Studio 17 2022", "architecture": "x64", "toolset": "v143",
+      "binaryDir": "${sourceDir}/build/sdk",
+      "cacheVariables": { "BUILD_TESTING": "ON", "AEOSTARA_DIAGNOSTIC_PROFILE": "LEAN", "AEOSTARA_INSTALL_SDK": "ON", "CMAKE_SYSTEM_VERSION": "10.0.26100.0" }
     }
   ],
   "buildPresets": [
-    {
-      "name": "debug",
-      "configurePreset": "debug",
-      "configuration": "Debug"
-    },
-    {
-      "name": "release",
-      "configurePreset": "release",
-      "configuration": "Release"
-    }
+    { "name": "debug", "configurePreset": "debug", "configuration": "Debug" },
+    { "name": "release", "configurePreset": "release", "configuration": "Release" },
+    { "name": "sdk-debug", "configurePreset": "sdk", "configuration": "Debug" },
+    { "name": "sdk-release", "configurePreset": "sdk", "configuration": "Release" }
   ],
   "testPresets": [
-    {
-      "name": "debug",
-      "configurePreset": "debug",
-      "configuration": "Debug",
-      "output": {
-        "outputOnFailure": true
-      }
-    }
+    { "name": "debug", "configurePreset": "debug", "configuration": "Debug", "output": { "outputOnFailure": true } },
+    { "name": "release", "configurePreset": "release", "configuration": "Release", "output": { "outputOnFailure": true } },
+    { "name": "sdk-debug", "configurePreset": "sdk", "configuration": "Debug", "output": { "outputOnFailure": true } },
+    { "name": "sdk-release", "configurePreset": "sdk", "configuration": "Release", "output": { "outputOnFailure": true } }
   ]
 }

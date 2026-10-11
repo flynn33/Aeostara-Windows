@@ -2,6 +2,19 @@
 
 All notable changes to Aeostara will be documented in this file.
 
+## [0.1.0-rc.1] - 2026-10-11
+
+### Windows SDK
+
+- Native C++20 static Core SDK with x64 v143 Debug /MDd and Release /MD artifacts, curated public headers, relocatable CMake integration and native local-feed NuGet packaging.
+- Owned strict bounded JSON and exact decimal canonicalization replace the previous public/runtime JSON dependency. Public serialization now uses `Aeostara::Json`.
+- Owner-adopted immutable JSON-to-ASH supplement supplies complete opt-in mapping and recovery bindings while preserving pinned platform-neutral ASH semantics. Missing evidence returns truthful typed failures.
+- Pure projection/classification/planning are separated from authorized native execution. Actual plan/policy/target/backup evidence, checked verification and truthful restoration replace arbitrary difference-driven healing.
+- Bounded lean diagnostics ship in both installed configurations; development evidence is confined to source development builds. Explicit paired redacted incident exports report incomplete writes and unavailable causes.
+- Public synthetic CMake/MSBuild client exercises authorized healing, pre-mutation policy rejection and verified restoration after forced failure.
+- Apache-2.0 notices reconcile stale confidential header labels with the owner-added repository license.
+
+This is a qualified compiler/runtime release candidate. Representative target-machine storage/ACL/crash validation remains deployment work. Actual acceptance evidence and release asset hashes are recorded by the release manifest.
 ## [0.1.0] - 2026-03-20
 
 ### Added

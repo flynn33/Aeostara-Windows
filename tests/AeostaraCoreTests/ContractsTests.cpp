@@ -1,6 +1,6 @@
 // Aeostara
 // Copyright (c) 2026 James Daley. All Rights Reserved.
-// Proprietary and Confidential.
+// SPDX-License-Identifier: Apache-2.0
 
 #include "CppUnitTest.h"
 
@@ -24,7 +24,7 @@ public:
         state.data = {{"key", "value"}};
         state.timestamp = "2026-01-01T00:00:00Z";
 
-        nlohmann::json j = state;
+        Json j = state;
         auto restored = j.get<ObservedState>();
 
         Assert::AreEqual(state.sourceFile, restored.sourceFile);
@@ -40,7 +40,7 @@ public:
         state.data = {{"server", {{"port", 8080}}}};
         state.source = "desired.json";
 
-        nlohmann::json j = state;
+        Json j = state;
         auto restored = j.get<DesiredState>();
 
         Assert::AreEqual(state.source, restored.source);
@@ -55,7 +55,7 @@ public:
         state.observed["server.port"] = 8080;
         state.desired["server.port"] = 9090;
 
-        nlohmann::json j = state;
+        Json j = state;
         auto restored = j.get<EncodedState>();
 
         Assert::IsTrue(state.observed == restored.observed);
@@ -89,7 +89,7 @@ public:
         event.desiredValue = 8080;
         event.description = "port changed";
 
-        nlohmann::json j = event;
+        Json j = event;
         auto restored = j.get<DriftEvent>();
 
         Assert::AreEqual(event.keyPath, restored.keyPath);
@@ -116,7 +116,7 @@ public:
         action.toValue = 5432;
         action.rationale = "restore standard port";
 
-        nlohmann::json j = action;
+        Json j = action;
         auto restored = j.get<RepairAction>();
 
         Assert::AreEqual(action.keyPath, restored.keyPath);
@@ -136,7 +136,7 @@ public:
         plan.actions.push_back(RepairAction{
             "server.port", RepairActionType::Set, 9090, 8080, "fix port"});
 
-        nlohmann::json j = plan;
+        Json j = plan;
         auto restored = j.get<RepairPlan>();
 
         Assert::AreEqual(plan.planID, restored.planID);
@@ -154,7 +154,7 @@ public:
         result.verifiedAt = "2026-01-01T00:00:00Z";
         result.failedChecks = {};
 
-        nlohmann::json j = result;
+        Json j = result;
         auto restored = j.get<VerificationResult>();
 
         Assert::IsTrue(result.success == restored.success);
@@ -170,7 +170,7 @@ public:
         plan.backupFilePath = "/backup/config.json.bak";
         plan.originalFilePath = "/etc/config.json";
 
-        nlohmann::json j = plan;
+        Json j = plan;
         auto restored = j.get<RollbackPlan>();
 
         Assert::AreEqual(plan.planID, restored.planID);
@@ -197,7 +197,7 @@ public:
         event.configFile = "config.json";
         event.details = {{"action", "heal"}};
 
-        nlohmann::json j = event;
+        Json j = event;
         auto restored = j.get<AuditEvent>();
 
         Assert::AreEqual(event.eventID, restored.eventID);
@@ -216,7 +216,7 @@ public:
         manifest.description = "JSON config healing";
         manifest.supportedConfigTypes = {"json"};
 
-        nlohmann::json j = manifest;
+        Json j = manifest;
         auto restored = j.get<ModuleManifest>();
 
         Assert::AreEqual(manifest.moduleID, restored.moduleID);

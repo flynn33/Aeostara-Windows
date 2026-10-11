@@ -1,12 +1,14 @@
 // Aeostara
 // Copyright (c) 2026 James Daley. All Rights Reserved.
-// Proprietary and Confidential.
+// SPDX-License-Identifier: Apache-2.0
 
 #pragma once
 
 #include "AeostaraCore/IFileSystem.h"
 
 #include <map>
+#include <functional>
+#include <memory>
 #include <stdexcept>
 #include <string>
 
@@ -16,6 +18,15 @@ namespace Aeostara::Testing {
 class MockFileSystem final : public IFileSystem {
 public:
     std::map<std::string, std::string> files;
+    std::function<void(const std::string&, const std::string&)> afterWrite;
+    std::size_t configurationWrites = 0;
+    std::string version = "demo-observed-r1";
+    bool hasLease = false;
+    class Lease final : public ITargetWriteLease { public: explicit Lease(bool& state) : state_(state) {} ~Lease() override { state_ = false; } private: bool& state_; };
+    bool writeFileExclusive(const std::string& path, const std::string& content) override { if (files.contains(path)) return false; writeFile(path, content); return readFile(path) == content; }
+    std::string pathIdentity(const std::string& path) override { return path == "config.json" ? "fixture:configuration:demo-state-carrier" : "mock:" + path; }
+    std::string versionToken(const std::string&) override { return version; }
+    std::unique_ptr<ITargetWriteLease> acquireWriteLease(const std::string&) override { if (hasLease) return {}; hasLease = true; return std::make_unique<Lease>(hasLease); }
 
     std::string readFile(const std::string& path) override {
         auto it = files.find(path);
@@ -27,6 +38,8 @@ public:
 
     void writeFile(const std::string& path, const std::string& content) override {
         files[path] = content;
+        if (path == "config.json") ++configurationWrites;
+        if (afterWrite) afterWrite(path, content);
     }
 
     bool fileExists(const std::string& path) override {

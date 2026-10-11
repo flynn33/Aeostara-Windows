@@ -1,6 +1,6 @@
 // Aeostara
 // Copyright (c) 2026 James Daley. All Rights Reserved.
-// Proprietary and Confidential.
+// SPDX-License-Identifier: Apache-2.0
 
 #include "CppUnitTest.h"
 
@@ -17,70 +17,70 @@ public:
 
     TEST_METHOD(Get_TopLevelKey)
     {
-        auto j = nlohmann::json::parse(R"({"name":"Alice"})");
+        auto j = Json::parse(R"({"name":"Alice"})");
         auto result = JsonPath::get(j, "name");
         Assert::AreEqual(std::string("Alice"), result.get<std::string>());
     }
 
     TEST_METHOD(Get_NestedKey)
     {
-        auto j = nlohmann::json::parse(R"({"server":{"port":8080}})");
+        auto j = Json::parse(R"({"server":{"port":8080}})");
         auto result = JsonPath::get(j, "server.port");
         Assert::AreEqual(8080, result.get<int>());
     }
 
     TEST_METHOD(Get_DeeplyNestedKey)
     {
-        auto j = nlohmann::json::parse(R"({"a":{"b":{"c":{"d":42}}}})");
+        auto j = Json::parse(R"({"a":{"b":{"c":{"d":42}}}})");
         auto result = JsonPath::get(j, "a.b.c.d");
         Assert::AreEqual(42, result.get<int>());
     }
 
     TEST_METHOD(Get_NonexistentPath_ReturnsNull)
     {
-        auto j = nlohmann::json::parse(R"({"server":{"port":8080}})");
+        auto j = Json::parse(R"({"server":{"port":8080}})");
         auto result = JsonPath::get(j, "server.host");
         Assert::IsTrue(result.is_null());
     }
 
     TEST_METHOD(Set_TopLevelKey)
     {
-        nlohmann::json j = nlohmann::json::object();
+        Json j = Json::object();
         JsonPath::set(j, "name", "Bob");
         Assert::AreEqual(std::string("Bob"), j["name"].get<std::string>());
     }
 
     TEST_METHOD(Set_NestedKey_CreatesIntermediates)
     {
-        nlohmann::json j = nlohmann::json::object();
+        Json j = Json::object();
         JsonPath::set(j, "server.port", 9090);
         Assert::AreEqual(9090, j["server"]["port"].get<int>());
     }
 
     TEST_METHOD(Set_OverwritesExistingValue)
     {
-        auto j = nlohmann::json::parse(R"({"server":{"port":8080}})");
+        auto j = Json::parse(R"({"server":{"port":8080}})");
         JsonPath::set(j, "server.port", 9090);
         Assert::AreEqual(9090, j["server"]["port"].get<int>());
     }
 
     TEST_METHOD(Exists_ReturnsTrueForPresent)
     {
-        auto j = nlohmann::json::parse(R"({"server":{"port":8080}})");
+        auto j = Json::parse(R"({"server":{"port":8080}})");
         Assert::IsTrue(JsonPath::exists(j, "server.port"));
         Assert::IsTrue(JsonPath::exists(j, "server"));
     }
 
     TEST_METHOD(Exists_ReturnsFalseForAbsent)
     {
-        auto j = nlohmann::json::parse(R"({"server":{"port":8080}})");
+        auto j = Json::parse(R"({"server":{"port":8080}})");
         Assert::IsFalse(JsonPath::exists(j, "server.host"));
         Assert::IsFalse(JsonPath::exists(j, "database"));
     }
 
     TEST_METHOD(Flatten_SimpleObject)
     {
-        auto j = nlohmann::json::parse(R"({"a":1,"b":"two"})");
+        auto j = Json::parse(R"({"a":1,"b":"two"})");
         auto flat = JsonPath::flatten(j);
 
         Assert::AreEqual(static_cast<size_t>(2), flat.size());
@@ -90,7 +90,7 @@ public:
 
     TEST_METHOD(Flatten_NestedObject)
     {
-        auto j = nlohmann::json::parse(R"({"server":{"host":"localhost","port":8080}})");
+        auto j = Json::parse(R"({"server":{"host":"localhost","port":8080}})");
         auto flat = JsonPath::flatten(j);
 
         Assert::AreEqual(static_cast<size_t>(2), flat.size());
@@ -100,7 +100,7 @@ public:
 
     TEST_METHOD(Flatten_ArrayElements)
     {
-        auto j = nlohmann::json::parse(R"({"tags":["a","b","c"]})");
+        auto j = Json::parse(R"({"tags":["a","b","c"]})");
         auto flat = JsonPath::flatten(j);
 
         Assert::AreEqual(static_cast<size_t>(3), flat.size());
@@ -111,7 +111,7 @@ public:
 
     TEST_METHOD(Unflatten_ReconstructsNestedObject)
     {
-        std::map<std::string, nlohmann::json> flat;
+        std::map<std::string, Json> flat;
         flat["server.host"] = "localhost";
         flat["server.port"] = 8080;
         flat["database.name"] = "prod";
@@ -125,7 +125,7 @@ public:
 
     TEST_METHOD(Flatten_Unflatten_RoundTrip)
     {
-        auto j = nlohmann::json::parse(R"({"server":{"host":"localhost","port":8080,"ssl_enabled":true}})");
+        auto j = Json::parse(R"({"server":{"host":"localhost","port":8080,"ssl_enabled":true}})");
         auto flat = JsonPath::flatten(j);
         auto restored = JsonPath::unflatten(flat);
         Assert::IsTrue(j == restored);
@@ -133,14 +133,14 @@ public:
 
     TEST_METHOD(Flatten_EmptyObject)
     {
-        auto j = nlohmann::json::object();
+        auto j = Json::object();
         auto flat = JsonPath::flatten(j);
         Assert::AreEqual(static_cast<size_t>(0), flat.size());
     }
 
     TEST_METHOD(Get_BooleanValue)
     {
-        auto j = nlohmann::json::parse(R"({"server":{"ssl_enabled":true}})");
+        auto j = Json::parse(R"({"server":{"ssl_enabled":true}})");
         auto result = JsonPath::get(j, "server.ssl_enabled");
         Assert::IsTrue(result.get<bool>());
     }

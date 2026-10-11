@@ -61,6 +61,15 @@ if(MSVC)
         AeostaraCoreTests/AuditTrailTests.cpp
         AeostaraCoreTests/HealingEngineTests.cpp
         AeostaraCoreTests/JsonConfigAdapterTests.cpp
+        AeostaraCoreTests/JsonValueTests.cpp
+        AeostaraCoreTests/BaseContractsTests.cpp
+        AeostaraCoreTests/AuditSafetyTests.cpp
+        AeostaraCoreTests/BaseDocumentBindingsTests.cpp
+        AeostaraCoreTests/BaseAuditBindingsTests.cpp
+        AeostaraCoreTests/SemanticMappingTests.cpp
+        AeostaraCoreTests/JsonAggregateTests.cpp
+        AeostaraCoreTests/WindowsAtomicFileSystemTests.cpp
+        NativeExecutionBindingsTests.cpp
     )
     target_include_directories(AeostaraCoreTests PRIVATE
         ${VS_UNITTEST_INCLUDE}
@@ -68,6 +77,9 @@ if(MSVC)
         ${CMAKE_CURRENT_SOURCE_DIR}/AeostaraCoreTests
     )
     target_link_directories(AeostaraCoreTests PRIVATE ${VS_UNITTEST_LIB})
+    target_compile_definitions(AeostaraCoreTests PRIVATE
+        AEOSTARA_EXECUTION_FIXTURES="${CMAKE_CURRENT_SOURCE_DIR}/fixtures/adopted-semantic/proposed_deterministic_fixtures.json"
+        AEOSTARA_EXECUTION_AUTHORITY="${CMAKE_CURRENT_SOURCE_DIR}/fixtures/adopted-semantic/proposed_source_authority.json")
     target_link_libraries(AeostaraCoreTests PRIVATE
         Microsoft.VisualStudio.TestTools.CppUnitTestFramework
         AeostaraCore
@@ -76,6 +88,7 @@ if(MSVC)
     add_test(
         NAME AeostaraCoreTests
         COMMAND "${VSTEST_CONSOLE_EXE}" "$<TARGET_FILE:AeostaraCoreTests>" /Platform:x64
+            "/ResultsDirectory:${CMAKE_BINARY_DIR}/TestResults/$<CONFIG>" "/Logger:trx;LogFileName=AeostaraCoreTests.trx"
     )
 
     # --- AeostaraArchitectureTests ---
@@ -97,12 +110,15 @@ if(MSVC)
     add_test(
         NAME AeostaraArchitectureTests
         COMMAND "${VSTEST_CONSOLE_EXE}" "$<TARGET_FILE:AeostaraArchitectureTests>" /Platform:x64
+            "/ResultsDirectory:${CMAKE_BINARY_DIR}/TestResults/$<CONFIG>" "/Logger:trx;LogFileName=AeostaraArchitectureTests.trx"
     )
 
     # --- AeostaraCLITests ---
     add_library(AeostaraCLITests SHARED
         AeostaraCLITests/CommandParserTests.cpp
+        AeostaraCLITests/CLIRunnerTests.cpp
         ${CMAKE_SOURCE_DIR}/src/AeostaraCLI/CommandParser.cpp
+        ${CMAKE_SOURCE_DIR}/src/AeostaraCLI/CLIRunner.cpp
     )
     target_include_directories(AeostaraCLITests PRIVATE
         ${VS_UNITTEST_INCLUDE}
@@ -118,5 +134,22 @@ if(MSVC)
     add_test(
         NAME AeostaraCLITests
         COMMAND "${VSTEST_CONSOLE_EXE}" "$<TARGET_FILE:AeostaraCLITests>" /Platform:x64
+            "/ResultsDirectory:${CMAKE_BINARY_DIR}/TestResults/$<CONFIG>" "/Logger:trx;LogFileName=AeostaraCLITests.trx"
     )
+endif()
+
+foreach(suite SemanticConformanceTests LifecycleConformanceTests)
+    add_executable(${suite} conformance/${suite}.cpp)
+    target_link_libraries(${suite} PRIVATE AeostaraCore)
+    add_test(NAME ${suite} COMMAND ${suite}
+        "${CMAKE_CURRENT_SOURCE_DIR}/fixtures/adopted-semantic/proposed_deterministic_fixtures.json"
+        "${CMAKE_CURRENT_SOURCE_DIR}/fixtures/adopted-semantic/proposed_source_authority.json")
+endforeach()
+
+add_executable(DiagnosticFoundationTests diagnostics/DiagnosticFoundationTests.cpp)
+target_link_libraries(DiagnosticFoundationTests PRIVATE AeostaraCore)
+if(AEOSTARA_DIAGNOSTIC_PROFILE STREQUAL "DEVELOPMENT")
+    add_test(NAME DiagnosticFoundationTests COMMAND DiagnosticFoundationTests development)
+else()
+    add_test(NAME DiagnosticFoundationTests COMMAND DiagnosticFoundationTests lean)
 endif()

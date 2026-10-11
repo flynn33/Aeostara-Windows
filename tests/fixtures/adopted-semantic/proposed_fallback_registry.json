@@ -1,0 +1,57 @@
+{
+  "registryID": "AEOSTARA-DEMO-FALLBACK-V1",
+  "revision": 1,
+  "status": "proposed_requires_adoption",
+  "synthetic": true,
+  "productionDefault": false,
+  "orderingRule": {
+    "status": "derived_from_source",
+    "keys": [
+      "ordering_rank ASC",
+      "policy_id ASCII lexicographic ASC"
+    ],
+    "source": {
+      "repository": "flynn33/ASH-Pattern-System",
+      "commit": "e123f5d7fdbb381179971f721a3292c31eb1cbc2",
+      "path": "specs/registries/fallback-policy-registry.md",
+      "symbol": "Deterministic ordering rules"
+    }
+  },
+  "entries": [
+    {
+      "policy_id": "FALLBACK-STATE-001",
+      "ordering_rank": 0,
+      "candidate_state_reference": "000000000",
+      "applicability_conditions": [
+        "diagnostic.admissibility == TRANSFORMATION_INCOMPATIBLE",
+        "candidate belongs to adopted fixed K",
+        "entry is enabled by immutable registry revision"
+      ],
+      "validation_requirements": [
+        "candidate diagnoses VALID",
+        "candidate classifies STABLE in fresh nonterminal validation context"
+      ],
+      "escalation_on_failure": "TRY_NEXT"
+    },
+    {
+      "policy_id": "FALLBACK-STATE-002",
+      "ordering_rank": 1,
+      "candidate_state_reference": "000000001",
+      "applicability_conditions": [
+        "diagnostic.admissibility == TRANSFORMATION_INCOMPATIBLE",
+        "candidate belongs to adopted fixed K",
+        "entry is enabled by immutable registry revision"
+      ],
+      "validation_requirements": [
+        "candidate diagnoses VALID",
+        "candidate classifies STABLE in fresh nonterminal validation context"
+      ],
+      "escalation_on_failure": "ESCALATE_TO_CONTAINMENT"
+    }
+  ],
+  "availabilityRule": {
+    "status": "proposed_requires_adoption",
+    "rule": "Before canonical classification, availability is an existence preflight over eligible re-diagnosed candidates using the full diagnostic and immutable registry; it does not recursively call get_fallback_candidates whose precondition is DEGRADED. After classification, canonical selection requires DEGRADED. Execution policy authorization occurs after planning and never turns a valid mapping into a different bit value."
+  },
+  "idReservation": "IDs shown are synthetic examples; adopting entries requires reserving globally unique identifiers or replacing them in an immutable adopted supplement."
+}

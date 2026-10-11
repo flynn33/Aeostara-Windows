@@ -1,6 +1,6 @@
 // Aeostara
 // Copyright (c) 2026 James Daley. All Rights Reserved.
-// Proprietary and Confidential.
+// SPDX-License-Identifier: Apache-2.0
 
 #include "AeostaraCore/Verification.h"
 #include "AeostaraCore/JsonPath.h"
@@ -44,9 +44,9 @@ VerificationResult Verifier::verify(const std::string& filePath,
         return result;
     }
 
-    nlohmann::json reloaded;
+    Json reloaded;
     try {
-        reloaded = nlohmann::json::parse(content);
+        reloaded = Json::parse(content);
     } catch (const std::exception& e) {
         result.success = false;
         result.failedChecks.push_back(std::string("JSON parse error: ") + e.what());

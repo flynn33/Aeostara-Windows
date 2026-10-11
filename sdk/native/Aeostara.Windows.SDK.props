@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AeostaraSdkRoot>$(MSBuildThisFileDirectory)..\..\</AeostaraSdkRoot>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)'=='Debug' Or '$(Configuration)'=='Release'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(AeostaraSdkRoot)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>AeostaraCore/SdkCompatibility.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <LanguageStandard Condition="'%(LanguageStandard)'==''">stdcpp20</LanguageStandard>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">AEOSTARA_EXPECT_DEBUG=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">AEOSTARA_EXPECT_DEBUG=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions>/utf-8 /permissive- %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>$(AeostaraSdkRoot)lib\x64\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>AeostaraCore.lib;bcrypt.lib;ole32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+</Project>

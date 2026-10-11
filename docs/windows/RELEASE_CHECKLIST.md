@@ -1,55 +1,16 @@
-# Aeostara Windows Release Checklist — v0.1.0
+# Windows SDK publication checklist
 
-## Prerequisites
-- [ ] Visual Studio 2022 with C++ Desktop workload installed
-- [ ] CMake 3.28+ available (bundled with VS2022 or standalone)
-- [ ] vcpkg installed and `VCPKG_ROOT` set
-- [ ] Repository cloned and `platform/windows` branch checked out
+Use the exact clean source commit and actual evidence for every acceptance gate. Intermediate candidates do not pass a final release gate merely because a prior source revision passed.
 
-## Configure and Build
-```powershell
-cmake --preset release
-cmake --build --preset release
-```
-- [ ] Configure completes without errors
-- [ ] Build completes with zero warnings (/W4 /WX)
-- [ ] `aeostara.exe` produced at `build/release/src/AeostaraCLI/Release/aeostara.exe`
+- Owner-adopted immutable semantic supplement, pinned source/policy authority and independently reviewed source contracts.
+- Actual Debug and Release source-development native tests and lean SDK tests, with nonzero native discovery and zero failed cases.
+- All adopted input-only semantic vectors, complete ASH capability tests and adversarial policy/backup/execution/verification/restore/audit cases.
+- Redaction, quotas, TTL, partial paired export and actual lean archive object exclusion in both SDK configurations.
+- Installed CMake and native NuGet clients in both configurations, relocated spaces/Unicode paths, producer source unavailable and compatibility-negative tests.
+- Public-header isolation and exact public/dependency/package closure.
+- Repeated controlled staging, second clean build comparison, license/version/migration/documentation consistency and explicit physical validation limits.
+- Separate independent delivery review and pinned producer/consumer validation with six delivery conclusions.
+- Owner-authenticated PR integration and exact-final-commit clean rebuild/revalidation; owner annotated immutable SDK tag.
+- Five prepared/uploaded assets, prerelease publication, fresh download hashes and downloaded-package public client verification.
 
-## Tests
-```powershell
-cmake --preset debug
-cmake --build --preset debug
-cmake --build --preset debug --target RUN_TESTS
-```
-- [ ] AeostaraCoreTests: PASS
-- [ ] AeostaraArchitectureTests: PASS
-- [ ] AeostaraCLITests: PASS
-- [ ] 100% tests passed, 0 failures
-
-## Guardrails
-```powershell
-powershell -ExecutionPolicy Bypass -File Scripts/verify-aeostara-guardrails.ps1
-powershell -ExecutionPolicy Bypass -File Scripts/check-architecture.ps1
-```
-- [ ] All guardrail checks pass
-- [ ] Architecture check passes (5/5)
-
-## Acceptance Scenarios
-- [ ] Valid config, no drift → exit 0
-- [ ] Invalid JSON → exit 2
-- [ ] Policy blocked → exit 1, no mutation
-- [ ] Repairable config → exit 0, config healed, backup created
-- [ ] Verification failure → automatic rollback
-
-## Release Artifact
-- [ ] Release build produced (`cmake --preset release`)
-- [ ] Artifact layout assembled (see RELEASE_ARTIFACT.md)
-- [ ] Examples included and runnable
-- [ ] Operator guide included
-- [ ] License included
-
-## Release Decision
-- [ ] All checks above pass
-- [ ] No blocking issues remain
-- [ ] Version consistent across CMakeLists.txt, vcpkg.json, CHANGELOG.md
-- [ ] PLATFORM_MANIFEST.json status updated to `release-candidate`
+The administrator bypass may resolve administrative restrictions. It cannot waive failed technical acceptance, alter semantic authority or justify a false review/test result. Do not move published tags, force push, disable protection, create an identity, claim a signature or publish to another feed.

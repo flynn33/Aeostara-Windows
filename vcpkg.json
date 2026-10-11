@@ -1,8 +1,6 @@
 {
   "name": "aeostara",
-  "version-string": "0.1.0",
-  "description": "Aeostara — Deterministic Config Drift Healing CLI",
-  "dependencies": [
-    "nlohmann-json"
-  ]
+  "version-string": "0.1.0-rc.1",
+  "description": "Aeostara Windows C++20 SDK",
+  "dependencies": []
 }
