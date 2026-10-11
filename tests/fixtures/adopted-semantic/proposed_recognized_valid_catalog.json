@@ -1,0 +1,14 @@
+{
+  "catalogID": "AEOSTARA-DEMO-K-V1",
+  "revision": 1,
+  "status": "proposed_requires_adoption",
+  "synthetic": true,
+  "productionDefault": false,
+  "states": [
+    "000000000",
+    "000000001"
+  ],
+  "authority": "none: synthetic domain proposal only",
+  "binding": "one immutable adopted catalog per domain contract; never arbitrary desired state, request-supplied mutable cache, or inferred from C",
+  "sourceInvariantReconciliationRequired": "ASH classify_state_admissibility(state,C) does not expose K and promises same state/C status. Adoption must authorize this fixed recognized-valid catalog and its domain binding explicitly."
+}

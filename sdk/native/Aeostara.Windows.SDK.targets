@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Target Name="CheckAeostaraSdkCompatibility" BeforeTargets="ClCompile;Link">
+    <Error Condition="'$(Platform)'!='x64'" Text="Aeostara SDK supports x64 only." />
+    <Error Condition="'$(Configuration)'!='Debug' And '$(Configuration)'!='Release'" Text="Aeostara SDK supports Debug and Release only." />
+    <Error Condition="'$(PlatformToolset)'!='v143'" Text="Aeostara SDK requires v143." />
+    <Error Condition="'$(VCToolsVersion)'!='14.44.35207'" Text="Aeostara SDK requires qualified VCToolsVersion 14.44.35207 (MSVC 19.44.35223)." />
+    <Error Condition="'$(Configuration)'=='Debug' And '%(ClCompile.RuntimeLibrary)'!='MultiThreadedDebugDLL'" Text="Aeostara Debug SDK requires /MDd." />
+    <Error Condition="'$(Configuration)'=='Release' And '%(ClCompile.RuntimeLibrary)'!='MultiThreadedDLL'" Text="Aeostara Release SDK requires /MD." />
+    <Error Condition="!Exists('$(AeostaraSdkRoot)lib\x64\$(Configuration)\AeostaraCore.lib')" Text="Aeostara SDK binary is missing for the selected configuration." />
+  </Target>
+</Project>

@@ -1,6 +1,6 @@
 // Aeostara
 // Copyright (c) 2026 James Daley. All Rights Reserved.
-// Proprietary and Confidential.
+// SPDX-License-Identifier: LicenseRef-Raven-Forge-Dual
 
 #include "AeostaraCore/Invariant.h"
 
@@ -29,19 +29,19 @@ InvariantSeverity invariantSeverityFromString(const std::string& str) {
     throw std::invalid_argument("Unknown InvariantSeverity: " + str);
 }
 
-void to_json(nlohmann::json& j, InvariantSeverity severity) {
+void to_json(Json& j, InvariantSeverity severity) {
     j = to_string(severity);
 }
 
-void from_json(const nlohmann::json& j, InvariantSeverity& severity) {
+void from_json(const Json& j, InvariantSeverity& severity) {
     severity = invariantSeverityFromString(j.get<std::string>());
 }
 
 // ---------------------------------------------------------------------------
 // Invariant
 // ---------------------------------------------------------------------------
-void to_json(nlohmann::json& j, const Invariant& inv) {
-    j = nlohmann::json{
+void to_json(Json& j, const Invariant& inv) {
+    j = Json{
         {"invariant_id", inv.invariantID},
         {"name", inv.name},
         {"description", inv.description},
@@ -52,7 +52,7 @@ void to_json(nlohmann::json& j, const Invariant& inv) {
     };
 }
 
-void from_json(const nlohmann::json& j, Invariant& inv) {
+void from_json(const Json& j, Invariant& inv) {
     j.at("invariant_id").get_to(inv.invariantID);
     j.at("name").get_to(inv.name);
     j.at("description").get_to(inv.description);
@@ -65,8 +65,8 @@ void from_json(const nlohmann::json& j, Invariant& inv) {
 // ---------------------------------------------------------------------------
 // InvariantViolation
 // ---------------------------------------------------------------------------
-void to_json(nlohmann::json& j, const InvariantViolation& v) {
-    j = nlohmann::json{
+void to_json(Json& j, const InvariantViolation& v) {
+    j = Json{
         {"invariantID", v.invariantID},
         {"keyPath", v.keyPath},
         {"actualValue", v.actualValue},
@@ -75,7 +75,7 @@ void to_json(nlohmann::json& j, const InvariantViolation& v) {
     };
 }
 
-void from_json(const nlohmann::json& j, InvariantViolation& v) {
+void from_json(const Json& j, InvariantViolation& v) {
     j.at("invariantID").get_to(v.invariantID);
     j.at("keyPath").get_to(v.keyPath);
     j.at("actualValue").get_to(v.actualValue);

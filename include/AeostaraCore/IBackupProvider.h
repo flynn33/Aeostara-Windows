@@ -1,6 +1,6 @@
 // Aeostara
 // Copyright (c) 2026 James Daley. All Rights Reserved.
-// Proprietary and Confidential.
+// SPDX-License-Identifier: LicenseRef-Raven-Forge-Dual
 
 #pragma once
 
@@ -17,6 +17,7 @@ public:
     /// Restore a backup to the original file path. Returns true on success.
     virtual bool restoreBackup(const std::string& backupPath, const std::string& originalPath) = 0;
 
+    virtual bool supportsBackup() const noexcept { return false; }
     virtual ~IBackupProvider() = default;
 };
 

@@ -1,6 +1,6 @@
 // Aeostara
 // Copyright (c) 2026 James Daley. All Rights Reserved.
-// Proprietary and Confidential.
+// SPDX-License-Identifier: LicenseRef-Raven-Forge-Dual
 
 #include "CppUnitTest.h"
 
@@ -115,7 +115,7 @@ public:
         // Each line should be valid JSON — parse the first line
         auto firstNewline = content.find('\n');
         std::string firstLine = content.substr(0, firstNewline);
-        auto parsed = nlohmann::json::parse(firstLine);
+        auto parsed = Json::parse(firstLine);
         Assert::IsTrue(parsed.contains("event_id") || parsed.contains("eventID"));
     }
 };

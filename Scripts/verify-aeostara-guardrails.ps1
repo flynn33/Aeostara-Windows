@@ -1,6 +1,6 @@
 # Aeostara Guardrails Verification Script
 # Copyright (c) 2026 James Daley. All Rights Reserved.
-# Proprietary and Confidential.
+# SPDX-License-Identifier: LicenseRef-Raven-Forge-Dual
 #
 # Usage: powershell -ExecutionPolicy Bypass -File Scripts/verify-aeostara-guardrails.ps1
 # Run from the repository root.
@@ -68,11 +68,11 @@ $headerFiles = Get-ChildItem -Path "$SourceDir/include/AeostaraCore" -Filter "*.
 $nonFinalClasses = @()
 foreach ($file in $headerFiles) {
     $content = Get-Content $file.FullName -Raw
-    $matches = [regex]::Matches($content, '(class|struct)\s+(\w+)\s+(?!final)[:{]')
+    $matches = [regex]::Matches($content, '(enum\s+)?(class|struct)\s+(\w+)\s+(?!final)[:{]')
     foreach ($m in $matches) {
-        $typeName = $m.Groups[2].Value
-        # Skip known non-class types
-        if ($typeName -match 'Type$|Severity$') { continue }
+        if ($m.Groups[1].Success) { continue }
+        $typeName = $m.Groups[3].Value
+        if ($typeName -match '^I[A-Z]') { continue }
         $nonFinalClasses += "$typeName in $($file.Name)"
     }
 }

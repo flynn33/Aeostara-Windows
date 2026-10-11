@@ -1,6 +1,6 @@
 // Aeostara
 // Copyright (c) 2026 James Daley. All Rights Reserved.
-// Proprietary and Confidential.
+// SPDX-License-Identifier: LicenseRef-Raven-Forge-Dual
 
 #include "AeostaraCore/RollbackManager.h"
 

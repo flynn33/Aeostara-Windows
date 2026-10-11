@@ -1,0 +1,1774 @@
+{
+  "documentID": "JSON-TO-ASH-MAPPING-CONTRACT-PROPOSAL-2026-10-11",
+  "revision": 1,
+  "reviewStatus": "review_ready_proposal_not_adopted",
+  "adoptionStatus": "not_adopted",
+  "platformNeutral": true,
+  "productionImplementationAuthorized": false,
+  "ownerResolutionPath": "A:\\Codex-Project-Instructions\\Aeostara_Windows_SDK_Release_Handoff_2026-10-11\\execution-evidence\\OWNER_SEMANTIC_MAPPING_RESOLUTION_2026-10-11.md",
+  "authorityPins": [
+    {
+      "repository": "flynn33/aeostara",
+      "commit": "774b981ef2267a41c1b1a59497b2b0746a86f32b"
+    },
+    {
+      "repository": "flynn33/ASH-Pattern-System",
+      "commit": "e123f5d7fdbb381179971f721a3292c31eb1cbc2"
+    },
+    {
+      "repository": "flynn33/raven-forge-development",
+      "commit": "8dd6e75a06336491b249fac3577db75458db8c13",
+      "scope": "interpretation/gap/conflict policy only"
+    }
+  ],
+  "statusVocabulary": [
+    "derived_from_source",
+    "proposed_requires_adoption",
+    "unresolved"
+  ],
+  "rules": [
+    {
+      "id": "JASH-001",
+      "status": "derived_from_source",
+      "title": "Authority and separation",
+      "sources": [
+        {
+          "repository": "flynn33/aeostara",
+          "commit": "774b981ef2267a41c1b1a59497b2b0746a86f32b",
+          "path": "specs/architecture/product_boundaries.md",
+          "symbol": "Non-negotiable rules, rule 4"
+        },
+        {
+          "repository": "flynn33/aeostara",
+          "commit": "774b981ef2267a41c1b1a59497b2b0746a86f32b",
+          "path": "specs/architecture/ash_authority_and_aeostara_conformance.md",
+          "symbol": "ASH authority and platform-neutral adaptation"
+        },
+        {
+          "repository": "flynn33/ASH-Pattern-System",
+          "commit": "e123f5d7fdbb381179971f721a3292c31eb1cbc2",
+          "path": "specs/core/ash-state-space.pseudo.md",
+          "symbol": "State space and full-state invariants"
+        }
+      ],
+      "rule": "ASH owns the nine-bit model, codewords, classification and recovery meaning. Aeostara owns concrete JSON mapping/materialization. Ambiguous base adaptation yields to ASH. No Windows-specific meanings or advanced pins."
+    },
+    {
+      "id": "JASH-002",
+      "status": "proposed_requires_adoption",
+      "title": "Complete semantic input tuple",
+      "sources": [
+        {
+          "repository": "flynn33/aeostara",
+          "commit": "774b981ef2267a41c1b1a59497b2b0746a86f32b",
+          "path": "specs/interfaces/ISemanticProjector.pseudo.md",
+          "symbol": "project"
+        },
+        {
+          "repository": "flynn33/aeostara",
+          "commit": "774b981ef2267a41c1b1a59497b2b0746a86f32b",
+          "path": "specs/contracts/SemanticProjectionSpec.schema.json",
+          "symbol": "required"
+        },
+        {
+          "repository": "flynn33/ASH-Pattern-System",
+          "commit": "e123f5d7fdbb381179971f721a3292c31eb1cbc2",
+          "path": "specs/core/system-state-classification.pseudo.md",
+          "symbol": "classify_system_state"
+        }
+      ],
+      "rule": "Immutable observed and desired snapshots; profile ID/revision/hash; JSON canonicalization rule/revision; applicable invariant bundle ID/hash; all evidence snapshots and source bindings; ASH pin/C identity; recognized-valid domain catalog ID/revision/hash; full lifecycle/correction/fallback context; recovery registry ID/revision/hash; selected-target reference; realization rule identity; policy bundle/decision; backup/verification/execution context where applicable. Unavailable fields are explicitly unavailable, never silently defaulted.",
+      "determinism": "Same complete input tuple yields same semantic result. Diagnostic event IDs/times and host I/O outcomes are explicitly supplied or excluded from the semantic comparison, never hidden semantic inputs.",
+      "binding": "semantic input digest excludes expected assertions, fixture IDs, machine names and filesystem enumeration order; record raw source identity separately from semantic canonical digest"
+    },
+    {
+      "id": "JASH-003",
+      "status": "derived_from_source",
+      "title": "All nine coordinate meanings",
+      "sources": [
+        {
+          "repository": "flynn33/ASH-Pattern-System",
+          "commit": "e123f5d7fdbb381179971f721a3292c31eb1cbc2",
+          "path": "specs/core/ash-state-space.pseudo.md",
+          "symbol": "F2^9 and full-state semantics"
+        },
+        {
+          "repository": "flynn33/aeostara",
+          "commit": "774b981ef2267a41c1b1a59497b2b0746a86f32b",
+          "path": "specs/algorithms/semantic_projection.pseudo.md",
+          "symbol": "coordinate ordering"
+        }
+      ],
+      "rule": "b0 through b8 are exactly the nine equal binary coordinates in canonical order. No privileged or business meaning. C having b8=0 does not remove b8 from state projection, diagnosis, classification or verification."
+    },
+    {
+      "id": "JASH-004",
+      "status": "derived_from_source",
+      "title": "Pointer, null and structure semantics",
+      "sources": [
+        {
+          "repository": "flynn33/aeostara",
+          "commit": "774b981ef2267a41c1b1a59497b2b0746a86f32b",
+          "path": "specs/algorithms/json_pointer_operations.pseudo.md",
+          "symbol": "Pointer resolution"
+        },
+        {
+          "repository": "flynn33/aeostara",
+          "commit": "774b981ef2267a41c1b1a59497b2b0746a86f32b",
+          "path": "specs/contracts/JsonPointer.schema.json",
+          "symbol": "pointer,tokens,pointsToMissing,pointsToNull"
+        }
+      ],
+      "rule": "Use JSON Pointer; root is empty Pointer, '/' selects an empty-key object member, '.' in a key is literal, ~0/~1 decode escaped tokens, missing and explicit null are distinct, arrays preserve order.",
+      "proposedPrecisionRef": "JASH-015"
+    },
+    {
+      "id": "JASH-005",
+      "status": "proposed_requires_adoption",
+      "title": "Concrete binary evaluator",
+      "sources": [
+        {
+          "repository": "flynn33/aeostara",
+          "commit": "774b981ef2267a41c1b1a59497b2b0746a86f32b",
+          "path": "specs/algorithms/semantic_projection.pseudo.md",
+          "symbol": "evaluate_domain_rule_for_this_algorithm"
+        },
+        {
+          "repository": "flynn33/aeostara",
+          "commit": "774b981ef2267a41c1b1a59497b2b0746a86f32b",
+          "path": "specs/contracts/SemanticDimensionBinding.schema.json",
+          "symbol": "mappingRule,evidence"
+        }
+      ],
+      "rule": "Evaluate only explicit profile source bindings using genuine extracted snapshot values. An exact mathematical JSON numeric 0 or 1 yields that bit. Bool, string, null, other numbers, wrong carrier structure or malformed claim metadata fail. Missing required source/Pointer blocks. Unknown evaluator/evidence-kind blocks. Supported claims agreeing on one bit map; differing genuine bits are ambiguous. Desired is independently projected when needed and never substitutes for observed.",
+      "mixedFailurePrecedence": [
+        "FAILED",
+        "BLOCKED",
+        "AMBIGUOUS"
+      ],
+      "precedenceStatus": "proposed_requires_adoption",
+      "noImplicitSources": "Supplemental evidence is read only where an explicit immutable profile binding requires it; no implicit override or guessed alias."
+    },
+    {
+      "id": "JASH-006",
+      "status": "proposed_requires_adoption",
+      "title": "No manufactured full state on incomplete mapping",
+      "sources": [
+        {
+          "repository": "flynn33/aeostara",
+          "commit": "774b981ef2267a41c1b1a59497b2b0746a86f32b",
+          "path": "specs/interfaces/ISemanticProjector.pseudo.md",
+          "symbol": "No fabricated empty state; explicit C++ error results"
+        },
+        {
+          "repository": "flynn33/aeostara",
+          "commit": "774b981ef2267a41c1b1a59497b2b0746a86f32b",
+          "path": "specs/contracts/MappingResult.schema.json",
+          "symbol": "required and dimensionBindings exact length"
+        }
+      ],
+      "rule": "Create a full state only after nine genuine unique bits exist. Otherwise retain all per-coordinate outcomes, real evidence, faults and diagnostics in typed unsuccessful attempt. No zero padding, missing bindings, guessed diagnostics or fabricated canonical hash.",
+      "compatibilityRef": "JASH-018"
+    },
+    {
+      "id": "JASH-007",
+      "status": "proposed_requires_adoption",
+      "title": "Recognized valid state catalog and admissibility evidence",
+      "sources": [
+        {
+          "repository": "flynn33/ASH-Pattern-System",
+          "commit": "e123f5d7fdbb381179971f721a3292c31eb1cbc2",
+          "path": "specs/core/state-admissibility.pseudo.md",
+          "symbol": "classify_state_admissibility"
+        },
+        {
+          "repository": "flynn33/ASH-Pattern-System",
+          "commit": "e123f5d7fdbb381179971f721a3292c31eb1cbc2",
+          "path": "specs/core/codeword-set.pseudo.md",
+          "symbol": "canonical codeword set C"
+        }
+      ],
+      "rule": "After adoption of fixed K, x in K is VALID; otherwise x xor k in canonical C for any k in K proves TRANSFORMATION_COMPATIBLE; no witness with a complete evaluable fixed catalog/C proves TRANSFORMATION_INCOMPATIBLE; actual inability to evaluate canonical evidence produces UNCLASSIFIED. Witness retains k,c,source identities and all nine bits. A failed JSON projection does not invent x or automatically call this classifier.",
+      "unresolved": "The canonical recognized-valid set/owner is not supplied. K is not C and must not vary covertly for the same canonical state/C. Synthetic K requires explicit immutable authority reconciliation."
+    },
+    {
+      "id": "JASH-008",
+      "status": "derived_from_source",
+      "title": "Canonical classification",
+      "sources": [
+        {
+          "repository": "flynn33/ASH-Pattern-System",
+          "commit": "e123f5d7fdbb381179971f721a3292c31eb1cbc2",
+          "path": "specs/core/system-state-classification.pseudo.md",
+          "symbol": "classify_system_state"
+        },
+        {
+          "repository": "flynn33/ASH-Pattern-System",
+          "commit": "e123f5d7fdbb381179971f721a3292c31eb1cbc2",
+          "path": "specs/core/state-validity-diagnostics.pseudo.md",
+          "symbol": "diagnose_state"
+        }
+      ],
+      "rule": "SAFE_HALT context first; then CONTAINED; VALID+ALREADY_VALID→STABLE; TRANSFORMATION_COMPATIBLE+NORMALIZABLE→CORRECTABLE when specific correction known else UNSTABLE; TRANSFORMATION_INCOMPATIBLE→DEGRADED if fallback available else FAILED; remaining/UNCLASSIFIED→DEGRADED. Preserve immediate classification separately from subsequent recovery escalation.",
+      "contextPredicateProposalRef": "contextPredicateProposal.correctionPathIsKnown",
+      "unresolvedDependencies": [
+        "JASH-007 catalog",
+        "adoption of concrete selected-and-validated correction_path_is_known witness predicate",
+        "JASH-010 fallback availability preflight"
+      ]
+    },
+    {
+      "id": "JASH-009",
+      "status": "derived_from_source",
+      "title": "Canonical class to recovery and blocked transitions",
+      "sources": [
+        {
+          "repository": "flynn33/ASH-Pattern-System",
+          "commit": "e123f5d7fdbb381179971f721a3292c31eb1cbc2",
+          "path": "specs/core/recoverability-semantics.pseudo.md",
+          "symbol": "classify_recoverability and Blocked recovery conditions"
+        }
+      ],
+      "mapping": {
+        "STABLE": "NO_ACTION",
+        "UNSTABLE": "NORMALIZE_STATE",
+        "CORRECTABLE": "APPLY_CORRECTION",
+        "DEGRADED": "FALLBACK_REQUIRED",
+        "CONTAINED": "CONTAINMENT_REQUIRED",
+        "FAILED": "ESCALATION_REQUIRED",
+        "SAFE_HALT": "TERMINAL_NO_RECOVERY"
+      },
+      "blockedTransitions": [
+        {
+          "category": "NORMALIZE_STATE",
+          "blocked": "normalization path not computable",
+          "next": "CONTAINMENT_REQUIRED"
+        },
+        {
+          "category": "APPLY_CORRECTION",
+          "blocked": "correction path not computable",
+          "next": "FALLBACK_REQUIRED"
+        },
+        {
+          "category": "FALLBACK_REQUIRED",
+          "blocked": "no registry or no candidates",
+          "next": "CONTAINMENT_REQUIRED"
+        },
+        {
+          "category": "CONTAINMENT_REQUIRED",
+          "blocked": "containment boundary breached",
+          "next": "TERMINAL_NO_RECOVERY"
+        },
+        {
+          "category": "ESCALATION_REQUIRED",
+          "blocked": "no external authority reachable",
+          "next": "TERMINAL_NO_RECOVERY"
+        }
+      ],
+      "rule": "Recovery category identifies allowed semantics; it does not itself authorize or implement a JSON repair."
+    },
+    {
+      "id": "JASH-010",
+      "status": "derived_from_source",
+      "title": "Canonical fallback registry procedure",
+      "sources": [
+        {
+          "repository": "flynn33/ASH-Pattern-System",
+          "commit": "e123f5d7fdbb381179971f721a3292c31eb1cbc2",
+          "path": "specs/registries/fallback-policy-registry.md",
+          "symbol": "get_fallback_candidates, select_fallback_candidate, Candidate eligibility, Deterministic ordering, Escalation"
+        }
+      ],
+      "rule": "Explicit immutable registry entries; all applicability predicates; lower rank then policy ID; genuine known-valid candidate; re-diagnose and require STABLE; TRY_NEXT or ESCALATE_TO_CONTAINMENT; no valid candidate means recorded containment; no heuristic fallback.",
+      "unresolved": "Actual domain registry entries and undefined fallback_is_available predicate are absent. Synthetic registry and preflight are proposals, not established authority."
+    },
+    {
+      "id": "JASH-011",
+      "status": "proposed_requires_adoption",
+      "title": "Authorized inverse and concrete operations",
+      "sources": [
+        {
+          "repository": "flynn33/aeostara",
+          "commit": "774b981ef2267a41c1b1a59497b2b0746a86f32b",
+          "path": "specs/algorithms/generation_materialization_boundary.pseudo.md",
+          "symbol": "materialization boundary"
+        },
+        {
+          "repository": "flynn33/aeostara",
+          "commit": "774b981ef2267a41c1b1a59497b2b0746a86f32b",
+          "path": "specs/contracts/JsonMutationOperation.schema.json",
+          "symbol": "op,path,preconditionHash"
+        },
+        {
+          "repository": "flynn33/ASH-Pattern-System",
+          "commit": "e123f5d7fdbb381179971f721a3292c31eb1cbc2",
+          "path": "specs/core/recoverability-semantics.pseudo.md",
+          "symbol": "APPLY_CORRECTION postconditions"
+        }
+      ],
+      "rule": "Every step binds an adopted inverse rule, real source state, authorized target, witness, permitted Pointer scope and exact before/after values. Synthetic inverse only replaces changed existing /state_vector/i numeric slots. A target must be explicitly authorized and in fixed K; desired is only intent. NORMALIZE/APPLY_CORRECTION additionally require canonical codeword path; FALLBACK additionally requires selected eligible validated registry entry. NO_ACTION emits no mutations even for surface drift. Other recovery categories invoke explicit containment/escalation/halt capabilities, not invented configuration writes.",
+      "unsupported": "Absent adopted inverse/target permission or policy authorization blocks product planning/execution while preserving genuine mathematical witness, canonical class and recovery category. It does not mean the mathematical path is not computable, does not by itself trigger canonical path-not-computable escalation, and never automatically authorizes fallback. Invoke canonical blocked-recovery transition only with actual matching source condition; any later fallback requires separately justified category/registry/target/policy/backup authority. No category-to-diff shortcut."
+    },
+    {
+      "id": "JASH-012",
+      "status": "proposed_requires_adoption",
+      "title": "Policy, stale, backup and capability gates",
+      "sources": [
+        {
+          "repository": "flynn33/aeostara",
+          "commit": "774b981ef2267a41c1b1a59497b2b0746a86f32b",
+          "path": "specs/algorithms/policy_gate_lifecycle.pseudo.md",
+          "symbol": "Observe→Normalize→Project→Diagnose→Classify→Plan→PolicyGate→VerificationPlan→Backup→Execute"
+        },
+        {
+          "repository": "flynn33/aeostara",
+          "commit": "774b981ef2267a41c1b1a59497b2b0746a86f32b",
+          "path": "specs/algorithms/mutation_precondition_check.pseudo.md",
+          "symbol": "precondition hash"
+        },
+        {
+          "repository": "flynn33/aeostara",
+          "commit": "774b981ef2267a41c1b1a59497b2b0746a86f32b",
+          "path": "specs/interfaces/IHealingEngine.pseudo.md",
+          "symbol": "dryRun,heal"
+        }
+      ],
+      "rule": "No mutation in observation/projection/diagnosis/classification/planning/dry-run. Before mutation require exact profile/catalog/registry/policy identities, policy ALLOW, authorized scope, generated verification plan, confirmed pre-execution diagnostics/audit, exclusive host capability, current canonical/raw snapshot matching planned preconditions, verified uniquely stored backup and armed recovery. A stale identity blocks the attempt before writes; a new attempt requires new observation/plan/policy/backup, never silent reuse.",
+      "backup": "Claim backup success only after genuine copy/write confirmation and verified source bytes/hash; absence/false/throw gates mutation off. Filesystem details belong to platform binding."
+    },
+    {
+      "id": "JASH-013",
+      "status": "proposed_requires_adoption",
+      "title": "Verification postconditions",
+      "sources": [
+        {
+          "repository": "flynn33/aeostara",
+          "commit": "774b981ef2267a41c1b1a59497b2b0746a86f32b",
+          "path": "specs/contracts/VerificationPlan.schema.json",
+          "symbol": "generatedBeforeMutation"
+        },
+        {
+          "repository": "flynn33/aeostara",
+          "commit": "774b981ef2267a41c1b1a59497b2b0746a86f32b",
+          "path": "specs/contracts/VerificationResult.schema.json",
+          "symbol": "expectedSemanticState,actualSemanticState"
+        },
+        {
+          "repository": "flynn33/ASH-Pattern-System",
+          "commit": "e123f5d7fdbb381179971f721a3292c31eb1cbc2",
+          "path": "specs/core/recoverability-semantics.pseudo.md",
+          "symbol": "correction must classify STABLE"
+        }
+      ],
+      "rule": "After execution re-read actual bytes, strict-parse, re-project with identical immutable profile/evidence dependencies, diagnose full nine bits, verify authorized target, canonical STABLE where correction/fallback requires it, all declared invariants, all intended operations and unchanged protected scope. Do not compare only desired subset. Failed/blocked verification prevents HEALED/success and enters explicit recovery."
+    },
+    {
+      "id": "JASH-014",
+      "status": "proposed_requires_adoption",
+      "title": "Truthful failure and rollback",
+      "sources": [
+        {
+          "repository": "flynn33/aeostara",
+          "commit": "774b981ef2267a41c1b1a59497b2b0746a86f32b",
+          "path": "specs/contracts/RollbackResult.schema.json",
+          "symbol": "status,restoredHash"
+        },
+        {
+          "repository": "flynn33/aeostara",
+          "commit": "774b981ef2267a41c1b1a59497b2b0746a86f32b",
+          "path": "specs/contracts/ExecutionStepResult.schema.json",
+          "symbol": "status,observedHashAfterStep"
+        },
+        {
+          "repository": "flynn33/aeostara",
+          "commit": "774b981ef2267a41c1b1a59497b2b0746a86f32b",
+          "path": "specs/algorithms/generation_materialization_boundary.pseudo.md",
+          "symbol": "verification and recovery boundary"
+        },
+        {
+          "repository": "flynn33/ASH-Pattern-System",
+          "commit": "e123f5d7fdbb381179971f721a3292c31eb1cbc2",
+          "path": "specs/core/recoverability-semantics.pseudo.md",
+          "symbol": "monotonic escalation and diagnostics"
+        }
+      ],
+      "rule": "Arm recovery before first possible mutation. False returns and exceptions after partial writes, verification errors or persistence failure retain the primary outcome and attempt authorized restore. Restoration succeeds only after adapter confirmation plus exact byte equality/raw hash to the captured original and explicit restoration-safety invariants. Preserve preexisting repair postcondition violations and failed healing outcome; restored does not imply VALID/STABLE/HEALED or automatic resume. False/throw/unverifiable restore is FAILED, preserves both primary and recovery faults, and uses declared escalation/containment/halt. Do not claim rolled back from call completion. No destructive re-plan or terminal-state repair."
+    },
+    {
+      "id": "JASH-015",
+      "status": "proposed_requires_adoption",
+      "title": "Conservative exact JSON supplement",
+      "sources": [
+        {
+          "repository": "flynn33/aeostara",
+          "commit": "774b981ef2267a41c1b1a59497b2b0746a86f32b",
+          "path": "specs/algorithms/json_canonicalization.pseudo.md",
+          "symbol": "normalize and canonical hashing"
+        },
+        {
+          "repository": "flynn33/aeostara",
+          "commit": "774b981ef2267a41c1b1a59497b2b0746a86f32b",
+          "path": "specs/contracts/JsonCanonicalizationRule.schema.json",
+          "symbol": "JSON_NUMBER_CANONICAL"
+        },
+        {
+          "repository": "flynn33/aeostara",
+          "commit": "774b981ef2267a41c1b1a59497b2b0746a86f32b",
+          "path": "ci/common_checks.py",
+          "symbol": "CanonicalJson, JsonPointerEvaluator"
+        }
+      ],
+      "rule": "See canonicalizationProposal. Existing generic source requires deterministic canonicalization but does not settle all lexical/numeric/duplicate/Unicode/index details. This proposed precision is unapproved; Python float/json library behavior is observed reference behavior, not silently replaced normative authority.",
+      "canonicalizationProposalID": "JASH-CANON-EXACT-DECIMAL-V1"
+    },
+    {
+      "id": "JASH-016",
+      "status": "derived_from_source",
+      "title": "Genuine diagnostics and source references",
+      "sources": [
+        {
+          "repository": "flynn33/aeostara",
+          "commit": "774b981ef2267a41c1b1a59497b2b0746a86f32b",
+          "path": "specs/contracts/DiagnosticEnvelope.schema.json",
+          "symbol": "required"
+        },
+        {
+          "repository": "flynn33/ASH-Pattern-System",
+          "commit": "e123f5d7fdbb381179971f721a3292c31eb1cbc2",
+          "path": "specs/registries/fallback-policy-registry.md",
+          "symbol": "Schema conformance"
+        },
+        {
+          "repository": "flynn33/ASH-Pattern-System",
+          "commit": "e123f5d7fdbb381179971f721a3292c31eb1cbc2",
+          "path": "specs/interfaces/rule-id-taxonomy.md",
+          "symbol": "canonical rule families"
+        }
+      ],
+      "rule": "Retain genuine source/evidence, exact source pins, existing permitted diagnostic kinds, root/parent relationships and source rule families. Every failure and recovery action emits a diagnostic. JASH IDs identify proposal traceability only; do not replace canonical ASH rule IDs or claim their adoption.",
+      "proposedExportPrecision": "Semantic deterministic payload is separate from explicitly supplied event IDs/timestamps. Serialize the same diagnostic chain to JSON/Markdown with identical statuses, evidence and refs; serialization/persistence failure is a retained error."
+    },
+    {
+      "id": "JASH-017",
+      "status": "proposed_requires_adoption",
+      "title": "Independent fixtures and oracle",
+      "sources": [
+        {
+          "repository": "flynn33/aeostara",
+          "commit": "774b981ef2267a41c1b1a59497b2b0746a86f32b",
+          "path": "fixtures/conformance/semantic_projection_vectors.json",
+          "symbol": "projection-ambiguous-coordinate,projection-blocked-mapping"
+        },
+        {
+          "repository": "flynn33/aeostara",
+          "commit": "774b981ef2267a41c1b1a59497b2b0746a86f32b",
+          "path": "ci/fixture_validator.py",
+          "symbol": "FixtureSuiteEvaluator._compute_actual,_compute_projection"
+        }
+      ],
+      "rule": "Runtime actual() receives complete inputs only, never expected/class labels/fixture IDs. Assert separately. Preserve original fixtures/expected bytes and source hashes. New synthetic vectors are labeled proposals; a passing independent explicit-class map check proves only that map, not projection or release acceptance."
+    },
+    {
+      "id": "JASH-018",
+      "status": "proposed_requires_adoption",
+      "title": "Frozen DTO applicability and typed unsuccessful operations",
+      "sources": [
+        {
+          "repository": "flynn33/aeostara",
+          "commit": "774b981ef2267a41c1b1a59497b2b0746a86f32b",
+          "path": "specs/interfaces/ISemanticProjector.pseudo.md",
+          "symbol": "explicit C++ error results, schema-valid returned contracts, no fabricated empty state"
+        },
+        {
+          "repository": "flynn33/aeostara",
+          "commit": "774b981ef2267a41c1b1a59497b2b0746a86f32b",
+          "path": "specs/contracts/MappingResult.schema.json",
+          "symbol": "required"
+        },
+        {
+          "repository": "flynn33/aeostara",
+          "commit": "774b981ef2267a41c1b1a59497b2b0746a86f32b",
+          "path": "specs/contracts/BackupResult.schema.json",
+          "symbol": "required"
+        },
+        {
+          "repository": "flynn33/aeostara",
+          "commit": "774b981ef2267a41c1b1a59497b2b0746a86f32b",
+          "path": "specs/contracts/ExecutionStepResult.schema.json",
+          "symbol": "required"
+        },
+        {
+          "repository": "flynn33/aeostara",
+          "commit": "774b981ef2267a41c1b1a59497b2b0746a86f32b",
+          "path": "specs/contracts/RollbackResult.schema.json",
+          "symbol": "required"
+        },
+        {
+          "repository": "flynn33/aeostara",
+          "commit": "774b981ef2267a41c1b1a59497b2b0746a86f32b",
+          "path": "specs/contracts/FallbackDecision.schema.json",
+          "symbol": "required"
+        },
+        {
+          "repository": "flynn33/aeostara",
+          "commit": "774b981ef2267a41c1b1a59497b2b0746a86f32b",
+          "path": "specs/contracts/VerificationResult.schema.json",
+          "symbol": "required"
+        },
+        {
+          "repository": "flynn33/aeostara",
+          "commit": "774b981ef2267a41c1b1a59497b2b0746a86f32b",
+          "path": "specs/contracts/HealResult.schema.json",
+          "symbol": "required"
+        }
+      ],
+      "rule": "Source supports native explicit error mechanics but does not by itself authorize outer failure as the promised frozen return DTO. Proposed OperationAttempt<T> has either complete truthful schema-valid T or typed failure with genuine available evidence, missing-evidence reasons and diagnostics. It never makes required frozen fields optional/null/empty. Some negative frozen DTOs are returnable when all required actual evidence genuinely exists; unavailable values require authoritative clarification or a new versioned schema."
+    }
+  ],
+  "sourceEvidenceProposal": {
+    "status": "proposed_requires_adoption",
+    "ruleID": "JASH-CLAIM-PROVENANCE-V1",
+    "sources": [
+      {
+        "repository": "flynn33/aeostara",
+        "commit": "774b981ef2267a41c1b1a59497b2b0746a86f32b",
+        "path": "specs/interfaces/ISemanticProjector.pseudo.md",
+        "symbol": "Preconditions: supplied references resolvable; no fabricated state or diagnostics"
+      }
+    ],
+    "genuineDefinition": "An actual captured immutable source snapshot and value extracted at the declared Pointer; its sourceReference resolves to that exact snapshot identity/canonical content hash/Pointer/coordinate/evidence kind and an adopted host-registered source authority. Nonempty string alone is not provenance, authentication or authority.",
+    "authorityDefinitionProjection": [
+      "authorityID",
+      "revision",
+      "allowedSourceNames",
+      "allowedEvidenceKinds",
+      "provenanceRuleID"
+    ],
+    "authorityRefShape": {
+      "authorityID": "immutable logical ID",
+      "revision": "immutable integer revision",
+      "semanticDefinitionHash": "lowercase SHA256 of canonical exact authorityDefinitionProjection"
+    },
+    "registration": "Complete input includes registeredAuthorityRef and actual immutable source-authority definition. The expected authority comes from adopted profile/host source capability, not from the claim itself. Verify exact allowed source names/kinds and identity. Synthetic registration is explicit mock/test setup, never production authentication.",
+    "manifestShape": {
+      "manifestID": "immutable logical ID",
+      "revision": "immutable revision",
+      "authorityRef": "exact authorityRefShape",
+      "references": [
+        {
+          "reference": "demo:claim:bN",
+          "authorityID": "AEOSTARA-DEMO-SOURCE-AUTHORITY-V1",
+          "sourceName": "claims",
+          "snapshotID": "demo-claims-r1",
+          "canonicalDocumentHash": "computed from actual immutable captured claims document",
+          "pointer": "/claims/N/value",
+          "coordinate": "bN",
+          "evidenceKind": "JSON_BINARY_COORDINATE"
+        }
+      ]
+    },
+    "resolution": "Resolve metadata sourceReference through a unique manifest reference record. Match adopted/registered authority ID/revision/semantic hash, sourceName, actual snapshot ID and computed canonical document hash, exact Pointer, coordinate and kind; then extract actual snapshot value and run binary evaluator. Manifest and captured sources are explicit hashed immutable inputs. No asserted/external value may override snapshot extraction.",
+    "outcomes": {
+      "missingReferenceOrSourceOrManifestOrAuthority": "BLOCKED with actual missing/unresolvable reason",
+      "unknownLogicalReference": "BLOCKED",
+      "malformedReferenceOrManifest": "FAILED",
+      "duplicateOrConflictingReferenceRecord": "FAILED",
+      "wrongSnapshotHashPointerCoordinateKindOrAuthority": "FAILED",
+      "tamperedValueOrProvenance": "FAILED",
+      "resolvedGenuineBinaryClaimsDisagree": "AMBIGUOUS"
+    },
+    "identity": "Transport paths and raw file hashes stay provenance; authority semantic hash uses exact projection above. Source snapshot canonicalDocumentHash is computed from actual captured document bytes/parsed content under proposed adopted canonicalization, not an expected assertion.",
+    "syntheticAuthority": {
+      "authorityID": "AEOSTARA-DEMO-SOURCE-AUTHORITY-V1",
+      "revision": 1,
+      "allowedSourceNames": [
+        "claims"
+      ],
+      "allowedEvidenceKinds": [
+        "JSON_BINARY_COORDINATE"
+      ],
+      "provenanceRuleID": "JASH-CLAIM-PROVENANCE-V1",
+      "status": "proposed_requires_adoption",
+      "synthetic": true,
+      "productionAuthenticationAuthority": false
+    },
+    "adoption": "Actual authority/registration and source attestation semantics require an immutable adopted domain/source-capability supplement. Demo manifest proves only consistency against explicit proposed captured fixture data, not authenticity of a production source."
+  },
+  "invariantBoundaryProposal": {
+    "status": "proposed_requires_adoption",
+    "ruleIDs": [
+      "JASH-002",
+      "JASH-012",
+      "JASH-013",
+      "JASH-014"
+    ],
+    "roleVocabulary": [
+      "MUTATION_PRECONDITION",
+      "LIFECYCLE_SUCCESS_POSTCONDITION",
+      "RESTORATION_SAFETY",
+      "DIAGNOSTIC_ONLY"
+    ],
+    "declaration": "Every applicable invariant has immutable ID/revision/source, fully defined predicate and genuine evidence, one explicit role and mandatory/diagnostic disposition. Undefined role/predicate/evidence is BLOCKED; never assume empty policies or ignored violations.",
+    "evaluation": "Pure evaluation within observation/normalization/policy and verification uses immutable snapshot evidence and records PASS/VIOLATION/UNAVAILABLE with actual rule/source/values. It never mutates or secretly changes coordinate bits.",
+    "noAction": "Canonical STABLE/NO_ACTION is retained when x belongs to adopted K. Overall lifecycle success/healthy is permitted only when all mandatory LIFECYCLE_SUCCESS_POSTCONDITION predicates pass. Violation/unavailable records real failure and BLOCKED/typed unsuccessful product result with no mutation; it does not invent a different ASH class/category or generic repair.",
+    "beforeMutation": "Mandatory MUTATION_PRECONDITION predicates must pass. A preexisting repair-trigger violation of LIFECYCLE_SUCCESS_POSTCONDITION may be repaired only by an independently authorized canonical recovery plan and adopted inverse/target/policy; it is not silently a mutation precondition. Such predicates must pass after recovery for HEALED.",
+    "restore": "Verified restoration requires checked restore plus exact byte equality/raw hash to captured original and explicit mandatory RESTORATION_SAFETY predicates. It does not require fixing preexisting repair postcondition violations; preserve those violations and the initiating failed healing outcome. Restoration success does not imply VALID/STABLE/HEALED or automatic resume.",
+    "diagnosticOnly": "Record diagnostic-only results truthfully; do not claim their violation blocks lifecycle unless an adopted policy says so."
+  },
+  "semanticIdentityProposal": {
+    "status": "proposed_requires_adoption",
+    "ruleID": "JASH-SEMANTIC-IDENTITY-V1",
+    "canonicalizationRuleID": "JASH-CANON-EXACT-DECIMAL-V1",
+    "digest": "lowercase SHA256 of canonical UTF-8 JSON for the exact named projection; no formatting/newline bytes",
+    "profileDefinitionProjection": [
+      "profileID",
+      "revision",
+      "canonicalizationRuleID",
+      "evaluatorID",
+      "recognizedValidCatalogID",
+      "acceptedCarrierShape",
+      "dimensions",
+      "mutationScope",
+      "inverseRuleID"
+    ],
+    "catalogDefinitionProjection": [
+      "catalogID",
+      "revision",
+      "states"
+    ],
+    "codewordDefinitionProjection": {
+      "coordinateOrder": [
+        "b0",
+        "b1",
+        "b2",
+        "b3",
+        "b4",
+        "b5",
+        "b6",
+        "b7",
+        "b8"
+      ],
+      "members": [
+        "000000000",
+        "000011110",
+        "001100110",
+        "001111000",
+        "010101010",
+        "010110100",
+        "011001100",
+        "011010010",
+        "100101100",
+        "100110010",
+        "101001010",
+        "101010100",
+        "110000110",
+        "110011000",
+        "111100000",
+        "111111110"
+      ]
+    },
+    "profileRefShape": {
+      "profileID": "immutable logical ID",
+      "revision": "immutable integer revision",
+      "semanticDefinitionHash": "digest of exact profileDefinitionProjection"
+    },
+    "catalogRefShape": {
+      "catalogID": "immutable logical ID",
+      "revision": "immutable integer revision",
+      "semanticDefinitionHash": "digest of exact catalogDefinitionProjection"
+    },
+    "codewordSetRefShape": {
+      "repository": "flynn33/ASH-Pattern-System",
+      "commit": "e123f5d7fdbb381179971f721a3292c31eb1cbc2",
+      "path": "specs/core/codeword-set.pseudo.md",
+      "semanticDefinitionHash": "digest of exact codewordDefinitionProjection; path is repository-relative authority identity, never local locator"
+    },
+    "witnessPayloadProjection": [
+      "witnessRuleID",
+      "sourceState",
+      "targetState",
+      "codewords",
+      "evidenceSourceReference",
+      "profileRef",
+      "catalogRef",
+      "codewordSetRef"
+    ],
+    "witnessRuleID": "JASH-CORRECTION-WITNESS-ID-V1",
+    "witnessHash": "Construct a fresh object with exactly witnessPayloadProjection keys; witnessRuleID is the fixed string above; all state/codeword vectors are actual validated bits; refs have exactly the semantic shapes above. Canonicalize then hash. witnessID is not inside payload.",
+    "evidenceSourceReference": "Nonempty immutable platform-neutral logical/source authority identifier or content-addressed URN; local filesystem paths and transport URLs are not witness semantic source IDs.",
+    "excluded": "Transport path/locator, local volume/host, file formatting/newline/raw file hash, display/review/adoption status, notes, timestamp, witnessID and other nonsemantic metadata. Retain these separately as provenance/execution preconditions where applicable.",
+    "reproducibility": "Relocating the same artifacts or changing a review display label cannot change semantic definition/witness identity. A changed semantic definition, evidence authority identity, source/target state or codeword sequence does change identity.",
+    "adoption": "The projection of semantic fields itself requires adoption; no present reference canonical hash is redefined."
+  },
+  "contextPredicateProposal": {
+    "status": "proposed_requires_adoption",
+    "ruleIDs": [
+      "JASH-007",
+      "JASH-008",
+      "JASH-010"
+    ],
+    "correctionPathIsKnown": {
+      "status": "proposed_requires_adoption",
+      "definition": "True only for an explicitly selected, immutable-source-bound correctionPath whose full witness validates against the actual full observed state, fixed K and pinned canonical C. Exhaustive orbit/path existence alone does not imply selected/known correction context.",
+      "selectedShape": {
+        "status": "selected",
+        "sourceState": "actual nine observed bits",
+        "targetState": "nine bits belonging to fixed K",
+        "codewords": "1..16 genuine canonical C nine-bit members; apply in stated order",
+        "witnessID": "lowercase SHA256 of exact semanticIdentityProposal.witnessPayloadProjection; witnessID excluded",
+        "evidenceSourceReference": "nonempty immutable platform-neutral logical/source authority identifier or content-addressed URN, never local path",
+        "profileRef": "exact semanticIdentityProposal.profileRefShape, no transport path/status",
+        "catalogRef": "exact semanticIdentityProposal.catalogRefShape, no transport path/status",
+        "codewordSetRef": {
+          "repository": "flynn33/ASH-Pattern-System",
+          "commit": "e123f5d7fdbb381179971f721a3292c31eb1cbc2",
+          "path": "specs/core/codeword-set.pseudo.md",
+          "semanticDefinitionHash": "digest of exact semanticIdentityProposal.codewordDefinitionProjection"
+        }
+      },
+      "validation": "Validate shape, source references/hash identities, sourceState equals actual projection, target belongs to K, every codeword belongs to pinned C and ordered XOR reaches target. Selected malformed/noncanonical/out-of-K/mismatched/hash-invalid witness is typed FAILED before classification; never trust a boolean claim.",
+      "notSelectedShape": {
+        "status": "not_selected",
+        "codewords": [],
+        "targetState": null
+      },
+      "notSelectedMeaning": "Explicit supplemental tagged absence, not an optional/null frozen DTO field. With compatible NORMALIZABLE evidence, this makes canonical correction_path_is_known false and class UNSTABLE. It does not deny existence of a normalization path.",
+      "notEvaluated": "Allowed before diagnosis; if compatible classification requires this context and it remains not_evaluated or unavailable, return typed BLOCKED rather than silently choose known/unknown.",
+      "mutationAuthorization": "Selected validated mathematical witness does not itself authorize target materialization; inverse, target authority, scope, policy and backup gates remain separate."
+    },
+    "fallbackIsAvailable": {
+      "status": "proposed_requires_adoption",
+      "definition": "True only when actual immutable registry input exists and at least one entry has all genuine applicability predicates satisfied and its actual candidate re-diagnoses VALID/STABLE under fixed K. Evaluate this nonrecursive existence preflight before classification; invoke canonical select_fallback_candidate only after DEGRADED.",
+      "unavailable": "A missing registry, genuine inaccessible reference, empty entries or no eligible/validated candidates yields no available fallback with explicit reason. An availability=true flag with empty/ineligible registry is inconsistent; a flag alone cannot manufacture or hide candidates. Synthetic unavailable fixture supplies a separately hashed empty registry variant.",
+      "policy": "Preflight proves semantic candidate availability, not execution permission. Policy decision is evaluated after planning."
+    }
+  },
+  "canonicalCodewordSet": {
+    "status": "derived_from_source",
+    "source": {
+      "repository": "flynn33/ASH-Pattern-System",
+      "commit": "e123f5d7fdbb381179971f721a3292c31eb1cbc2",
+      "path": "specs/core/codeword-set.pseudo.md",
+      "symbol": "canonical codeword set C"
+    },
+    "coordinates": "b0..b8, left to right",
+    "members": [
+      "000000000",
+      "000011110",
+      "001100110",
+      "001111000",
+      "010101010",
+      "010110100",
+      "011001100",
+      "011010010",
+      "100101100",
+      "100110010",
+      "101001010",
+      "101010100",
+      "110000110",
+      "110011000",
+      "111100000",
+      "111111110"
+    ]
+  },
+  "syntheticProfiles": [
+    {
+      "profileID": "AEOSTARA-DEMO-DIRECT-BINARY-V1",
+      "revision": 1,
+      "status": "proposed_requires_adoption",
+      "synthetic": true,
+      "productionDefault": false,
+      "domainMeaning": "JSON directly carries the canonical nine binary coordinates; no business interpretation is assigned.",
+      "canonicalizationRuleID": "JASH-CANON-EXACT-DECIMAL-V1",
+      "evaluatorID": "JASH-BINARY-EXACT-V1",
+      "recognizedValidCatalogID": "AEOSTARA-DEMO-K-V1",
+      "acceptedCarrierShape": {
+        "root": "object",
+        "pointer": "/state_vector",
+        "type": "array",
+        "length": 9,
+        "lengthRule": "Nine entries required for complete projection; shorter array gives BLOCKED for actual absent Pointers (retain existing coordinate evidence); longer array is FAILED shape; wrong carrier type is FAILED. Do not fail a short array before reporting actual missing evidence.",
+        "elementType": "exact JSON numeric 0 or 1",
+        "extraRootMembers": "allowed and preserved"
+      },
+      "dimensions": [
+        {
+          "dimension": "b0",
+          "index": 0,
+          "sourceBindings": [
+            {
+              "sourceName": "observed",
+              "pointer": "/state_vector/0",
+              "evidenceKind": "JSON_BINARY_COORDINATE",
+              "required": true
+            }
+          ],
+          "mappingRule": "exact-json-binary",
+          "acceptedValues": [
+            0,
+            1
+          ],
+          "missing": "BLOCKED",
+          "null": "FAILED",
+          "malformedValue": "FAILED",
+          "unsupportedEvaluatorOrEvidenceKind": "BLOCKED",
+          "disagreeingGenuineValues": "AMBIGUOUS",
+          "diagnosticRuleIDs": [
+            "JASH-003",
+            "JASH-004",
+            "JASH-005",
+            "JASH-006"
+          ]
+        },
+        {
+          "dimension": "b1",
+          "index": 1,
+          "sourceBindings": [
+            {
+              "sourceName": "observed",
+              "pointer": "/state_vector/1",
+              "evidenceKind": "JSON_BINARY_COORDINATE",
+              "required": true
+            }
+          ],
+          "mappingRule": "exact-json-binary",
+          "acceptedValues": [
+            0,
+            1
+          ],
+          "missing": "BLOCKED",
+          "null": "FAILED",
+          "malformedValue": "FAILED",
+          "unsupportedEvaluatorOrEvidenceKind": "BLOCKED",
+          "disagreeingGenuineValues": "AMBIGUOUS",
+          "diagnosticRuleIDs": [
+            "JASH-003",
+            "JASH-004",
+            "JASH-005",
+            "JASH-006"
+          ]
+        },
+        {
+          "dimension": "b2",
+          "index": 2,
+          "sourceBindings": [
+            {
+              "sourceName": "observed",
+              "pointer": "/state_vector/2",
+              "evidenceKind": "JSON_BINARY_COORDINATE",
+              "required": true
+            }
+          ],
+          "mappingRule": "exact-json-binary",
+          "acceptedValues": [
+            0,
+            1
+          ],
+          "missing": "BLOCKED",
+          "null": "FAILED",
+          "malformedValue": "FAILED",
+          "unsupportedEvaluatorOrEvidenceKind": "BLOCKED",
+          "disagreeingGenuineValues": "AMBIGUOUS",
+          "diagnosticRuleIDs": [
+            "JASH-003",
+            "JASH-004",
+            "JASH-005",
+            "JASH-006"
+          ]
+        },
+        {
+          "dimension": "b3",
+          "index": 3,
+          "sourceBindings": [
+            {
+              "sourceName": "observed",
+              "pointer": "/state_vector/3",
+              "evidenceKind": "JSON_BINARY_COORDINATE",
+              "required": true
+            }
+          ],
+          "mappingRule": "exact-json-binary",
+          "acceptedValues": [
+            0,
+            1
+          ],
+          "missing": "BLOCKED",
+          "null": "FAILED",
+          "malformedValue": "FAILED",
+          "unsupportedEvaluatorOrEvidenceKind": "BLOCKED",
+          "disagreeingGenuineValues": "AMBIGUOUS",
+          "diagnosticRuleIDs": [
+            "JASH-003",
+            "JASH-004",
+            "JASH-005",
+            "JASH-006"
+          ]
+        },
+        {
+          "dimension": "b4",
+          "index": 4,
+          "sourceBindings": [
+            {
+              "sourceName": "observed",
+              "pointer": "/state_vector/4",
+              "evidenceKind": "JSON_BINARY_COORDINATE",
+              "required": true
+            }
+          ],
+          "mappingRule": "exact-json-binary",
+          "acceptedValues": [
+            0,
+            1
+          ],
+          "missing": "BLOCKED",
+          "null": "FAILED",
+          "malformedValue": "FAILED",
+          "unsupportedEvaluatorOrEvidenceKind": "BLOCKED",
+          "disagreeingGenuineValues": "AMBIGUOUS",
+          "diagnosticRuleIDs": [
+            "JASH-003",
+            "JASH-004",
+            "JASH-005",
+            "JASH-006"
+          ]
+        },
+        {
+          "dimension": "b5",
+          "index": 5,
+          "sourceBindings": [
+            {
+              "sourceName": "observed",
+              "pointer": "/state_vector/5",
+              "evidenceKind": "JSON_BINARY_COORDINATE",
+              "required": true
+            }
+          ],
+          "mappingRule": "exact-json-binary",
+          "acceptedValues": [
+            0,
+            1
+          ],
+          "missing": "BLOCKED",
+          "null": "FAILED",
+          "malformedValue": "FAILED",
+          "unsupportedEvaluatorOrEvidenceKind": "BLOCKED",
+          "disagreeingGenuineValues": "AMBIGUOUS",
+          "diagnosticRuleIDs": [
+            "JASH-003",
+            "JASH-004",
+            "JASH-005",
+            "JASH-006"
+          ]
+        },
+        {
+          "dimension": "b6",
+          "index": 6,
+          "sourceBindings": [
+            {
+              "sourceName": "observed",
+              "pointer": "/state_vector/6",
+              "evidenceKind": "JSON_BINARY_COORDINATE",
+              "required": true
+            }
+          ],
+          "mappingRule": "exact-json-binary",
+          "acceptedValues": [
+            0,
+            1
+          ],
+          "missing": "BLOCKED",
+          "null": "FAILED",
+          "malformedValue": "FAILED",
+          "unsupportedEvaluatorOrEvidenceKind": "BLOCKED",
+          "disagreeingGenuineValues": "AMBIGUOUS",
+          "diagnosticRuleIDs": [
+            "JASH-003",
+            "JASH-004",
+            "JASH-005",
+            "JASH-006"
+          ]
+        },
+        {
+          "dimension": "b7",
+          "index": 7,
+          "sourceBindings": [
+            {
+              "sourceName": "observed",
+              "pointer": "/state_vector/7",
+              "evidenceKind": "JSON_BINARY_COORDINATE",
+              "required": true
+            }
+          ],
+          "mappingRule": "exact-json-binary",
+          "acceptedValues": [
+            0,
+            1
+          ],
+          "missing": "BLOCKED",
+          "null": "FAILED",
+          "malformedValue": "FAILED",
+          "unsupportedEvaluatorOrEvidenceKind": "BLOCKED",
+          "disagreeingGenuineValues": "AMBIGUOUS",
+          "diagnosticRuleIDs": [
+            "JASH-003",
+            "JASH-004",
+            "JASH-005",
+            "JASH-006"
+          ]
+        },
+        {
+          "dimension": "b8",
+          "index": 8,
+          "sourceBindings": [
+            {
+              "sourceName": "observed",
+              "pointer": "/state_vector/8",
+              "evidenceKind": "JSON_BINARY_COORDINATE",
+              "required": true
+            }
+          ],
+          "mappingRule": "exact-json-binary",
+          "acceptedValues": [
+            0,
+            1
+          ],
+          "missing": "BLOCKED",
+          "null": "FAILED",
+          "malformedValue": "FAILED",
+          "unsupportedEvaluatorOrEvidenceKind": "BLOCKED",
+          "disagreeingGenuineValues": "AMBIGUOUS",
+          "diagnosticRuleIDs": [
+            "JASH-003",
+            "JASH-004",
+            "JASH-005",
+            "JASH-006"
+          ]
+        }
+      ],
+      "mutationScope": {
+        "operation": "replace",
+        "paths": [
+          "/state_vector/0",
+          "/state_vector/1",
+          "/state_vector/2",
+          "/state_vector/3",
+          "/state_vector/4",
+          "/state_vector/5",
+          "/state_vector/6",
+          "/state_vector/7",
+          "/state_vector/8"
+        ],
+        "precondition": "full canonical/raw observed identity, per-slot old value, adopted immutable profile/catalog/registry/policy identities, generated verification plan, verified backup, exclusive host mutation capability",
+        "preserve": "all root members other than changed state_vector slots; no additions, removals, carrier resize, key rename, metadata mutation"
+      },
+      "inverseRuleID": "JASH-DEMO-CARRIER-INVERSE-V1"
+    },
+    {
+      "profileID": "AEOSTARA-DEMO-DIRECT-BINARY-CLAIMS-V1",
+      "revision": 1,
+      "status": "proposed_requires_adoption",
+      "synthetic": true,
+      "productionDefault": false,
+      "domainMeaning": "JSON directly carries the canonical nine binary coordinates; no business interpretation is assigned.",
+      "canonicalizationRuleID": "JASH-CANON-EXACT-DECIMAL-V1",
+      "evaluatorID": "JASH-BINARY-EXACT-V1",
+      "recognizedValidCatalogID": "AEOSTARA-DEMO-K-V1",
+      "acceptedCarrierShape": {
+        "root": "object",
+        "pointer": "/state_vector",
+        "type": "array",
+        "length": 9,
+        "lengthRule": "Nine entries required for complete projection; shorter array gives BLOCKED for actual absent Pointers (retain existing coordinate evidence); longer array is FAILED shape; wrong carrier type is FAILED. Do not fail a short array before reporting actual missing evidence.",
+        "elementType": "exact JSON numeric 0 or 1",
+        "extraRootMembers": "allowed and preserved"
+      },
+      "dimensions": [
+        {
+          "dimension": "b0",
+          "index": 0,
+          "sourceBindings": [
+            {
+              "sourceName": "observed",
+              "pointer": "/state_vector/0",
+              "evidenceKind": "JSON_BINARY_COORDINATE",
+              "required": true
+            },
+            {
+              "sourceName": "claims",
+              "pointer": "/claims/0/value",
+              "evidenceKind": "JSON_BINARY_COORDINATE",
+              "required": true,
+              "metadataPredicates": {
+                "coordinatePointer": "/claims/0/coordinate",
+                "coordinateEquals": "b0",
+                "kindPointer": "/claims/0/kind",
+                "kindEquals": "JSON_BINARY_COORDINATE",
+                "sourceReferencePointer": "/claims/0/sourceReference",
+                "sourceReference": "logical reference resolved to actual captured immutable snapshot/hash/Pointer/authority", "provenanceResolutionRuleID": "JASH-CLAIM-PROVENANCE-V1", "sourceAuthorityID": "AEOSTARA-DEMO-SOURCE-AUTHORITY-V1"
+              }
+            }
+          ],
+          "mappingRule": "exact-json-binary",
+          "acceptedValues": [
+            0,
+            1
+          ],
+          "missing": "BLOCKED",
+          "null": "FAILED",
+          "malformedValue": "FAILED",
+          "unsupportedEvaluatorOrEvidenceKind": "BLOCKED",
+          "disagreeingGenuineValues": "AMBIGUOUS",
+          "diagnosticRuleIDs": [
+            "JASH-003",
+            "JASH-004",
+            "JASH-005",
+            "JASH-006"
+          ]
+        },
+        {
+          "dimension": "b1",
+          "index": 1,
+          "sourceBindings": [
+            {
+              "sourceName": "observed",
+              "pointer": "/state_vector/1",
+              "evidenceKind": "JSON_BINARY_COORDINATE",
+              "required": true
+            },
+            {
+              "sourceName": "claims",
+              "pointer": "/claims/1/value",
+              "evidenceKind": "JSON_BINARY_COORDINATE",
+              "required": true,
+              "metadataPredicates": {
+                "coordinatePointer": "/claims/1/coordinate",
+                "coordinateEquals": "b1",
+                "kindPointer": "/claims/1/kind",
+                "kindEquals": "JSON_BINARY_COORDINATE",
+                "sourceReferencePointer": "/claims/1/sourceReference",
+                "sourceReference": "logical reference resolved to actual captured immutable snapshot/hash/Pointer/authority", "provenanceResolutionRuleID": "JASH-CLAIM-PROVENANCE-V1", "sourceAuthorityID": "AEOSTARA-DEMO-SOURCE-AUTHORITY-V1"
+              }
+            }
+          ],
+          "mappingRule": "exact-json-binary",
+          "acceptedValues": [
+            0,
+            1
+          ],
+          "missing": "BLOCKED",
+          "null": "FAILED",
+          "malformedValue": "FAILED",
+          "unsupportedEvaluatorOrEvidenceKind": "BLOCKED",
+          "disagreeingGenuineValues": "AMBIGUOUS",
+          "diagnosticRuleIDs": [
+            "JASH-003",
+            "JASH-004",
+            "JASH-005",
+            "JASH-006"
+          ]
+        },
+        {
+          "dimension": "b2",
+          "index": 2,
+          "sourceBindings": [
+            {
+              "sourceName": "observed",
+              "pointer": "/state_vector/2",
+              "evidenceKind": "JSON_BINARY_COORDINATE",
+              "required": true
+            },
+            {
+              "sourceName": "claims",
+              "pointer": "/claims/2/value",
+              "evidenceKind": "JSON_BINARY_COORDINATE",
+              "required": true,
+              "metadataPredicates": {
+                "coordinatePointer": "/claims/2/coordinate",
+                "coordinateEquals": "b2",
+                "kindPointer": "/claims/2/kind",
+                "kindEquals": "JSON_BINARY_COORDINATE",
+                "sourceReferencePointer": "/claims/2/sourceReference",
+                "sourceReference": "logical reference resolved to actual captured immutable snapshot/hash/Pointer/authority", "provenanceResolutionRuleID": "JASH-CLAIM-PROVENANCE-V1", "sourceAuthorityID": "AEOSTARA-DEMO-SOURCE-AUTHORITY-V1"
+              }
+            }
+          ],
+          "mappingRule": "exact-json-binary",
+          "acceptedValues": [
+            0,
+            1
+          ],
+          "missing": "BLOCKED",
+          "null": "FAILED",
+          "malformedValue": "FAILED",
+          "unsupportedEvaluatorOrEvidenceKind": "BLOCKED",
+          "disagreeingGenuineValues": "AMBIGUOUS",
+          "diagnosticRuleIDs": [
+            "JASH-003",
+            "JASH-004",
+            "JASH-005",
+            "JASH-006"
+          ]
+        },
+        {
+          "dimension": "b3",
+          "index": 3,
+          "sourceBindings": [
+            {
+              "sourceName": "observed",
+              "pointer": "/state_vector/3",
+              "evidenceKind": "JSON_BINARY_COORDINATE",
+              "required": true
+            },
+            {
+              "sourceName": "claims",
+              "pointer": "/claims/3/value",
+              "evidenceKind": "JSON_BINARY_COORDINATE",
+              "required": true,
+              "metadataPredicates": {
+                "coordinatePointer": "/claims/3/coordinate",
+                "coordinateEquals": "b3",
+                "kindPointer": "/claims/3/kind",
+                "kindEquals": "JSON_BINARY_COORDINATE",
+                "sourceReferencePointer": "/claims/3/sourceReference",
+                "sourceReference": "logical reference resolved to actual captured immutable snapshot/hash/Pointer/authority", "provenanceResolutionRuleID": "JASH-CLAIM-PROVENANCE-V1", "sourceAuthorityID": "AEOSTARA-DEMO-SOURCE-AUTHORITY-V1"
+              }
+            }
+          ],
+          "mappingRule": "exact-json-binary",
+          "acceptedValues": [
+            0,
+            1
+          ],
+          "missing": "BLOCKED",
+          "null": "FAILED",
+          "malformedValue": "FAILED",
+          "unsupportedEvaluatorOrEvidenceKind": "BLOCKED",
+          "disagreeingGenuineValues": "AMBIGUOUS",
+          "diagnosticRuleIDs": [
+            "JASH-003",
+            "JASH-004",
+            "JASH-005",
+            "JASH-006"
+          ]
+        },
+        {
+          "dimension": "b4",
+          "index": 4,
+          "sourceBindings": [
+            {
+              "sourceName": "observed",
+              "pointer": "/state_vector/4",
+              "evidenceKind": "JSON_BINARY_COORDINATE",
+              "required": true
+            },
+            {
+              "sourceName": "claims",
+              "pointer": "/claims/4/value",
+              "evidenceKind": "JSON_BINARY_COORDINATE",
+              "required": true,
+              "metadataPredicates": {
+                "coordinatePointer": "/claims/4/coordinate",
+                "coordinateEquals": "b4",
+                "kindPointer": "/claims/4/kind",
+                "kindEquals": "JSON_BINARY_COORDINATE",
+                "sourceReferencePointer": "/claims/4/sourceReference",
+                "sourceReference": "logical reference resolved to actual captured immutable snapshot/hash/Pointer/authority", "provenanceResolutionRuleID": "JASH-CLAIM-PROVENANCE-V1", "sourceAuthorityID": "AEOSTARA-DEMO-SOURCE-AUTHORITY-V1"
+              }
+            }
+          ],
+          "mappingRule": "exact-json-binary",
+          "acceptedValues": [
+            0,
+            1
+          ],
+          "missing": "BLOCKED",
+          "null": "FAILED",
+          "malformedValue": "FAILED",
+          "unsupportedEvaluatorOrEvidenceKind": "BLOCKED",
+          "disagreeingGenuineValues": "AMBIGUOUS",
+          "diagnosticRuleIDs": [
+            "JASH-003",
+            "JASH-004",
+            "JASH-005",
+            "JASH-006"
+          ]
+        },
+        {
+          "dimension": "b5",
+          "index": 5,
+          "sourceBindings": [
+            {
+              "sourceName": "observed",
+              "pointer": "/state_vector/5",
+              "evidenceKind": "JSON_BINARY_COORDINATE",
+              "required": true
+            },
+            {
+              "sourceName": "claims",
+              "pointer": "/claims/5/value",
+              "evidenceKind": "JSON_BINARY_COORDINATE",
+              "required": true,
+              "metadataPredicates": {
+                "coordinatePointer": "/claims/5/coordinate",
+                "coordinateEquals": "b5",
+                "kindPointer": "/claims/5/kind",
+                "kindEquals": "JSON_BINARY_COORDINATE",
+                "sourceReferencePointer": "/claims/5/sourceReference",
+                "sourceReference": "logical reference resolved to actual captured immutable snapshot/hash/Pointer/authority", "provenanceResolutionRuleID": "JASH-CLAIM-PROVENANCE-V1", "sourceAuthorityID": "AEOSTARA-DEMO-SOURCE-AUTHORITY-V1"
+              }
+            }
+          ],
+          "mappingRule": "exact-json-binary",
+          "acceptedValues": [
+            0,
+            1
+          ],
+          "missing": "BLOCKED",
+          "null": "FAILED",
+          "malformedValue": "FAILED",
+          "unsupportedEvaluatorOrEvidenceKind": "BLOCKED",
+          "disagreeingGenuineValues": "AMBIGUOUS",
+          "diagnosticRuleIDs": [
+            "JASH-003",
+            "JASH-004",
+            "JASH-005",
+            "JASH-006"
+          ]
+        },
+        {
+          "dimension": "b6",
+          "index": 6,
+          "sourceBindings": [
+            {
+              "sourceName": "observed",
+              "pointer": "/state_vector/6",
+              "evidenceKind": "JSON_BINARY_COORDINATE",
+              "required": true
+            },
+            {
+              "sourceName": "claims",
+              "pointer": "/claims/6/value",
+              "evidenceKind": "JSON_BINARY_COORDINATE",
+              "required": true,
+              "metadataPredicates": {
+                "coordinatePointer": "/claims/6/coordinate",
+                "coordinateEquals": "b6",
+                "kindPointer": "/claims/6/kind",
+                "kindEquals": "JSON_BINARY_COORDINATE",
+                "sourceReferencePointer": "/claims/6/sourceReference",
+                "sourceReference": "logical reference resolved to actual captured immutable snapshot/hash/Pointer/authority", "provenanceResolutionRuleID": "JASH-CLAIM-PROVENANCE-V1", "sourceAuthorityID": "AEOSTARA-DEMO-SOURCE-AUTHORITY-V1"
+              }
+            }
+          ],
+          "mappingRule": "exact-json-binary",
+          "acceptedValues": [
+            0,
+            1
+          ],
+          "missing": "BLOCKED",
+          "null": "FAILED",
+          "malformedValue": "FAILED",
+          "unsupportedEvaluatorOrEvidenceKind": "BLOCKED",
+          "disagreeingGenuineValues": "AMBIGUOUS",
+          "diagnosticRuleIDs": [
+            "JASH-003",
+            "JASH-004",
+            "JASH-005",
+            "JASH-006"
+          ]
+        },
+        {
+          "dimension": "b7",
+          "index": 7,
+          "sourceBindings": [
+            {
+              "sourceName": "observed",
+              "pointer": "/state_vector/7",
+              "evidenceKind": "JSON_BINARY_COORDINATE",
+              "required": true
+            },
+            {
+              "sourceName": "claims",
+              "pointer": "/claims/7/value",
+              "evidenceKind": "JSON_BINARY_COORDINATE",
+              "required": true,
+              "metadataPredicates": {
+                "coordinatePointer": "/claims/7/coordinate",
+                "coordinateEquals": "b7",
+                "kindPointer": "/claims/7/kind",
+                "kindEquals": "JSON_BINARY_COORDINATE",
+                "sourceReferencePointer": "/claims/7/sourceReference",
+                "sourceReference": "logical reference resolved to actual captured immutable snapshot/hash/Pointer/authority", "provenanceResolutionRuleID": "JASH-CLAIM-PROVENANCE-V1", "sourceAuthorityID": "AEOSTARA-DEMO-SOURCE-AUTHORITY-V1"
+              }
+            }
+          ],
+          "mappingRule": "exact-json-binary",
+          "acceptedValues": [
+            0,
+            1
+          ],
+          "missing": "BLOCKED",
+          "null": "FAILED",
+          "malformedValue": "FAILED",
+          "unsupportedEvaluatorOrEvidenceKind": "BLOCKED",
+          "disagreeingGenuineValues": "AMBIGUOUS",
+          "diagnosticRuleIDs": [
+            "JASH-003",
+            "JASH-004",
+            "JASH-005",
+            "JASH-006"
+          ]
+        },
+        {
+          "dimension": "b8",
+          "index": 8,
+          "sourceBindings": [
+            {
+              "sourceName": "observed",
+              "pointer": "/state_vector/8",
+              "evidenceKind": "JSON_BINARY_COORDINATE",
+              "required": true
+            },
+            {
+              "sourceName": "claims",
+              "pointer": "/claims/8/value",
+              "evidenceKind": "JSON_BINARY_COORDINATE",
+              "required": true,
+              "metadataPredicates": {
+                "coordinatePointer": "/claims/8/coordinate",
+                "coordinateEquals": "b8",
+                "kindPointer": "/claims/8/kind",
+                "kindEquals": "JSON_BINARY_COORDINATE",
+                "sourceReferencePointer": "/claims/8/sourceReference",
+                "sourceReference": "logical reference resolved to actual captured immutable snapshot/hash/Pointer/authority", "provenanceResolutionRuleID": "JASH-CLAIM-PROVENANCE-V1", "sourceAuthorityID": "AEOSTARA-DEMO-SOURCE-AUTHORITY-V1"
+              }
+            }
+          ],
+          "mappingRule": "exact-json-binary",
+          "acceptedValues": [
+            0,
+            1
+          ],
+          "missing": "BLOCKED",
+          "null": "FAILED",
+          "malformedValue": "FAILED",
+          "unsupportedEvaluatorOrEvidenceKind": "BLOCKED",
+          "disagreeingGenuineValues": "AMBIGUOUS",
+          "diagnosticRuleIDs": [
+            "JASH-003",
+            "JASH-004",
+            "JASH-005",
+            "JASH-006"
+          ]
+        }
+      ],
+      "mutationScope": {
+        "operation": "replace",
+        "paths": [
+          "/state_vector/0",
+          "/state_vector/1",
+          "/state_vector/2",
+          "/state_vector/3",
+          "/state_vector/4",
+          "/state_vector/5",
+          "/state_vector/6",
+          "/state_vector/7",
+          "/state_vector/8"
+        ],
+        "precondition": "full canonical/raw observed identity, per-slot old value, adopted immutable profile/catalog/registry/policy identities, generated verification plan, verified backup, exclusive host mutation capability",
+        "preserve": "all root members other than changed state_vector slots; no additions, removals, carrier resize, key rename, metadata mutation; claims snapshot read-only"
+      },
+      "inverseRuleID": "JASH-DEMO-CARRIER-INVERSE-V1"
+    }
+  ],
+  "syntheticRecognizedValidCatalog": {
+    "catalogID": "AEOSTARA-DEMO-K-V1",
+    "revision": 1,
+    "status": "proposed_requires_adoption",
+    "synthetic": true,
+    "productionDefault": false,
+    "states": [
+      "000000000",
+      "000000001"
+    ],
+    "authority": "none: synthetic domain proposal only",
+    "binding": "one immutable adopted catalog per domain contract; never arbitrary desired state, request-supplied mutable cache, or inferred from C",
+    "sourceInvariantReconciliationRequired": "ASH classify_state_admissibility(state,C) does not expose K and promises same state/C status. Adoption must authorize this fixed recognized-valid catalog and its domain binding explicitly."
+  },
+  "syntheticFallbackRegistry": {
+    "registryID": "AEOSTARA-DEMO-FALLBACK-V1",
+    "revision": 1,
+    "status": "proposed_requires_adoption",
+    "synthetic": true,
+    "productionDefault": false,
+    "orderingRule": {
+      "status": "derived_from_source",
+      "keys": [
+        "ordering_rank ASC",
+        "policy_id ASCII lexicographic ASC"
+      ],
+      "source": {
+        "repository": "flynn33/ASH-Pattern-System",
+        "commit": "e123f5d7fdbb381179971f721a3292c31eb1cbc2",
+        "path": "specs/registries/fallback-policy-registry.md",
+        "symbol": "Deterministic ordering rules"
+      }
+    },
+    "entries": [
+      {
+        "policy_id": "FALLBACK-STATE-001",
+        "ordering_rank": 0,
+        "candidate_state_reference": "000000000",
+        "applicability_conditions": [
+          "diagnostic.admissibility == TRANSFORMATION_INCOMPATIBLE",
+          "candidate belongs to adopted fixed K",
+          "entry is enabled by immutable registry revision"
+        ],
+        "validation_requirements": [
+          "candidate diagnoses VALID",
+          "candidate classifies STABLE in fresh nonterminal validation context"
+        ],
+        "escalation_on_failure": "TRY_NEXT"
+      },
+      {
+        "policy_id": "FALLBACK-STATE-002",
+        "ordering_rank": 1,
+        "candidate_state_reference": "000000001",
+        "applicability_conditions": [
+          "diagnostic.admissibility == TRANSFORMATION_INCOMPATIBLE",
+          "candidate belongs to adopted fixed K",
+          "entry is enabled by immutable registry revision"
+        ],
+        "validation_requirements": [
+          "candidate diagnoses VALID",
+          "candidate classifies STABLE in fresh nonterminal validation context"
+        ],
+        "escalation_on_failure": "ESCALATE_TO_CONTAINMENT"
+      }
+    ],
+    "availabilityRule": {
+      "status": "proposed_requires_adoption",
+      "rule": "Before canonical classification, availability is an existence preflight over eligible re-diagnosed candidates using the full diagnostic and immutable registry; it does not recursively call get_fallback_candidates whose precondition is DEGRADED. After classification, canonical selection requires DEGRADED. Execution policy authorization occurs after planning and never turns a valid mapping into a different bit value."
+    },
+    "idReservation": "IDs shown are synthetic examples; adopting entries requires reserving globally unique identifiers or replacing them in an immutable adopted supplement."
+  },
+  "canonicalizationProposal": {
+    "status": "proposed_requires_adoption",
+    "ruleID": "JASH-CANON-EXACT-DECIMAL-V1",
+    "input": "UTF-8 JSON bytes without BOM; no comments, trailing commas, NaN/Infinity, invalid UTF-8 or unpaired surrogate. Preserve original bytes separately for rollback.",
+    "limits": {
+      "maxRawDocumentBytes": 8388608,
+      "maxAggregateInputBytes": 67108864,
+      "maxSourceDocuments": 32,
+      "maxCanonicalDocumentBytes": 16777216,
+      "maxNestingDepth": 64,
+      "maxNodes": 100000,
+      "maxDecodedStringUtf8Bytes": 1048576,
+      "maxCoefficientDigits": 1024,
+      "maxAbsoluteWrittenExponent": 4096,
+      "maxAbsoluteEffectiveExponent": 5120,
+      "maxPointerTokens": 64
+    },
+    "limitsStatus": "proposed_requires_adoption",
+    "grammar": "JSON number -?(0|[1-9][0-9]*)(\\.[0-9]+)?([eE][+-]?[0-9]+)?; ASCII digits only; bounded exact signed coefficient plus decimal exponent, no binary floating conversion. Count all significand digits before insignificant-zero removal; written exponent magnitude <=4096; effective exponent is written exponent minus fraction length, then adjusted for removed coefficient trailing zeros, magnitude <=5120. Reject resource limits explicitly before expansion; root has depth 1; each value/container is one node; limits apply to every document, decoded key/string, Pointer and aggregate complete input.",
+    "numericCanonicalization": "Normalize negative zero to 0. Remove insignificant leading/trailing coefficient zeros, then emit the exact expanded decimal with no exponent, no plus sign, no unnecessary fractional zeros or trailing decimal point. Examples: 1.0→1; 1e3→1000; 1e-3→0.001; -0.0→0; 9007199254740993 remains exact.",
+    "numericEquality": "Exact mathematical decimal equality (1 == 1.0 == 1e0); bool is not numeric; binary evaluator accepts exact values 0/1 under this rule.",
+    "duplicateMembers": "Reject duplicate decoded object keys before constructing a lookup map, including a and \\u0061. No last/first-wins interpretation.",
+    "unicode": "Unicode scalar values, no normalization/casefolding. Reject invalid UTF-8/overlong encodings/surrogates; paired escaped surrogate encodes its scalar. Preserve scalar sequence.",
+    "stringCanonicalization": "UTF-8, escape quote and backslash; use \\b,\\t,\\n,\\f,\\r for those controls, lowercase \\u00xx for other U+0000..001F; slash unescaped; other scalars literal UTF-8.",
+    "objectCanonicalization": "Sort decoded keys by unsigned UTF-8 byte lexicographic order; no whitespace; canonical key/value encoding.",
+    "arrayCanonicalization": "Retain exact element order; no whitespace.",
+    "hashing": "lowercase SHA256 hex of canonical UTF-8 bytes. Raw-byte hash uses original UTF-8 bytes and is distinct. Immutable input references use separate canonical hash and actual content/source identity.",
+    "pointers": "Validate leading '/' except empty root; decode ~0/~1 exactly once; other ~escape invalid. Object tokens literal. Arrays require ASCII 0 or [1-9][0-9]*, no leading zeros, sign, Unicode digits or '-' for reads. Bounds checked exactly; missing is distinct from null. Wrong container type fails, absent object key/index blocks. These precision rules require adoption because source JsonPointerEvaluator currently accepts decimal/leading-zero indices more broadly.",
+    "authoritativeReferenceReconciliation": "Source common_checks.py uses Python json serialization and binary float parsing, duplicate-last-wins loading and broad isdecimal array indexing. Adopting this exact proposal requires an immutable JSON clarification plus supplementary cross-platform/reference fixtures; do not silently change the frozen reference or claim equivalence for all numbers."
+  },
+  "unsuccessfulOperationProposal": {
+    "status": "proposed_requires_adoption",
+    "nativeShape": "OperationAttempt<T> = Value(T) | Failure(OperationFailure)",
+    "failureShape": {
+      "phase": "PARSE|NORMALIZE|PROJECT|DIAGNOSE|CLASSIFY|PLAN|POLICY|BACKUP|EXECUTE|VERIFY|ROLLBACK|FALLBACK|CONTAIN|HALT|AUDIT|EXPORT",
+      "code": "stable adopted typed enum, not fixture ID",
+      "mappingStatus": "AMBIGUOUS|BLOCKED|FAILED when projection-related",
+      "availableEvidence": "explicit genuine per-coordinate outcomes, snapshots, attempted IDs, hashes, source refs and diagnostics",
+      "unavailableEvidence": "field name + reason, no synthetic value",
+      "mutationState": "NOT_STARTED|MAY_HAVE_MUTATED|MUTATED|VERIFIED_RESTORED|RESTORE_FAILED|UNKNOWN",
+      "primaryFailure": "retained",
+      "secondaryFailures": "retained ordered recovery/export/persistence faults",
+      "diagnosticChain": "genuine available chain; persistence availability separately represented"
+    },
+    "adoptionAlternatives": [
+      {
+        "id": "ERRATUM-OUTER-FAILURE",
+        "status": "proposed_requires_adoption",
+        "effect": "Immutable authoritative interface clarification says a non-return native error branch satisfies failure reporting, and promised frozen T is returned only with complete truthful required evidence. Establish applicability per operation and wire/export error envelope."
+      },
+      {
+        "id": "VERSIONED-RESULT-UNION",
+        "status": "proposed_requires_adoption",
+        "effect": "New supplemental schema revision discriminates existing truthful DTO branch from an explicit unsuccessful operation branch. Define unavailable evidence as typed tagged absence only in new branch. Preserve pinned schemas unchanged; identify compatibility and serializer migration."
+      }
+    ],
+    "neitherAdopted": "Affected failure contracts remain unresolved; no production API freeze, fabricated DTO, success claim or release qualification."
+  },
+  "negativeDtoMatrix": [
+    {
+      "contract": "MappingResult",
+      "requiredGenuineFields": [
+        "projectedState",
+        "dimensionBindings[9]"
+      ],
+      "negativeValuePossible": "Only when a genuine complete state and all bindings already exist and reported negative status meaning is explicitly authorized.",
+      "failureBranchWhen": "Any coordinate missing/ambiguous/malformed or no genuine unique state; use proposal, not invented zero."
+    },
+    {
+      "contract": "BackupResult",
+      "requiredGenuineFields": [
+        "backupRecord"
+      ],
+      "negativeValuePossible": "An actual attempted record may exist even if storage failed, provided fields truthfully denote attempted source/storage and do not claim persisted artifact.",
+      "failureBranchWhen": "No real record/source/storage reference exists; applicability clarification required."
+    },
+    {
+      "contract": "ExecutionStepResult",
+      "requiredGenuineFields": [
+        "observedHashAfterStep"
+      ],
+      "negativeValuePossible": "Negative/blocked/skipped attempt may return genuine current hash after independently reading actual state.",
+      "failureBranchWhen": "Post-attempt state cannot be read/hash verified; unknown is not empty or pre-write hash."
+    },
+    {
+      "contract": "RollbackResult",
+      "requiredGenuineFields": [
+        "backupRecordID",
+        "restoredHash"
+      ],
+      "negativeValuePossible": "Only if adopted wording permits actual observed post-restore-attempt hash with FAILED status; SUCCEEDED additionally requires verified restoration.",
+      "failureBranchWhen": "No backup ID or no actual readable restored/post-attempt bytes; NOT_REQUIRED without a restoration hash needs same clarification."
+    },
+    {
+      "contract": "FallbackDecision",
+      "requiredGenuineFields": [
+        "selectedCandidateID"
+      ],
+      "negativeValuePossible": "BLOCKED may refer to a genuinely selected/attempted candidate if status semantics explicitly allow it.",
+      "failureBranchWhen": "UNAVAILABLE with no selected candidate cannot invent ID or empty sentinel."
+    },
+    {
+      "contract": "VerificationResult",
+      "requiredGenuineFields": [
+        "expectedSemanticState",
+        "actualSemanticState"
+      ],
+      "negativeValuePossible": "FAILED may contain real expected and observed complete states with mismatch/invariant violation.",
+      "failureBranchWhen": "Mapping/read failure leaves no full actual state; do not invent expected/actual."
+    },
+    {
+      "contract": "HealResult",
+      "requiredGenuineFields": [
+        "recoveryPlan",
+        "auditChain",
+        "diagnosticChain"
+      ],
+      "negativeValuePossible": "Complete real precomputed plan and chains may support BLOCKED/ESCALATED/SAFE_HALT result.",
+      "failureBranchWhen": "Projection/planning/persistence prevents required real plan or chain; absence/failure must be typed, not manufacture recoveryPlan."
+    }
+  ],
+  "unresolvedAdoptionDecisions": [
+    {
+      "id": "ADOPT-PROFILE",
+      "status": "unresolved",
+      "boundProposal": "JASH-002/005; AEOSTARA-DEMO-DIRECT-BINARY-V1 and optional explicit CLAIMS-V1",
+      "requiredAuthority": "Immutable domain mapping supplement adopts exact profile, evidence shapes, evaluator outcomes and mixed precedence, or replaces them with another fully specified profile."
+    },
+    {
+      "id": "ADOPT-K",
+      "status": "unresolved",
+      "boundProposal": "JASH-007; AEOSTARA-DEMO-K-V1",
+      "requiredAuthority": "ASH-compatible recognized-valid catalog authority and same-state/C determinism reconciliation. No inference from C or desired."
+    },
+    {
+      "id": "ADOPT-CONTEXT",
+      "status": "unresolved",
+      "boundProposal": "JASH-008/010; explicit immutable correction witness and fallback-availability preflight",
+      "requiredAuthority": "Adopt or replace the explicit contextPredicateProposal: selected source-bound validated correction witness is known, independent of orbit existence; fallback availability is computed from actual eligible validated registry contents without fixture flags/circularity."
+    },
+    {
+      "id": "ADOPT-REGISTRY",
+      "status": "unresolved",
+      "boundProposal": "AEOSTARA-DEMO-FALLBACK-V1",
+      "requiredAuthority": "Adopt actual domain entries and reserve IDs; canonical rank/policyID order itself already source-derived."
+    },
+    {
+      "id": "ADOPT-INVERSE",
+      "status": "unresolved",
+      "boundProposal": "JASH-011/012/013/014; JASH-DEMO-CARRIER-INVERSE-V1",
+      "requiredAuthority": "Adopt allowed target authority, exact Pointer scope, witnesses, policy/invariant/backup/stale/verification/restore guarantees and host capabilities."
+    },
+    {
+      "id": "ADOPT-JSON",
+      "status": "unresolved",
+      "boundProposal": "JASH-015; JASH-CANON-EXACT-DECIMAL-V1",
+      "requiredAuthority": "Adopt exact precision/limits and reconcile reference numeric, duplicate, Unicode and Pointer behavior with immutable supplementary vectors."
+    },
+    {
+      "id": "ADOPT-ERRORS",
+      "status": "unresolved",
+      "boundProposal": "JASH-006/018; ERRATUM-OUTER-FAILURE or VERSIONED-RESULT-UNION",
+      "requiredAuthority": "Adopt lawful failure channel and per-operation negative DTO semantics/exports; fixed schemas unchanged."
+    },
+    {
+      "id": "ADOPT-FIXTURE-ERRATA",
+      "status": "unresolved",
+      "boundProposal": "JASH-017 plus separate proposed fixtures/traceability",
+      "requiredAuthority": "Supply complete authoritative distinguishing inputs/lifecycle traces or corrected expectation errata, preserving original frozen bytes and identification."
+    }
+  ],
+  "fixtureConsistencyFindings": [
+    {
+      "source": {
+        "repository": "flynn33/aeostara",
+        "commit": "774b981ef2267a41c1b1a59497b2b0746a86f32b",
+        "path": "fixtures/conformance/semantic_projection_vectors.json",
+        "symbol": "projection-ambiguous-coordinate/projection-blocked-mapping"
+      },
+      "observed": "identical observed={},desired={} with different class/category expectations",
+      "proposal": "Ambiguous input requires explicit CLAIMS profile and two genuine conflicting source values. Blocked input requires missing source/evaluator/Pointer. Neither incomplete projection yields a manufactured class. To retain DEGRADED/FAILED expectation, supply an independent genuine full diagnostic and explicit immediate/later lifecycle context or adopt expectation correction."
+    },
+    {
+      "source": {
+        "repository": "flynn33/aeostara",
+        "commit": "774b981ef2267a41c1b1a59497b2b0746a86f32b",
+        "path": "fixtures/conformance/state_admissibility_vectors.json",
+        "symbol": "all four state-admissibility vectors"
+      },
+      "observed": "same declared empty inputs expected STABLE/CORRECTABLE/DEGRADED/FAILED",
+      "proposal": "Add complete full states, adopted fixed K, witnesses and explicit fallback/containment/halt context. UNCLASSIFIED immediate canonical classification is DEGRADED; FAILED requires justified later context or corrected expectation."
+    },
+    {
+      "source": {
+        "repository": "flynn33/aeostara",
+        "commit": "774b981ef2267a41c1b1a59497b2b0746a86f32b",
+        "path": "fixtures/ash_conformance/scenario2_no_diff_semantically_unstable.json",
+        "symbol": "scenario S2; observed.state_vector and intent.state_vector"
+      },
+      "observed": "observed and desired both all-one nine-bit vector; desired is not established recognized valid target",
+      "proposal": "Synthetic K permits witness 111111111 xor 000000001 = 111111110 in C, but this does not validate original target intent or prove fixture conformance; full target authority/materialization trace remains missing."
+    },
+    {
+      "source": {
+        "repository": "flynn33/aeostara",
+        "commit": "774b981ef2267a41c1b1a59497b2b0746a86f32b",
+        "path": "ci/fixture_validator.py",
+        "symbol": "FixtureSuiteEvaluator._compute_actual,_compute_projection"
+      },
+      "observed": "expected-derived class/category and coordinate-name/count comparison",
+      "proposal": "Preserve structural validation, replace semantic proof claim with separate actual evaluator depending only on complete inputs after adoption."
+    }
+  ],
+  "review": {
+    "required": "Separate source fidelity, determinism, schema compatibility, fixture consistency and recovery safety review",
+    "status": "see_separate_hash_bound_review",
+    "reviewerArtifact": "SEMANTIC_MAPPING_REVIEW.md",
+    "claim": "Review-ready is a preparation disposition only; no authority/adoption/implementation acceptance is implied."
+  }
+}

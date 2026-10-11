@@ -1,0 +1,7 @@
+cmake_minimum_required(VERSION 3.28)
+project(AeostaraSdkClient LANGUAGES CXX)
+set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL")
+find_package(Aeostara CONFIG REQUIRED)
+add_executable(AeostaraSdkClient main.cpp)
+target_compile_options(AeostaraSdkClient PRIVATE /W4 /WX /EHsc /GR /utf-8)
+target_link_libraries(AeostaraSdkClient PRIVATE Aeostara::Core)

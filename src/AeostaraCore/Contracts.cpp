@@ -1,6 +1,6 @@
 // Aeostara
 // Copyright (c) 2026 James Daley. All Rights Reserved.
-// Proprietary and Confidential.
+// SPDX-License-Identifier: LicenseRef-Raven-Forge-Dual
 
 #include "AeostaraCore/Contracts.h"
 
@@ -11,15 +11,15 @@ namespace Aeostara {
 // ---------------------------------------------------------------------------
 // ObservedState
 // ---------------------------------------------------------------------------
-void to_json(nlohmann::json& j, const ObservedState& s) {
-    j = nlohmann::json{
+void to_json(Json& j, const ObservedState& s) {
+    j = Json{
         {"sourceFile", s.sourceFile},
         {"data", s.data},
         {"timestamp", s.timestamp}
     };
 }
 
-void from_json(const nlohmann::json& j, ObservedState& s) {
+void from_json(const Json& j, ObservedState& s) {
     j.at("sourceFile").get_to(s.sourceFile);
     j.at("data").get_to(s.data);
     j.at("timestamp").get_to(s.timestamp);
@@ -28,14 +28,14 @@ void from_json(const nlohmann::json& j, ObservedState& s) {
 // ---------------------------------------------------------------------------
 // DesiredState
 // ---------------------------------------------------------------------------
-void to_json(nlohmann::json& j, const DesiredState& s) {
-    j = nlohmann::json{
+void to_json(Json& j, const DesiredState& s) {
+    j = Json{
         {"data", s.data},
         {"source", s.source}
     };
 }
 
-void from_json(const nlohmann::json& j, DesiredState& s) {
+void from_json(const Json& j, DesiredState& s) {
     j.at("data").get_to(s.data);
     j.at("source").get_to(s.source);
 }
@@ -43,14 +43,14 @@ void from_json(const nlohmann::json& j, DesiredState& s) {
 // ---------------------------------------------------------------------------
 // EncodedState
 // ---------------------------------------------------------------------------
-void to_json(nlohmann::json& j, const EncodedState& s) {
-    j = nlohmann::json{
+void to_json(Json& j, const EncodedState& s) {
+    j = Json{
         {"observed", s.observed},
         {"desired", s.desired}
     };
 }
 
-void from_json(const nlohmann::json& j, EncodedState& s) {
+void from_json(const Json& j, EncodedState& s) {
     j.at("observed").get_to(s.observed);
     j.at("desired").get_to(s.desired);
 }
@@ -74,19 +74,19 @@ DriftType driftTypeFromString(const std::string& str) {
     throw std::invalid_argument("Unknown DriftType: " + str);
 }
 
-void to_json(nlohmann::json& j, DriftType type) {
+void to_json(Json& j, DriftType type) {
     j = to_string(type);
 }
 
-void from_json(const nlohmann::json& j, DriftType& type) {
+void from_json(const Json& j, DriftType& type) {
     type = driftTypeFromString(j.get<std::string>());
 }
 
 // ---------------------------------------------------------------------------
 // DriftEvent
 // ---------------------------------------------------------------------------
-void to_json(nlohmann::json& j, const DriftEvent& e) {
-    j = nlohmann::json{
+void to_json(Json& j, const DriftEvent& e) {
+    j = Json{
         {"keyPath", e.keyPath},
         {"type", e.type},
         {"observedValue", e.observedValue},
@@ -95,7 +95,7 @@ void to_json(nlohmann::json& j, const DriftEvent& e) {
     };
 }
 
-void from_json(const nlohmann::json& j, DriftEvent& e) {
+void from_json(const Json& j, DriftEvent& e) {
     j.at("keyPath").get_to(e.keyPath);
     j.at("type").get_to(e.type);
     j.at("observedValue").get_to(e.observedValue);
@@ -122,19 +122,19 @@ RepairActionType repairActionTypeFromString(const std::string& str) {
     throw std::invalid_argument("Unknown RepairActionType: " + str);
 }
 
-void to_json(nlohmann::json& j, RepairActionType type) {
+void to_json(Json& j, RepairActionType type) {
     j = to_string(type);
 }
 
-void from_json(const nlohmann::json& j, RepairActionType& type) {
+void from_json(const Json& j, RepairActionType& type) {
     type = repairActionTypeFromString(j.get<std::string>());
 }
 
 // ---------------------------------------------------------------------------
 // RepairAction
 // ---------------------------------------------------------------------------
-void to_json(nlohmann::json& j, const RepairAction& a) {
-    j = nlohmann::json{
+void to_json(Json& j, const RepairAction& a) {
+    j = Json{
         {"keyPath", a.keyPath},
         {"actionType", a.actionType},
         {"fromValue", a.fromValue},
@@ -143,7 +143,7 @@ void to_json(nlohmann::json& j, const RepairAction& a) {
     };
 }
 
-void from_json(const nlohmann::json& j, RepairAction& a) {
+void from_json(const Json& j, RepairAction& a) {
     j.at("keyPath").get_to(a.keyPath);
     j.at("actionType").get_to(a.actionType);
     j.at("fromValue").get_to(a.fromValue);
@@ -154,8 +154,8 @@ void from_json(const nlohmann::json& j, RepairAction& a) {
 // ---------------------------------------------------------------------------
 // RepairPlan
 // ---------------------------------------------------------------------------
-void to_json(nlohmann::json& j, const RepairPlan& p) {
-    j = nlohmann::json{
+void to_json(Json& j, const RepairPlan& p) {
+    j = Json{
         {"planID", p.planID},
         {"actions", p.actions},
         {"timestamp", p.timestamp},
@@ -163,7 +163,7 @@ void to_json(nlohmann::json& j, const RepairPlan& p) {
     };
 }
 
-void from_json(const nlohmann::json& j, RepairPlan& p) {
+void from_json(const Json& j, RepairPlan& p) {
     j.at("planID").get_to(p.planID);
     j.at("actions").get_to(p.actions);
     j.at("timestamp").get_to(p.timestamp);
@@ -173,15 +173,15 @@ void from_json(const nlohmann::json& j, RepairPlan& p) {
 // ---------------------------------------------------------------------------
 // VerificationResult
 // ---------------------------------------------------------------------------
-void to_json(nlohmann::json& j, const VerificationResult& r) {
-    j = nlohmann::json{
+void to_json(Json& j, const VerificationResult& r) {
+    j = Json{
         {"success", r.success},
         {"failedChecks", r.failedChecks},
         {"verifiedAt", r.verifiedAt}
     };
 }
 
-void from_json(const nlohmann::json& j, VerificationResult& r) {
+void from_json(const Json& j, VerificationResult& r) {
     j.at("success").get_to(r.success);
     j.at("failedChecks").get_to(r.failedChecks);
     j.at("verifiedAt").get_to(r.verifiedAt);
@@ -190,15 +190,15 @@ void from_json(const nlohmann::json& j, VerificationResult& r) {
 // ---------------------------------------------------------------------------
 // RollbackPlan
 // ---------------------------------------------------------------------------
-void to_json(nlohmann::json& j, const RollbackPlan& p) {
-    j = nlohmann::json{
+void to_json(Json& j, const RollbackPlan& p) {
+    j = Json{
         {"planID", p.planID},
         {"backupFilePath", p.backupFilePath},
         {"originalFilePath", p.originalFilePath}
     };
 }
 
-void from_json(const nlohmann::json& j, RollbackPlan& p) {
+void from_json(const Json& j, RollbackPlan& p) {
     j.at("planID").get_to(p.planID);
     j.at("backupFilePath").get_to(p.backupFilePath);
     j.at("originalFilePath").get_to(p.originalFilePath);
@@ -237,19 +237,19 @@ AuditEventType auditEventTypeFromString(const std::string& str) {
     throw std::invalid_argument("Unknown AuditEventType: " + str);
 }
 
-void to_json(nlohmann::json& j, AuditEventType type) {
+void to_json(Json& j, AuditEventType type) {
     j = to_string(type);
 }
 
-void from_json(const nlohmann::json& j, AuditEventType& type) {
+void from_json(const Json& j, AuditEventType& type) {
     type = auditEventTypeFromString(j.get<std::string>());
 }
 
 // ---------------------------------------------------------------------------
 // AuditEvent
 // ---------------------------------------------------------------------------
-void to_json(nlohmann::json& j, const AuditEvent& e) {
-    j = nlohmann::json{
+void to_json(Json& j, const AuditEvent& e) {
+    j = Json{
         {"eventID", e.eventID},
         {"type", e.type},
         {"timestamp", e.timestamp},
@@ -258,7 +258,7 @@ void to_json(nlohmann::json& j, const AuditEvent& e) {
     };
 }
 
-void from_json(const nlohmann::json& j, AuditEvent& e) {
+void from_json(const Json& j, AuditEvent& e) {
     j.at("eventID").get_to(e.eventID);
     j.at("type").get_to(e.type);
     j.at("timestamp").get_to(e.timestamp);
@@ -269,8 +269,8 @@ void from_json(const nlohmann::json& j, AuditEvent& e) {
 // ---------------------------------------------------------------------------
 // ModuleManifest
 // ---------------------------------------------------------------------------
-void to_json(nlohmann::json& j, const ModuleManifest& m) {
-    j = nlohmann::json{
+void to_json(Json& j, const ModuleManifest& m) {
+    j = Json{
         {"moduleID", m.moduleID},
         {"displayName", m.displayName},
         {"version", m.version},
@@ -279,7 +279,7 @@ void to_json(nlohmann::json& j, const ModuleManifest& m) {
     };
 }
 
-void from_json(const nlohmann::json& j, ModuleManifest& m) {
+void from_json(const Json& j, ModuleManifest& m) {
     j.at("moduleID").get_to(m.moduleID);
     j.at("displayName").get_to(m.displayName);
     j.at("version").get_to(m.version);

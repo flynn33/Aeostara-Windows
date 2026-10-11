@@ -1,20 +1,15 @@
 // Aeostara
 // Copyright (c) 2026 James Daley. All Rights Reserved.
-// Proprietary and Confidential.
-
 #pragma once
-
 #include "AeostaraCore/Contracts.h"
 #include "AeostaraCore/Invariant.h"
-
+#include "AeostaraCore/SemanticMapping.h"
+#include "AeostaraCore/Diagnostics.h"
 #include <optional>
 #include <string>
 #include <vector>
-
 namespace Aeostara {
-
-/// Top-level abstract interface for the healing engine.
-/// Designed to parallel the Forsetti module interface shape for future hosting.
+enum class RestorationStatus { NotNeeded, Verified, Failed };
 class IHealingEngine {
 public:
     struct ValidationResult final {
@@ -22,13 +17,15 @@ public:
         std::vector<std::string> errors;
         std::vector<DriftEvent> drifts;
         std::vector<InvariantViolation> violations;
+        std::optional<SemanticAnalysis> semanticAnalysis;
+        std::optional<OperationFailure> failure;
     };
-
     struct DiffResult final {
         std::vector<DriftEvent> drifts;
         RepairPlan proposedPlan;
+        std::optional<SemanticPlan> semanticPlan;
+        std::optional<OperationFailure> failure;
     };
-
     struct HealResult final {
         bool success = false;
         RepairPlan executedPlan;
@@ -36,22 +33,25 @@ public:
         std::optional<RollbackPlan> rollback;
         std::vector<AuditEvent> auditEvents;
         std::string message;
+        std::optional<SemanticAnalysis> semanticAnalysis;
+        std::optional<OperationFailure> failure;
+        RestorationStatus restoration = RestorationStatus::NotNeeded;
+        bool mutationMayHaveOccurred = false;
+        std::optional<std::string> rawHashBefore;
+        std::optional<std::string> rawHashAfter;
+        std::optional<std::string> backupPath;
+        Json diagnosticChain;
+        Json auditChain;
+        std::vector<OperationFault> diagnosticErrors;
+        std::uint64_t diagnosticErrorsDropped = 0;
+        std::optional<DiagnosticHealth> diagnosticHealth;
     };
-
-    virtual ValidationResult validate(const std::string& configPath,
-                                       const std::string& desiredPath,
-                                       const std::string& invariantsPath) = 0;
-
-    virtual DiffResult diff(const std::string& configPath,
-                            const std::string& desiredPath,
-                            const std::string& invariantsPath) = 0;
-
-    virtual HealResult heal(const std::string& configPath,
-                            const std::string& desiredPath,
-                            const std::string& invariantsPath,
-                            const std::string& auditPath) = 0;
-
+    virtual ValidationResult validate(const std::string&, const std::string&, const std::string&) = 0;
+    virtual DiffResult diff(const std::string&, const std::string&, const std::string&) = 0;
+    virtual HealResult heal(const std::string&, const std::string&, const std::string&, const std::string&) = 0;
+    virtual ValidationResult validateSemantic(const std::string&, const Json&) = 0;
+    virtual DiffResult diffSemantic(const std::string&, const Json&) = 0;
+    virtual HealResult healSemantic(const std::string&, const Json&, const std::string&) = 0;
     virtual ~IHealingEngine() = default;
 };
-
 } // namespace Aeostara

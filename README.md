@@ -1,70 +1,22 @@
-# Aeostara (Windows Native Realization)
+# Aeostara Windows SDK
 
-**Downstream ASH-based healing platform** - Windows C++20 implementation
+Aeostara Windows is a native C++20 realization of the pinned Aeostara base and ASH semantics. The SDK is the `AeostaraCore` static library, curated public headers, relocatable `Aeostara::Core` CMake target and `Aeostara.Windows.SDK` native NuGet package. The CLI remains a development consumer.
 
-This repository is the Windows native realization of Aeostara. Semantic authority is upstream in ASH and the pinned Aeostara base release; this repository implements execution mechanics and native runtime behavior on Windows.
-
-
-## Branch Role
-
-- Semantic authority: ASH upstream and `flynn33/aeostara` release `v1.0.0`
-- Branch responsibility: native Windows implementation of those semantics
-- Conflict rule: semantics align to the pinned Aeostara release and ASH; Windows changes update implementation details only
-
-## Native Stack
-
-- C++20
-- MSVC (Visual Studio 2022)
-- CMake 3.28+
-- vcpkg + `nlohmann/json`
-
-## Build
+SDK version is defined once in `SDK_VERSION`. This release candidate qualifies Windows x64, Visual Studio 2022 v143, MSVC 19.44.35223 (VCToolsVersion 14.44.35207), Windows SDK 10.0.26100.0 and C++20. Debug uses /MDd; Release uses /MD. Both installed configurations contain the lean diagnostic backend. The source development profile uses the development collector. The SDK has owned strict JSON and no external runtime dependency package; `bcrypt` and `ole32` are Windows system dependencies.
 
 ```powershell
 cmake --preset debug
 cmake --build --preset debug
 ctest --preset debug
+cmake --preset release
+cmake --build --preset release
+ctest --preset release
 ```
 
-## Commands
+For installed SDK builds, use `sdk`, `sdk-debug` and `sdk-release` presets and run both SDK test presets before installation. The [build guide](docs/windows/BUILD_AND_TEST.md) documents configuration and test evidence. The [SDK guide](docs/windows/SDK_GUIDE.md) and [public client](examples/sdk-client/README.md) describe CMake and native NuGet integration, migration and recovery limits.
 
-```text
-aeostara validate <config> --desired <desired> [--invariants <invariants>]
-aeostara diff    <config> --desired <desired> [--invariants <invariants>]
-aeostara heal    <config> --desired <desired> [--invariants <invariants>] [--audit <audit.jsonl>]
-```
+The upstream pins remain Aeostara `774b981ef2267a41c1b1a59497b2b0746a86f32b` and ASH `e123f5d7fdbb381179971f721a3292c31eb1cbc2`. The owner explicitly [adopted the reviewed supplemental contract](docs/semantics/ADOPTION.md), SHA-256 `98539d83ad6199cecc26eb7b9fcb92993073a2e511ebf70191330cd46ba35dc7`. It supplies opt-in domain profiles and concrete recovery realization while preserving platform-neutral ASH meanings. Projection and planning own no writer. Missing evidence uses truthful typed failures. Ordinary observed/desired JSON differences grant no mutation permission.
 
-## Execution Guarantees
+The original arbitrary-difference healing path is replaced by complete semantic requests, actual policy evaluation, measured target identity/version, checked backup, protected execution and independent verification. Failed healing remains failed after verified restoration. Diagnostic exports provide bounded redacted JSON/Markdown evidence with explicit unavailable causes and partial-export failure status. Representative target-machine storage, ACL and crash behavior remains deployment validation.
 
-- Deterministic execution
-- Policy gating before mutation
-- Backup before mutation
-- Verification after execution
-- Rollback/escalation on verification failure
-- Audit trail for all decision-critical actions
-
-## Base Pin and Migration
-
-- [Aeostara baseline reference](AEOSTARA_BASELINE_REFERENCE.md)
-- [Migration provenance](MIGRATION_PROVENANCE.md)
-
-## Release Documentation
-
-- [Build and Test Guide](docs/windows/BUILD_AND_TEST.md)
-- [CLI Operator Guide](docs/windows/CLI_OPERATOR_GUIDE.md)
-- [Release Checklist](docs/windows/RELEASE_CHECKLIST.md)
-- [Release Artifact Spec](docs/windows/RELEASE_ARTIFACT_SPEC.md)
-- [Troubleshooting](docs/windows/TROUBLESHOOTING.md)
-
-## Contributing
-
-This project is dual-licensed. Non-commercial, academic, and personal use is free under [LICENSE](LICENSE). Commercial use requires a separate written license from the copyright holder.
-
-Outside contributions to this repository are not accepted. Pull requests and collaboration requests will not be reviewed or merged. See [CONTRIBUTING.md](CONTRIBUTING.md).
-
-## License
-
-Copyright 2026 James Daley
-
-This project is dual-licensed. Non-commercial, academic, and personal use is free. Commercial use requires a separate written license.
-See the [LICENSE](LICENSE) file for the full terms.
+This project is dual-licensed under [LICENSE](LICENSE). Non-commercial, academic, and personal use is free under its terms; commercial use requires a separate written license from James Daley, DBA Raven Forge Software. Copyright 2026 James Daley. See [third-party notices](THIRD_PARTY_NOTICES.md) and [contribution policy](CONTRIBUTING.md). Outside contributions are not accepted.

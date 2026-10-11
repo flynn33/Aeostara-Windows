@@ -1,10 +1,10 @@
 // Aeostara
 // Copyright (c) 2026 James Daley. All Rights Reserved.
-// Proprietary and Confidential.
+// SPDX-License-Identifier: LicenseRef-Raven-Forge-Dual
 
 #pragma once
 
-#include <nlohmann/json.hpp>
+#include "AeostaraCore/Json.h"
 
 #include <map>
 #include <string>
@@ -15,25 +15,25 @@ class JsonPath final {
 public:
     /// Resolve a dot-separated path (e.g., "a.b.c") to a value in the JSON tree.
     /// Returns nullptr json if the path does not exist.
-    static nlohmann::json get(const nlohmann::json& root, const std::string& dotPath);
+    static Json get(const Json& root, const std::string& dotPath);
 
     /// Set a value at a dot-separated path, creating intermediate objects as needed.
-    static void set(nlohmann::json& root, const std::string& dotPath, const nlohmann::json& value);
+    static void set(Json& root, const std::string& dotPath, const Json& value);
 
     /// Check if a dot-separated path exists in the JSON tree.
-    static bool exists(const nlohmann::json& root, const std::string& dotPath);
+    static bool exists(const Json& root, const std::string& dotPath);
 
     /// Flatten a nested JSON object into a sorted map of dot-separated paths to values.
     /// Arrays are indexed as "key.0", "key.1", etc.
-    static std::map<std::string, nlohmann::json> flatten(const nlohmann::json& root);
+    static std::map<std::string, Json> flatten(const Json& root);
 
     /// Reconstruct a nested JSON object from a flattened dot-path map.
-    static nlohmann::json unflatten(const std::map<std::string, nlohmann::json>& flat);
+    static Json unflatten(const std::map<std::string, Json>& flat);
 
 private:
-    static void flattenRecursive(const nlohmann::json& value,
+    static void flattenRecursive(const Json& value,
                                   const std::string& prefix,
-                                  std::map<std::string, nlohmann::json>& result);
+                                  std::map<std::string, Json>& result);
 };
 
 } // namespace Aeostara

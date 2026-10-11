@@ -1,6 +1,6 @@
 // Aeostara
 // Copyright (c) 2026 James Daley. All Rights Reserved.
-// Proprietary and Confidential.
+// SPDX-License-Identifier: LicenseRef-Raven-Forge-Dual
 
 #pragma once
 
@@ -23,7 +23,7 @@ public:
     /// Create an AuditEvent with a generated event ID and current timestamp.
     static AuditEvent createEvent(AuditEventType type,
                                    const std::string& configFile,
-                                   const nlohmann::json& details = {});
+                                   const Json& details = {});
 
 private:
     std::string auditFilePath_;

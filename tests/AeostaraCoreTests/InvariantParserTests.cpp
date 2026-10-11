@@ -1,6 +1,6 @@
 // Aeostara
 // Copyright (c) 2026 James Daley. All Rights Reserved.
-// Proprietary and Confidential.
+// SPDX-License-Identifier: LicenseRef-Raven-Forge-Dual
 
 #include "CppUnitTest.h"
 
@@ -20,7 +20,7 @@ public:
 
     TEST_METHOD(Parse_SampleInvariants)
     {
-        auto j = nlohmann::json::parse(SAMPLE_INVARIANTS);
+        auto j = Json::parse(SAMPLE_INVARIANTS);
         auto invariants = InvariantParser::parse(j);
 
         Assert::AreEqual(static_cast<size_t>(2), invariants.size());
@@ -28,7 +28,7 @@ public:
 
     TEST_METHOD(Parse_FirstInvariant_HasCorrectFields)
     {
-        auto j = nlohmann::json::parse(SAMPLE_INVARIANTS);
+        auto j = Json::parse(SAMPLE_INVARIANTS);
         auto invariants = InvariantParser::parse(j);
 
         Assert::AreEqual(std::string("INV-001"), invariants[0].invariantID);
@@ -40,7 +40,7 @@ public:
 
     TEST_METHOD(Parse_SecondInvariant_IsCritical)
     {
-        auto j = nlohmann::json::parse(SAMPLE_INVARIANTS);
+        auto j = Json::parse(SAMPLE_INVARIANTS);
         auto invariants = InvariantParser::parse(j);
 
         Assert::AreEqual(std::string("INV-002"), invariants[1].invariantID);
@@ -70,14 +70,14 @@ public:
 
     TEST_METHOD(Parse_EmptyArray)
     {
-        auto j = nlohmann::json::parse("[]");
+        auto j = Json::parse("[]");
         auto invariants = InvariantParser::parse(j);
         Assert::AreEqual(static_cast<size_t>(0), invariants.size());
     }
 
     TEST_METHOD(Parse_BlockingInvariant_NotAutoRemediate)
     {
-        auto j = nlohmann::json::parse(BLOCKING_INVARIANTS);
+        auto j = Json::parse(BLOCKING_INVARIANTS);
         auto invariants = InvariantParser::parse(j);
 
         Assert::AreEqual(static_cast<size_t>(1), invariants.size());
@@ -96,7 +96,7 @@ public:
         inv.appliesTo = {"server"};
         inv.autoRemediate = true;
 
-        nlohmann::json j = inv;
+        Json j = inv;
         auto restored = j.get<Invariant>();
 
         Assert::AreEqual(inv.invariantID, restored.invariantID);
@@ -115,7 +115,7 @@ public:
         viol.expectedValue = 5432;
         viol.severity = InvariantSeverity::High;
 
-        nlohmann::json j = viol;
+        Json j = viol;
         auto restored = j.get<InvariantViolation>();
 
         Assert::AreEqual(viol.invariantID, restored.invariantID);

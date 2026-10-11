@@ -1,0 +1,14 @@
+{
+  "authorityID": "AEOSTARA-DEMO-SOURCE-AUTHORITY-V1",
+  "revision": 1,
+  "allowedSourceNames": [
+    "claims"
+  ],
+  "allowedEvidenceKinds": [
+    "JSON_BINARY_COORDINATE"
+  ],
+  "provenanceRuleID": "JASH-CLAIM-PROVENANCE-V1",
+  "status": "proposed_requires_adoption",
+  "synthetic": true,
+  "productionAuthenticationAuthority": false
+}

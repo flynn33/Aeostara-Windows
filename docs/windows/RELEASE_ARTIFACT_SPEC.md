@@ -1,81 +1,19 @@
-# Aeostara Windows Release Artifact — v0.1.0
+# Windows SDK release assets
 
-## Artifact Type
+SDK identity comes from `SDK_VERSION`; the first SDK candidate is `0.1.0-rc.1`. The owner publication tag is `sdk/windows/v0.1.0-rc.1`, bound to the exact clean tested source commit. GitHub publication is a prerelease and is not marked latest.
 
-Standalone executable with documentation and examples in a zip archive.
-No installer required — the operator extracts and runs.
+Five assets are published:
 
-## Artifact Name
+- `aeostara-windows-sdk-0.1.0-rc.1-msvc-v143-x64.zip`
+- `Aeostara.Windows.SDK.0.1.0-rc.1.nupkg`
+- `aeostara-windows-sdk-developer-kit-0.1.0-rc.1.zip`
+- `release-manifest.json`
+- `SHA256SUMS`
 
-`aeostara-windows-v0.1.0.zip`
+The binary ZIP contains one versioned SDK root with `include/AeostaraCore`, `lib/x64/Debug`, `lib/x64/Release`, `lib/cmake/Aeostara`, `share/aeostara` and a standalone README. The native NuGet package contains equivalent header/library/manifest bytes plus `build/native` integration metadata. The developer kit contains only the synthetic public SDK client, build metadata, integration guide and legal notices.
 
-## Folder Layout
+Private implementation bodies, tests, CLI binaries, upstream schema/reference corpora, controlling instruction/evidence package, raw incident captures, development collector and external toolchain/dependency caches are excluded. Public headers and static library debug information remain deliberate ABI/developer payload. The repository's Raven Forge dual license is included unchanged; the ordinary static SDK is unsigned.
 
-```
-aeostara-windows-v0.1.0/
-├── aeostara.exe                          # CLI binary (Release build)
-├── README.md                             # Quick-start guide
-├── LICENSE.md                            # Proprietary license
-├── CHANGELOG.md                          # Release notes
-├── docs/
-│   └── OPERATOR_GUIDE.md                 # Full operator documentation
-└── examples/
-    ├── README.md                         # Example index
-    ├── basic-validate/
-    │   ├── config.json                   # Config matching desired state
-    │   └── desired.json                  # Desired state
-    ├── drift-and-heal/
-    │   ├── config.json                   # Config with drift
-    │   ├── desired.json                  # Desired state
-    │   └── invariants.json               # Policy rules
-    └── policy-blocked/
-        ├── config.json                   # Config violating critical policy
-        ├── desired.json                  # Desired state
-        └── invariants.json               # Critical invariant (blocks healing)
-```
+The SDK manifest lists source identity, compatibility tuple, semantic pins/supplement and payload hashes. The release manifest lists the three package hashes; `SHA256SUMS` covers those packages and the release manifest. A checksum file does not hash itself. Repeated staging controls ZIP timestamps and entry order. A separate clean compiler build measures actual debug/archive differences; compiler bit repeatability is never inferred from deterministic packaging.
 
-## What Ships
-
-| Item | Included | Purpose |
-|------|----------|---------|
-| `aeostara.exe` | Yes | CLI binary |
-| `README.md` | Yes | Quick-start |
-| `LICENSE.md` | Yes | Legal |
-| `CHANGELOG.md` | Yes | Release notes |
-| `docs/OPERATOR_GUIDE.md` | Yes | Full documentation |
-| `examples/` | Yes | Runnable example scenarios |
-
-## What Does NOT Ship
-
-| Item | Reason |
-|------|--------|
-| Source code (`src/`, `include/`) | Proprietary — not distributed |
-| Tests (`tests/`) | Development only |
-| Build files (`CMakeLists.txt`, `CMakePresets.json`) | Build from source only |
-| CI workflows (`.github/`) | Repo automation only |
-| Guardrail scripts (`Scripts/`) | Development compliance only |
-| Specs (`specs/`) | Internal architecture reference |
-
-## Operator Prerequisites
-
-- Windows 10 or Windows 11
-- No Visual Studio or build tools required to run the binary
-- The executable is self-contained (statically linked)
-
-## Audit Output
-
-When `--audit` is specified, Aeostara writes a JSONL file (one JSON object per line) in the working directory. The default filename is `aeostara-audit.jsonl`. This file is created by the operator's run — it is not included in the release artifact.
-
-## Version Naming
-
-- Version string: `0.1.0`
-- Git tag (when created): `v0.1.0-windows`
-- Artifact zip: `aeostara-windows-v0.1.0.zip`
-
-## Known Limitations (v0.1.0)
-
-- Windows-only (macOS and iOS targets are in development)
-- JSON configuration format only (no YAML, no TOML)
-- Single-file healing only (no directory-recursive mode)
-- No GUI — CLI only
-- No installer — manual extraction from zip
+Package consumers must use the matching qualified Microsoft runtime/toolchain. There is no NuGet.org publication. The local folder feed and download verification are part of release acceptance. After publication, every asset is downloaded afresh, hashed against prepared bytes, inspected and exercised through the downloaded public SDK.

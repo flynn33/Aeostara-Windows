@@ -1,6 +1,6 @@
 // Aeostara
 // Copyright (c) 2026 James Daley. All Rights Reserved.
-// Proprietary and Confidential.
+// SPDX-License-Identifier: LicenseRef-Raven-Forge-Dual
 
 #include "AeostaraCore/JsonPath.h"
 
@@ -34,17 +34,18 @@ bool isArrayIndex(const std::string& key) {
 
 } // anonymous namespace
 
-nlohmann::json JsonPath::get(const nlohmann::json& root, const std::string& dotPath) {
+Json JsonPath::get(const Json& root, const std::string& dotPath) {
     auto parts = splitPath(dotPath);
-    const nlohmann::json* current = &root;
+    const Json* current = &root;
 
     for (const auto& part : parts) {
         if (current->is_object()) {
-            auto it = current->find(part);
-            if (it == current->end()) {
+            const auto& members = current->object_items();
+            auto it = members.find(part);
+            if (it == members.end()) {
                 return nullptr;
             }
-            current = &(*it);
+            current = &it->second;
         } else if (current->is_array() && isArrayIndex(part)) {
             size_t index = std::stoull(part);
             if (index >= current->size()) {
@@ -59,11 +60,11 @@ nlohmann::json JsonPath::get(const nlohmann::json& root, const std::string& dotP
     return *current;
 }
 
-void JsonPath::set(nlohmann::json& root, const std::string& dotPath, const nlohmann::json& value) {
+void JsonPath::set(Json& root, const std::string& dotPath, const Json& value) {
     auto parts = splitPath(dotPath);
     if (parts.empty()) return;
 
-    nlohmann::json* current = &root;
+    Json* current = &root;
 
     for (size_t i = 0; i < parts.size() - 1; ++i) {
         const auto& part = parts[i];
@@ -71,16 +72,16 @@ void JsonPath::set(nlohmann::json& root, const std::string& dotPath, const nlohm
 
         if (current->is_null() || (!current->is_object() && !current->is_array())) {
             if (isArrayIndex(nextPart)) {
-                (*current)[part] = nlohmann::json::array();
+                (*current)[part] = Json::array();
             } else {
-                (*current)[part] = nlohmann::json::object();
+                (*current)[part] = Json::object();
             }
         } else if (current->is_object()) {
-            if (current->find(part) == current->end()) {
+            if (!current->contains(part)) {
                 if (isArrayIndex(nextPart)) {
-                    (*current)[part] = nlohmann::json::array();
+                    (*current)[part] = Json::array();
                 } else {
-                    (*current)[part] = nlohmann::json::object();
+                    (*current)[part] = Json::object();
                 }
             }
         }
@@ -90,7 +91,7 @@ void JsonPath::set(nlohmann::json& root, const std::string& dotPath, const nlohm
         } else if (current->is_array() && isArrayIndex(part)) {
             size_t index = std::stoull(part);
             while (current->size() <= index) {
-                current->push_back(nlohmann::json());
+                current->push_back(Json());
             }
             current = &(*current)[index];
         }
@@ -100,7 +101,7 @@ void JsonPath::set(nlohmann::json& root, const std::string& dotPath, const nlohm
     if (current->is_array() && isArrayIndex(lastPart)) {
         size_t index = std::stoull(lastPart);
         while (current->size() <= index) {
-            current->push_back(nlohmann::json());
+            current->push_back(Json());
         }
         (*current)[index] = value;
     } else {
@@ -108,15 +109,16 @@ void JsonPath::set(nlohmann::json& root, const std::string& dotPath, const nlohm
     }
 }
 
-bool JsonPath::exists(const nlohmann::json& root, const std::string& dotPath) {
+bool JsonPath::exists(const Json& root, const std::string& dotPath) {
     auto parts = splitPath(dotPath);
-    const nlohmann::json* current = &root;
+    const Json* current = &root;
 
     for (const auto& part : parts) {
         if (current->is_object()) {
-            auto it = current->find(part);
-            if (it == current->end()) return false;
-            current = &(*it);
+            const auto& members = current->object_items();
+            auto it = members.find(part);
+            if (it == members.end()) return false;
+            current = &it->second;
         } else if (current->is_array() && isArrayIndex(part)) {
             size_t index = std::stoull(part);
             if (index >= current->size()) return false;
@@ -129,13 +131,13 @@ bool JsonPath::exists(const nlohmann::json& root, const std::string& dotPath) {
     return true;
 }
 
-void JsonPath::flattenRecursive(const nlohmann::json& value,
+void JsonPath::flattenRecursive(const Json& value,
                                  const std::string& prefix,
-                                 std::map<std::string, nlohmann::json>& result) {
+                                 std::map<std::string, Json>& result) {
     if (value.is_object()) {
-        for (auto it = value.begin(); it != value.end(); ++it) {
-            std::string key = prefix.empty() ? it.key() : prefix + "." + it.key();
-            flattenRecursive(it.value(), key, result);
+        for (const auto& [member, child] : value.object_items()) {
+            std::string key = prefix.empty() ? member : prefix + "." + member;
+            flattenRecursive(child, key, result);
         }
     } else if (value.is_array()) {
         for (size_t i = 0; i < value.size(); ++i) {
@@ -147,16 +149,16 @@ void JsonPath::flattenRecursive(const nlohmann::json& value,
     }
 }
 
-std::map<std::string, nlohmann::json> JsonPath::flatten(const nlohmann::json& root) {
-    std::map<std::string, nlohmann::json> result;
+std::map<std::string, Json> JsonPath::flatten(const Json& root) {
+    std::map<std::string, Json> result;
     if (root.is_object() || root.is_array()) {
         flattenRecursive(root, "", result);
     }
     return result;
 }
 
-nlohmann::json JsonPath::unflatten(const std::map<std::string, nlohmann::json>& flat) {
-    nlohmann::json root = nlohmann::json::object();
+Json JsonPath::unflatten(const std::map<std::string, Json>& flat) {
+    Json root = Json::object();
     for (const auto& [path, value] : flat) {
         set(root, path, value);
     }

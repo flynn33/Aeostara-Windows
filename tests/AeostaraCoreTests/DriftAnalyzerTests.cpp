@@ -1,6 +1,6 @@
 // Aeostara
 // Copyright (c) 2026 James Daley. All Rights Reserved.
-// Proprietary and Confidential.
+// SPDX-License-Identifier: LicenseRef-Raven-Forge-Dual
 
 #include "CppUnitTest.h"
 
@@ -20,8 +20,8 @@ public:
 
     TEST_METHOD(NoDrift_WhenStatesMatch)
     {
-        auto config = nlohmann::json::parse(Testing::SAMPLE_CONFIG);
-        auto desired = nlohmann::json::parse(Testing::SAMPLE_DESIRED);
+        auto config = Json::parse(Testing::SAMPLE_CONFIG);
+        auto desired = Json::parse(Testing::SAMPLE_DESIRED);
 
         EncodedState state;
         state.observed = JsonPath::flatten(config);
@@ -36,8 +36,8 @@ public:
 
     TEST_METHOD(DetectsDrift_WhenValuesChange)
     {
-        auto config = nlohmann::json::parse(Testing::DRIFTED_CONFIG);
-        auto desired = nlohmann::json::parse(Testing::SAMPLE_DESIRED);
+        auto config = Json::parse(Testing::DRIFTED_CONFIG);
+        auto desired = Json::parse(Testing::SAMPLE_DESIRED);
 
         EncodedState state;
         state.observed = JsonPath::flatten(config);

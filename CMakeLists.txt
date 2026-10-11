@@ -1,37 +1,44 @@
-# Aeostara — Self-Healing Configuration Platform
+# Aeostara
 # Copyright (c) 2026 James Daley. All Rights Reserved.
-# Proprietary and Confidential.
-
 cmake_minimum_required(VERSION 3.28)
-project(Aeostara
-    VERSION 0.1.0
-    LANGUAGES CXX
-    DESCRIPTION "Aeostara — Deterministic Config Drift Healing CLI"
-)
-
+cmake_policy(SET CMP0141 NEW)
+set(CMAKE_MSVC_DEBUG_INFORMATION_FORMAT Embedded)
+file(STRINGS "${CMAKE_CURRENT_SOURCE_DIR}/SDK_VERSION" AEOSTARA_SDK_VERSION LIMIT_COUNT 1)
+if(NOT AEOSTARA_SDK_VERSION MATCHES "^([0-9]+)\\.([0-9]+)\\.([0-9]+)(-[0-9A-Za-z.-]+)?$")
+    message(FATAL_ERROR "SDK_VERSION must contain the supported SemVer identity")
+endif()
+set(AEOSTARA_VERSION_MAJOR "${CMAKE_MATCH_1}")
+set(AEOSTARA_VERSION_MINOR "${CMAKE_MATCH_2}")
+set(AEOSTARA_VERSION_PATCH "${CMAKE_MATCH_3}")
+project(Aeostara VERSION "${AEOSTARA_VERSION_MAJOR}.${AEOSTARA_VERSION_MINOR}.${AEOSTARA_VERSION_PATCH}" LANGUAGES CXX DESCRIPTION "Aeostara Windows C++20 SDK")
+if(NOT WIN32 OR NOT MSVC OR NOT CMAKE_SIZEOF_VOID_P EQUAL 8 OR NOT CMAKE_CXX_COMPILER_VERSION STREQUAL "19.44.35223.0")
+    message(FATAL_ERROR "Aeostara SDK requires Windows x64, MSVC 19.44.35223.0, v143")
+endif()
+if(CMAKE_GENERATOR_PLATFORM MATCHES "ARM64|Win32" OR (DEFINED CMAKE_VS_PLATFORM_TOOLSET AND NOT CMAKE_VS_PLATFORM_TOOLSET STREQUAL "v143"))
+    message(FATAL_ERROR "Aeostara SDK requires the x64 v143 toolset")
+endif()
+configure_file(cmake/SdkVersion.h.in "${PROJECT_BINARY_DIR}/include/AeostaraCore/SdkVersion.h" @ONLY)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
-
-# MSVC warnings as errors
-if(MSVC)
-    add_compile_options(/W4 /WX)
+set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL")
+set(CMAKE_INTERPROCEDURAL_OPTIMIZATION OFF)
+option(AEOSTARA_BUILD_CLI "Build source CLI regression consumer" ON)
+option(AEOSTARA_INSTALL_SDK "Install the lean SDK" OFF)
+set(AEOSTARA_DIAGNOSTIC_PROFILE "DEVELOPMENT" CACHE STRING "LEAN or DEVELOPMENT")
+set_property(CACHE AEOSTARA_DIAGNOSTIC_PROFILE PROPERTY STRINGS LEAN DEVELOPMENT)
+if(NOT AEOSTARA_DIAGNOSTIC_PROFILE MATCHES "^(LEAN|DEVELOPMENT)$")
+    message(FATAL_ERROR "Unknown diagnostic profile")
 endif()
-
-# Find nlohmann/json via vcpkg
-find_package(nlohmann_json CONFIG REQUIRED)
-
-# Include directories for public headers
-include_directories(${CMAKE_SOURCE_DIR}/include)
-
-# Library targets
+if(AEOSTARA_INSTALL_SDK AND NOT AEOSTARA_DIAGNOSTIC_PROFILE STREQUAL "LEAN")
+    message(FATAL_ERROR "Only the lean profile may be installed as the SDK")
+endif()
+add_compile_options(/W4 /WX /permissive- /utf-8 /EHsc /GR /Z7)
 add_subdirectory(src/AeostaraCore)
-
-# CLI executable
-add_subdirectory(src/AeostaraCLI)
-
-# Tests
+if(AEOSTARA_BUILD_CLI)
+    add_subdirectory(src/AeostaraCLI)
+endif()
+include(CTest)
 if(BUILD_TESTING)
-    enable_testing()
     add_subdirectory(tests)
 endif()

@@ -1,12 +1,27 @@
 // Aeostara
 // Copyright (c) 2026 James Daley. All Rights Reserved.
-// Proprietary and Confidential.
+// SPDX-License-Identifier: LicenseRef-Raven-Forge-Dual
 
 #include "CLIRunner.h"
 
 #include <iostream>
 
 namespace Aeostara {
+namespace {
+int failureExitCode(const OperationFailure& failure) {
+    switch (failure.code) {
+    case OperationCode::Ambiguous:
+    case OperationCode::Blocked:
+    case OperationCode::UnsupportedEvidence:
+    case OperationCode::StaleState:
+    case OperationCode::PolicyRejected:
+    case OperationCode::VerificationFailed:
+        return 1;
+    default:
+        return 2;
+    }
+}
+}
 
 CLIRunner::CLIRunner(std::shared_ptr<IHealingEngine> engine)
     : engine_(std::move(engine)) {}
@@ -25,10 +40,11 @@ int CLIRunner::runValidate(const ParsedCommand& cmd) const {
         auto result = engine_->validate(
             cmd.configPath, cmd.desiredPath, cmd.invariantsPath);
 
-        nlohmann::json output;
+        Json output;
         output["command"] = "validate";
         output["configFile"] = cmd.configPath;
         output["valid"] = result.valid;
+        if (result.failure) output["failure"] = operationFailureJson(*result.failure);
 
         if (!result.errors.empty()) {
             output["errors"] = result.errors;
@@ -36,23 +52,25 @@ int CLIRunner::runValidate(const ParsedCommand& cmd) const {
 
         if (!result.drifts.empty()) {
             output["driftCount"] = result.drifts.size();
-            nlohmann::json driftsJson = nlohmann::json::array();
+            Json driftsJson = Json::array();
             for (const auto& d : result.drifts) {
-                driftsJson.push_back(nlohmann::json(d));
+                driftsJson.push_back(Json(d));
             }
             output["drifts"] = driftsJson;
         }
 
         if (!result.violations.empty()) {
             output["violationCount"] = result.violations.size();
-            nlohmann::json violationsJson = nlohmann::json::array();
+            Json violationsJson = Json::array();
             for (const auto& v : result.violations) {
-                violationsJson.push_back(nlohmann::json(v));
+                violationsJson.push_back(Json(v));
             }
             output["violations"] = violationsJson;
         }
 
         std::cout << output.dump(2) << "\n";
+
+        if (result.failure) return failureExitCode(*result.failure);
 
         if (!result.valid) {
             std::cerr << "Drift detected: " << result.drifts.size() << " difference(s)\n";
@@ -73,20 +91,23 @@ int CLIRunner::runDiff(const ParsedCommand& cmd) const {
         auto result = engine_->diff(
             cmd.configPath, cmd.desiredPath, cmd.invariantsPath);
 
-        nlohmann::json output;
+        Json output;
         output["command"] = "diff";
         output["configFile"] = cmd.configPath;
         output["driftCount"] = result.drifts.size();
 
-        nlohmann::json driftsJson = nlohmann::json::array();
+        Json driftsJson = Json::array();
         for (const auto& d : result.drifts) {
-            driftsJson.push_back(nlohmann::json(d));
+            driftsJson.push_back(Json(d));
         }
         output["drifts"] = driftsJson;
 
-        output["proposedPlan"] = nlohmann::json(result.proposedPlan);
+        output["proposedPlan"] = Json(result.proposedPlan);
+        if (result.failure) output["failure"] = operationFailureJson(*result.failure);
 
         std::cout << output.dump(2) << "\n";
+
+        if (result.failure) return failureExitCode(*result.failure);
 
         if (result.drifts.empty()) {
             std::cerr << "No drift detected\n";
@@ -109,29 +130,33 @@ int CLIRunner::runHeal(const ParsedCommand& cmd) const {
         auto result = engine_->heal(
             cmd.configPath, cmd.desiredPath, cmd.invariantsPath, cmd.auditPath);
 
-        nlohmann::json output;
+        Json output;
         output["command"] = "heal";
         output["configFile"] = cmd.configPath;
         output["success"] = result.success;
         output["message"] = result.message;
+        output["mutationMayHaveOccurred"] = result.mutationMayHaveOccurred;
+        if (result.failure) output["failure"] = operationFailureJson(*result.failure);
 
         if (!result.executedPlan.actions.empty()) {
-            output["plan"] = nlohmann::json(result.executedPlan);
+            output["plan"] = Json(result.executedPlan);
         }
 
-        output["verification"] = nlohmann::json(result.verification);
+        output["verification"] = Json(result.verification);
 
         if (result.rollback.has_value()) {
-            output["rollback"] = nlohmann::json(result.rollback.value());
+            output["rollback"] = Json(result.rollback.value());
         }
 
-        nlohmann::json eventsJson = nlohmann::json::array();
+        Json eventsJson = Json::array();
         for (const auto& e : result.auditEvents) {
-            eventsJson.push_back(nlohmann::json(e));
+            eventsJson.push_back(Json(e));
         }
         output["auditEvents"] = eventsJson;
 
         std::cout << output.dump(2) << "\n";
+
+        if (result.failure) return failureExitCode(*result.failure);
 
         if (result.success) {
             std::cerr << "Heal successful: " << result.message << "\n";

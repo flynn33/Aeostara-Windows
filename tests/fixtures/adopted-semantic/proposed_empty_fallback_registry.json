@@ -1,0 +1,31 @@
+{
+  "registryID": "AEOSTARA-DEMO-FALLBACK-EMPTY-V1",
+  "revision": 1,
+  "status": "proposed_requires_adoption",
+  "synthetic": true,
+  "productionDefault": false,
+  "orderingRule": {
+    "status": "derived_from_source",
+    "keys": [
+      "ordering_rank ASC",
+      "policy_id ASCII lexicographic ASC"
+    ],
+    "source": {
+      "repository": "flynn33/ASH-Pattern-System",
+      "commit": "e123f5d7fdbb381179971f721a3292c31eb1cbc2",
+      "path": "specs/registries/fallback-policy-registry.md",
+      "symbol": "Deterministic ordering rules"
+    }
+  },
+  "entries": [],
+  "availabilityRule": {
+    "status": "proposed_requires_adoption",
+    "rule": "Before canonical classification, availability is an existence preflight over eligible re-diagnosed candidates using the full diagnostic and immutable registry; it does not recursively call get_fallback_candidates whose precondition is DEGRADED. After classification, canonical selection requires DEGRADED. Execution policy authorization occurs after planning and never turns a valid mapping into a different bit value."
+  },
+  "idReservation": "IDs shown are synthetic examples; adopting entries requires reserving globally unique identifiers or replacing them in an immutable adopted supplement.",
+  "purpose": "Proposed negative test input only: immutable available registry with no eligible candidates.",
+  "derivedFromProposedFile": {
+    "path": "A:\\Codex-Project-Instructions\\Aeostara_Windows_SDK_Release_Handoff_2026-10-11\\execution-evidence\\preparation\\semantic-mapping\\proposed_fallback_registry.json",
+    "sha256": "d20150ec552f149a3d1b7cb74e3e1eb0e64e0728cce3e766848255fe9693d744"
+  }
+}
