@@ -1,6 +1,6 @@
 # Aeostara Architecture Check Script
-# Copyright (c) 2026 James Daley. All Rights Reserved.
-# SPDX-License-Identifier: LicenseRef-Raven-Forge-Dual
+# Copyright (c) 2026 James Daley, Raven Forge Software.
+# SPDX-License-Identifier: MIT
 #
 # Quick architecture validation for CI/pre-commit.
 # Usage: powershell -ExecutionPolicy Bypass -File Scripts/check-architecture.ps1

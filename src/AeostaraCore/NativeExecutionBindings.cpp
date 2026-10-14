@@ -1,6 +1,6 @@
 // Aeostara
-// Copyright (c) 2026 James Daley. All Rights Reserved.
-// SPDX-License-Identifier: LicenseRef-Raven-Forge-Dual
+// Copyright (c) 2026 James Daley, Raven Forge Software.
+// SPDX-License-Identifier: MIT
 #include "AeostaraCore/NativeExecutionBindings.h"
 #include <chrono>
 #include <iomanip>

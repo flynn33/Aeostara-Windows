@@ -1,5 +1,6 @@
 # Aeostara
-# Copyright (c) 2026 James Daley. All Rights Reserved.
+# Copyright (c) 2026 James Daley, Raven Forge Software.
+# SPDX-License-Identifier: MIT
 add_library(AeostaraCore STATIC
     Version.cpp Contracts.cpp Invariant.cpp InvariantParser.cpp JsonPath.cpp DriftAnalyzer.cpp
     RepairPlanner.cpp PolicyEvaluator.cpp BackupManager.cpp Verification.cpp RollbackManager.cpp

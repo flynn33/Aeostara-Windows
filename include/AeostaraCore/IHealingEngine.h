@@ -1,5 +1,6 @@
 // Aeostara
-// Copyright (c) 2026 James Daley. All Rights Reserved.
+// Copyright (c) 2026 James Daley, Raven Forge Software.
+// SPDX-License-Identifier: MIT
 #pragma once
 #include "AeostaraCore/Contracts.h"
 #include "AeostaraCore/Invariant.h"

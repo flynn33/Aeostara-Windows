@@ -57,7 +57,7 @@ Operator documentation: `docs/windows/CLI_OPERATOR_GUIDE.md`
 aeostara-windows-v0.1.0/
 ├── aeostara.exe          # Release build CLI binary
 ├── README.md             # Quick-start guide
-├── LICENSE.md            # Proprietary license
+├── LICENSE.md            # MIT License
 ├── CHANGELOG.md          # v0.1.0 release notes
 ├── docs/
 │   └── CLI_OPERATOR_GUIDE.md

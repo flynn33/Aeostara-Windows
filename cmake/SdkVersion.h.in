@@ -1,5 +1,5 @@
 // Aeostara
-// Copyright (c) 2026 James Daley. All Rights Reserved.
+// Copyright (c) 2026 James Daley, Raven Forge Software.
 #pragma once
 #define AEOSTARA_SDK_VERSION "@AEOSTARA_SDK_VERSION@"
 #define AEOSTARA_VERSION_MAJOR @AEOSTARA_VERSION_MAJOR@

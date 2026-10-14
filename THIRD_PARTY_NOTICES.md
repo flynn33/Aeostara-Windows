@@ -1,7 +1,5 @@
-Aeostara Windows SDK is dual-licensed under the repository's LICENSE.
-Non-commercial, academic, and personal use is free under its terms; commercial
-use requires a separate written license from James Daley, DBA Raven Forge Software.
-Copyright (c) 2026 James Daley. All Rights Reserved.
+Aeostara Windows SDK is licensed under the MIT License in the repository LICENSE.
+Copyright (c) 2026 James Daley, Raven Forge Software.
 
 The distributed SDK contains product-owned native C++20 code. It requires the
 qualified Microsoft Visual C++ toolchain and runtime, Windows SDK headers and

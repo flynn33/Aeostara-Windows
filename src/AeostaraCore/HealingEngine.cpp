@@ -1,5 +1,6 @@
 // Aeostara
-// Copyright (c) 2026 James Daley. All Rights Reserved.
+// Copyright (c) 2026 James Daley, Raven Forge Software.
+// SPDX-License-Identifier: MIT
 #include "AeostaraCore/HealingEngine.h"
 #include "AeostaraCore/AuditTrail.h"
 #include "AeostaraCore/NativeExecutionBindings.h"

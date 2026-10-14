@@ -12,7 +12,7 @@ Five assets are published:
 
 The binary ZIP contains one versioned SDK root with `include/AeostaraCore`, `lib/x64/Debug`, `lib/x64/Release`, `lib/cmake/Aeostara`, `share/aeostara` and a standalone README. The native NuGet package contains equivalent header/library/manifest bytes plus `build/native` integration metadata. The developer kit contains only the synthetic public SDK client, build metadata, integration guide and legal notices.
 
-Private implementation bodies, tests, CLI binaries, upstream schema/reference corpora, controlling instruction/evidence package, raw incident captures, development collector and external toolchain/dependency caches are excluded. Public headers and static library debug information remain deliberate ABI/developer payload. The repository's Raven Forge dual license is included unchanged; the ordinary static SDK is unsigned.
+Private implementation bodies, tests, CLI binaries, upstream schema/reference corpora, controlling instruction/evidence package, raw incident captures, development collector and external toolchain/dependency caches are excluded. Public headers and static library debug information remain deliberate ABI/developer payload. The repository's MIT License is included unchanged; the ordinary static SDK is unsigned.
 
 The SDK manifest lists source identity, compatibility tuple, semantic pins/supplement and payload hashes. The release manifest lists the three package hashes; `SHA256SUMS` covers those packages and the release manifest. A checksum file does not hash itself. Repeated staging controls ZIP timestamps and entry order. A separate clean compiler build measures actual debug/archive differences; compiler bit repeatability is never inferred from deterministic packaging.
 

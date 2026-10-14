@@ -1,5 +1,6 @@
 // Aeostara
-// Copyright (c) 2026 James Daley. All Rights Reserved.
+// Copyright (c) 2026 James Daley, Raven Forge Software.
+// SPDX-License-Identifier: MIT
 #include "AeostaraCore/BackupManager.h"
 #include "AeostaraCore/SemanticMapping.h"
 #define WIN32_LEAN_AND_MEAN
