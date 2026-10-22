@@ -2,7 +2,7 @@
 
 The SDK is the `AeostaraCore` static library with curated public headers, relocatable CMake metadata and a native NuGet package. The development CLI remains a source regression consumer. SDK assets contain the lean diagnostic backend in both Debug and Release.
 
-The repository's Raven Forge dual license is included in each package. Non-commercial, academic, and personal use is free under its terms; commercial use requires a separate written license from James Daley, DBA Raven Forge Software. Read the included LICENSE for the complete terms.
+The repository's Apache License, Version 2.0 is included in each package. Copyright remains with James Daley, DBA: Raven Forge Software. Commercial use is allowed. Retain the included LICENSE and NOTICE and credit James Daley for this project. Read the included LICENSE for the complete terms.
 
 The qualified tuple is Windows x64, Visual Studio 2022 v143, MSVC 19.44.35223, VCToolsVersion 14.44.35207, Windows SDK 10.0.26100.0 and C++20. Use /MDd with Debug or /MD with Release, exceptions, RTTI and the corresponding iterator debug setting. Embedded /Z7 producer debug information avoids a required external compiler PDB. Cross-toolset, x86, ARM64, /MT and mixed Debug/Release use are rejected. This candidate does not promise a compiler-independent C++ ABI.
 

@@ -12,7 +12,7 @@ All notable changes to Aeostara will be documented in this file.
 - Pure projection/classification/planning are separated from authorized native execution. Actual plan/policy/target/backup evidence, checked verification and truthful restoration replace arbitrary difference-driven healing.
 - Bounded lean diagnostics ship in both installed configurations; development evidence is confined to source development builds. Explicit paired redacted incident exports report incomplete writes and unavailable causes.
 - Public synthetic CMake/MSBuild client exercises authorized healing, pre-mutation policy rejection and verified restoration after forced failure.
-- Dual-license notices follow the owner's Raven Forge license update and reconcile stale confidential header labels.
+- Apache License, Version 2.0 notices keep copyright with James Daley, allow commercial use, and require attribution and a record of changes.
 
 This is a qualified compiler/runtime release candidate. Representative target-machine storage/ACL/crash validation remains deployment work. Actual acceptance evidence and release asset hashes are recorded by the release manifest.
 ## [0.1.0] - 2026-03-20
