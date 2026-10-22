@@ -20,3 +20,5 @@ The upstream pins remain Aeostara `774b981ef2267a41c1b1a59497b2b0746a86f32b` and
 The original arbitrary-difference healing path is replaced by complete semantic requests, actual policy evaluation, measured target identity/version, checked backup, protected execution and independent verification. Failed healing remains failed after verified restoration. Diagnostic exports provide bounded redacted JSON/Markdown evidence with explicit unavailable causes and partial-export failure status. Representative target-machine storage, ACL and crash behavior remains deployment validation.
 
 This project is licensed under the Apache License, Version 2.0. See [LICENSE](LICENSE). Copyright (c) 2026 James Daley, Raven Forge Software. See [third-party notices](THIRD_PARTY_NOTICES.md) and [contribution policy](CONTRIBUTING.md). Outside contributions are not accepted.
+
+You must give credit to James Daley, Raven Forge Software, for Aeostara for Windows. Keep that credit with every copy or product that uses this work. Keep the LICENSE and NOTICE files, keep the copyright lines in the source, and state the changes you make.
