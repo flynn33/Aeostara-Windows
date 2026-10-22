@@ -1,6 +1,6 @@
 # Aeostara Guardrails Verification Script
 # Copyright (c) 2026 James Daley, Raven Forge Software.
-# SPDX-License-Identifier: MIT
+# SPDX-License-Identifier: Apache-2.0
 #
 # Usage: powershell -ExecutionPolicy Bypass -File Scripts/verify-aeostara-guardrails.ps1
 # Run from the repository root.

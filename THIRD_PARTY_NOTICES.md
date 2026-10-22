@@ -1,4 +1,4 @@
-Aeostara Windows SDK is licensed under the MIT License in the repository LICENSE.
+Aeostara Windows SDK is licensed under the Apache License, Version 2.0 in the repository LICENSE.
 Copyright (c) 2026 James Daley, Raven Forge Software.
 
 The distributed SDK contains product-owned native C++20 code. It requires the

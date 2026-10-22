@@ -1,6 +1,6 @@
 // Aeostara
 // Copyright (c) 2026 James Daley, Raven Forge Software.
-// SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: Apache-2.0
 #pragma once
 #include "AeostaraCore/BaseAdapterBindings.h"
 #include "AeostaraCore/IFileSystem.h"

@@ -1,6 +1,6 @@
 // Aeostara
 // Copyright (c) 2026 James Daley, Raven Forge Software.
-// SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: Apache-2.0
 static unsigned runJsonAggregateChecks() {
     unsigned checks = 0;
     const auto require = [&](bool condition) { ++checks; if (!condition) throw std::runtime_error("Captured aggregate assertion " + std::to_string(checks)); };
